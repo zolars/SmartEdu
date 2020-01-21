@@ -30,6 +30,9 @@ class MySQL:
     def execute(self, sql):
         self._cur.execute(sql)
 
+    def clear(self):
+        self._cur.execute('DROP DATABASE IF EXISTS `smartedu`;')
+
     def __del__(self):
         self._conn.close()
 
@@ -38,18 +41,14 @@ def init_db():
     g.db = MySQL()
 
 
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    '''Clear the existing data and create new tables.'''
-    init_db()
-    click.echo('Initialized the database.')
+def clear_db():
+    g.db = MySQL()
+    g.db.clear()
 
 
 def get_db():
     if 'db' not in g:
         g.db = init_db()
-
     return g.db
 
 
@@ -60,6 +59,23 @@ def close_db(e=None):
         del db
 
 
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    '''Create new tables.'''
+    init_db()
+    click.echo('Initialized the database.')
+
+
+@click.command('clear-db')
+@with_appcontext
+def clear_db_command():
+    '''Clear the existing database.'''
+    clear_db()
+    click.echo('Deleted the database.')
+
+
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+    app.cli.add_command(clear_db_command)
