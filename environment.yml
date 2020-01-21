@@ -1,0 +1,12 @@
+name: smartedu
+dependencies:
+  - python=3.6
+  - pip:
+      - pymysql
+      - pyecharts
+      - pandas
+      - flask
+      - flask-cors
+      - pylint
+      - yapf
+      - pymysql
