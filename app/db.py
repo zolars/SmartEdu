@@ -20,25 +20,36 @@ class MySQL:
             charset='utf8',
         )
         self._cur = self._conn.cursor()
+
+    def execute(self, sql):
+        self._cur.execute(sql)
+
+    def create(self):
+        logging.info("Start to initialize the database...")
+
         with current_app.open_resource('schema.sql') as f:
             for sql in f.read().decode('utf8').split(';'):
                 try:
                     self._cur.execute(sql)
                 except Exception as err:
-                    logging.error(err)
-
-    def execute(self, sql):
-        self._cur.execute(sql)
+                    if err.args[0] != 1065:
+                        logging.error(err)
 
     def clear(self):
-        self._cur.execute('DROP DATABASE IF EXISTS `smartedu`;')
+        logging.info("Start to delete and clear the database...")
+
+        try:
+            self._cur.execute('DROP DATABASE IF EXISTS `smartedu`;')
+        except Exception as err:
+            logging.error(err)
 
     def __del__(self):
         self._conn.close()
 
 
-def init_db():
+def create_db():
     g.db = MySQL()
+    g.db.create()
 
 
 def clear_db():
@@ -48,7 +59,7 @@ def clear_db():
 
 def get_db():
     if 'db' not in g:
-        g.db = init_db()
+        g.db = create_db()
     return g.db
 
 
@@ -59,11 +70,11 @@ def close_db(e=None):
         del db
 
 
-@click.command('init-db')
+@click.command('create-db')
 @with_appcontext
-def init_db_command():
+def create_db_command():
     '''Create new tables.'''
-    init_db()
+    create_db()
     click.echo('Initialized the database.')
 
 
@@ -77,5 +88,5 @@ def clear_db_command():
 
 def init_app(app):
     app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    app.cli.add_command(create_db_command)
     app.cli.add_command(clear_db_command)

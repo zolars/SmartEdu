@@ -7,7 +7,7 @@ from app.config import config
 
 logging.basicConfig(filename='./log/app.log',
                     filemode="a+",
-                    format="%(asctime)s %(levelname)s:%(message)s",
+                    format="%(asctime)s %(levelname)s : %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S",
                     level=logging.DEBUG)
 

@@ -37,6 +37,6 @@
 4. Run flask application.
    ```
    $ flask clear-db
-   $ flask init-db
+   $ flask create-db
    $ flask run
    ```
