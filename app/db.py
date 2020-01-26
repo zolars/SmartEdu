@@ -59,7 +59,7 @@ def clear_db():
 
 def get_db():
     if 'db' not in g:
-        g.db = create_db()
+        g.db = MySQL()
     return g.db
 
 
