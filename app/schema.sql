@@ -8,8 +8,8 @@ CREATE TABLE user_info (
   role BOOLEAN NOT NULL,
   reg_ip VARCHAR(16) NOT NULL,
   reg_time TIMESTAMP NOT NULL,
-  mobile VARCHAR(12) NOT NULL,
-  birthday TIMESTAMP NOT NULL,
+  birthday TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+  mobile VARCHAR(12) DEFAULT NULL,
   province VARCHAR(10) DEFAULT NULL,
   city VARCHAR(10) DEFAULT NULL, 
   gender BOOLEAN DEFAULT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE page_info (
   title VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE user_login_history (
+CREATE TABLE user_auth_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   user_ip VARCHAR(16) NOT NULL,
