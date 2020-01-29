@@ -16,6 +16,7 @@ def create_app(test_config=None):
 
     # create and configure the app
     app = Flask(__name__)
+    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

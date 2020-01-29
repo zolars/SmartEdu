@@ -1,11 +1,105 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 主页{% endblock %} 
+{% extends 'base.html' %} {% block title %}SmartEdu - 注册{% endblock %} {%
+block content %}
 
-{% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Register">
-  </form>
+<!-- contact -->
+<div class="contact py-5" id="contact">
+  <div class="container pb-xl-5 pb-lg-3">
+    <div class="row">
+      <div class="col-lg-6">
+        <img
+          src="{{ url_for('static', filename='images/b2.png') }}"
+          alt="image"
+          class="img-fluid"
+        />
+      </div>
+      <div class="col-lg-6 mt-lg-0 mt-5">
+        <!-- contact form grid -->
+        <div class="contact-top1">
+          <form action="#" method="post" class="contact-wthree-do">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>
+                    用户名
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="中英文和数字, 不包含空格"
+                    name="username"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>
+                    学号
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="请填写10位北邮学号"
+                    name="student_id"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>
+                    密码
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="不少于八位"
+                    name="password"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>
+                    密码确认
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="请确保输入的密码相同"
+                    name="password_confirm"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <button class="btn btn-cont-w3 btn-block mt-4">
+                  完成注册
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- //contact form grid ends here -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- //contact-->
+
+<script>
+  function submit(res) {
+    console.log(res);
+  }
+</script>
+
 {% endblock %}

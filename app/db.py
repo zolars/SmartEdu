@@ -12,17 +12,34 @@ from app.config import config
 
 class MySQL:
     def __init__(self):
-        self._conn = pymysql.connect(
-            host='localhost',  # mysql server address
-            port=3306,  # port num
-            user=config['development'].MYSQL_USERNAME,  # username
-            passwd=config['development'].MYSQL_PASSWORD,  # password
-            charset='utf8',
-        )
+        try:
+            self._conn = pymysql.connect(
+                host='localhost',  # mysql server address
+                port=3306,  # port num
+                user=config['development'].MYSQL_USERNAME,  # username
+                passwd=config['development'].MYSQL_PASSWORD,  # password
+                db='smartedu',
+                charset='utf8',
+            )
+        except:
+            self._conn = pymysql.connect(
+                host='localhost',  # mysql server address
+                port=3306,  # port num
+                user=config['development'].MYSQL_USERNAME,  # username
+                passwd=config['development'].MYSQL_PASSWORD,  # password
+                charset='utf8',
+            )
         self._cur = self._conn.cursor()
 
     def execute(self, sql):
         self._cur.execute(sql)
+
+    def fetchall(self, sql):
+        df = pd.read_sql(sql, con=self._conn)
+        return df
+
+    def commit(self):
+        self._conn.commit()
 
     def create(self):
         logging.info("Start to initialize the database...")
