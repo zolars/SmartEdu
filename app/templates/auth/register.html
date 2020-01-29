@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block title %}SmartEdu - 注册{% endblock %} {%
 block content %}
 
-<!-- contact -->
-<div class="contact py-5" id="contact">
+<!-- authorize -->
+<div class="authorize py-5" id="authorize">
   <div class="container pb-xl-5 pb-lg-3">
     <div class="row">
       <div class="col-lg-6">
@@ -13,9 +13,19 @@ block content %}
         />
       </div>
       <div class="col-lg-6 mt-lg-0 mt-5">
-        <!-- contact form grid -->
-        <div class="contact-top1">
-          <form action="#" method="post" class="contact-wthree-do">
+        <!-- authorize form grid -->
+        <div class="authorize-top1">
+          <form action="#" method="post" class="authorize-wthree-do">
+          <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <h3>
+                    <i class="fa fa-user"></i>
+                    欢迎注册
+                  </h3>
+                </div>
+              </div>
+            </div>
             <div class="form-group">
               <div class="row">
                 <div class="col-md-6">
@@ -56,7 +66,7 @@ block content %}
                   </label>
                   <input
                     class="form-control"
-                    type="text"
+                    type="password"
                     placeholder="不少于八位"
                     name="password"
                     required=""
@@ -65,7 +75,7 @@ block content %}
               </div>
             </div>
             <div class="form-group">
-              <div class="row">
+              <div class="password">
                 <div class="col-md-6">
                   <label>
                     密码确认
@@ -89,13 +99,12 @@ block content %}
             </div>
           </form>
         </div>
-        <!-- //contact form grid ends here -->
+        <!-- //authorize form grid ends here -->
       </div>
     </div>
   </div>
 </div>
-<!-- //contact-->
-
+<!-- //authorize-->
 <script>
   function submit(res) {
     console.log(res);

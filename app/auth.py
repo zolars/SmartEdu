@@ -7,6 +7,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.db import get_db
+import app.pages
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -65,11 +66,11 @@ def register():
                         reg_time="now()"))
             db.commit()
             flash('注册成功。欢迎，{username}！'.format(username=username), 'success')
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('pages.index'))
 
         flash(error, 'error')
 
-    return render_template('auth/login.html')
+    return render_template('auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -79,20 +80,22 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        user = db.execute('SELECT * FROM user WHERE username = ?',
-                          (username, )).fetchone()
+        user = db.fetchall(
+            'SELECT * FROM user_info WHERE username = "{username}"'.format(
+                username=username))
 
-        if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+        if len(user) == 0:
+            error = '该用户未注册，请先注册！'
+        elif not check_password_hash(user['password'][0], password):
+            error = '密码错误，请确认填写无误。'
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            session['user_id'] = int(user['id'][0])
+            flash("您已成功登录！", "success")
+            return redirect(url_for('pages.index'))
 
-        flash(error)
+        flash(error, "error")
 
     return render_template('auth/login.html')
 
@@ -104,8 +107,9 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute('SELECT * FROM user WHERE id = ?',
-                                  (user_id, )).fetchone()
+        g.user = get_db().fetchall(
+            'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
+                user_id=user_id)).to_json(orient='index')
 
 
 @bp.route('/logout')

@@ -44,6 +44,13 @@
       href="{{ url_for('static', filename='css/pnotify.css') }}"
       rel="stylesheet"
     />
+
+    <!-- Animate-CSS -->
+    <link
+      href="{{ url_for('static', filename='css/animate.css') }}"
+      rel="stylesheet"
+    />
+
     <!-- Font-Awesome-Icons-CSS -->
     <!-- //Custom-Files -->
 
@@ -90,8 +97,13 @@
                 delay: 1500,
                 modules: {
                   Buttons: {
-                    closer: true, 
+                    closer: true,
                     sticker: false
+                  },
+                  Animate: {
+                    animate: true,
+                    inClass: 'rotateInUpRight',
+                    outClass: 'rotateOutUpRight'
                   }
                 },
               });
@@ -104,8 +116,13 @@
                 delay: 1500,
                 modules: {
                   Buttons: {
-                    closer: true, 
+                    closer: true,
                     sticker: false
+                  },
+                  Animate: {
+                    animate: true,
+                    inClass: 'rotateInUpRight',
+                    outClass: 'rotateOutUpRight'
                   }
                 },
               });
@@ -118,8 +135,13 @@
                 delay: 1500,
                 modules: {
                   Buttons: {
-                    closer: true, 
+                    closer: true,
                     sticker: false
+                  },
+                  Animate: {
+                    animate: true,
+                    inClass: 'rotateInUpRight',
+                    outClass: 'rotateOutUpRight'
                   }
                 },
               });
@@ -132,8 +154,13 @@
                 delay: 1500,
                 modules: {
                   Buttons: {
-                    closer: true, 
+                    closer: true,
                     sticker: false
+                  },
+                  Animate: {
+                    animate: true,
+                    inClass: 'rotateInUpRight',
+                    outClass: 'rotateOutUpRight'
                   }
                 },
               });
@@ -152,14 +179,13 @@
           >
             <!-- logo -->
             <div id="logo">
-              <a href="index.html">
+              <a href="{{ url_for('pages.index')}}">
                 <img
                   src="{{ url_for('static', filename='images/logo.jpg') }}"
                   width="63px"
                 />
                 &nbsp;智慧教育平台
               </a>
-              <!-- <i href="index.html">@北京邮电大学</i> -->
             </div>
             <!-- //logo -->
             <!-- nav -->
@@ -168,8 +194,45 @@
                 <label for="drop" class="toggle">Menu</label>
                 <input type="checkbox" id="drop" />
                 <ul class="menu">
-                  <li><a href="about.html">课程主页</a></li>
-                  <li><a href="pricing.html">教学资源</a></li>
+                  <li><a href="{{ url_for('pages.index')}}">课程主页</a></li>
+                  <li>
+                    <!-- First Tier Drop Down -->
+                    <label for="drop-2" class="toggle toogle-2"
+                      >教学资源
+                      <span class="fa fa-angle-down" aria-hidden="true"></span>
+                    </label>
+                    <a href="#"
+                      >教学资源
+                      <span class="fa fa-angle-down" aria-hidden="true"></span
+                    ></a>
+                    <input type="checkbox" id="drop-2" />
+                    <ul>
+                      <li>
+                        <a
+                          href="{{ url_for('pages.resources')}}"
+                          class="drop-text"
+                          >所有资源</a
+                        >
+                      </li>
+                      <li>
+                        <a href="{{ url_for('pages.video')}}" class="drop-text"
+                          >教学视频</a
+                        >
+                      </li>
+                      <li>
+                        <a href="{{ url_for('pages.book')}}" class="drop-text"
+                          >书籍课件</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="{{ url_for('pages.exercise')}}"
+                          class="drop-text"
+                          >练习题目</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
                   <li>
                     <!-- First Tier Drop Down -->
                     <label for="drop-2" class="toggle toogle-2"
@@ -183,25 +246,23 @@
                     <input type="checkbox" id="drop-2" />
                     <ul>
                       <li>
-                        <a href="#services" class="drop-text">Services</a>
-                      </li>
-                      <li><a href="faq.html" class="drop-text">Faq's</a></li>
-                      <li><a href="404.html" class="drop-text">404</a></li>
-                      <li><a href="#stats" class="drop-text">Statistics</a></li>
-                      <li>
-                        <a href="about.html" class="drop-text"
-                          >Why Choose Us?</a
+                        <a
+                          href="{{ url_for('statistics.statistics')}}"
+                          class="drop-text"
+                          >学习统计</a
                         >
                       </li>
                       <li>
-                        <a href="about.html" class="drop-text">Our Team</a>
-                      </li>
-                      <li>
-                        <a href="#partners" class="drop-text">Partners</a>
+                        <a
+                          href="{{ url_for('statistics.exam')}}"
+                          class="drop-text"
+                          >模拟考试</a
+                        >
                       </li>
                     </ul>
                   </li>
-                  <li><a href="form.html">作业助手</a></li>
+
+                  <li><a href="{{ url_for('pages.homework')}}">作业助手</a></li>
                 </ul>
               </nav>
             </div>
@@ -218,6 +279,7 @@
                     class="search"
                     type="search"
                     placeholder="点此搜索..."
+                    name="keyword"
                     required=""
                   />
                   <button class="form-control btn" type="submit">
@@ -227,7 +289,10 @@
               </div>
               <!-- //search -->
               <!-- login -->
-              <a class="login-w3ls btn" href="" target="_blank">
+              <a
+                class="login-w3ls btn"
+                onclick="location.href = '{{ url_for('auth.login')}}';"
+              >
                 {% if g.user %}
                 <span class="fa fa-user" aria-hidden="true"></span>
                 {% else %}
@@ -242,54 +307,53 @@
       <!-- //header -->
     </div>
     <!-- //main banner -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-    {% block content %}{% endblock %}
-
-    <!-- copyright bottom -->
-    <div class="copy-bottom bg-li py-4 border-top">
-      <div class="container-fluid">
-        <div class="d-md-flex px-md-3 position-relative text-center">
-          <!-- footer social icons -->
-          <div class="social-icons-footer mb-md-0 mb-3">
-            <ul class="list-unstyled">
-              <li>
-                <a href="#">
-                  <span class="fa fa-facebook"></span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="fa fa-twitter"></span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="fa fa-google-plus"></span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="fa fa-instagram"></span>
-                </a>
-              </li>
-            </ul>
+    <!-- copyright footer -->
+    <footer>
+      <div class="copy-bottom bg-li py-4 border-top">
+        <div class="container-fluid">
+          <div class="d-md-flex px-md-3 position-relative text-center">
+            <!-- footer social icons -->
+            <div class="social-icons-footer mb-md-0 mb-3">
+              <ul class="list-unstyled">
+                <li>
+                  <a href="#">
+                    <span class="fa fa-wechat"></span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <span class="fa fa-weibo"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- //footer social icons -->
+            <!-- copyright -->
+            <div class="copy_right mx-md-auto mb-md-0 mb-3">
+              <p class="text-bl let">
+                Copyright &copy; 2020. SmartEdu All rights reserved.
+              </p>
+            </div>
+            <!-- //copyright -->
+            <!-- move top icon -->
+            <a href="#home" class="move-top text-center">
+              <span class="fa fa-level-up" aria-hidden="true"></span>
+            </a>
+            <!-- //move top icon -->
           </div>
-          <!-- //footer social icons -->
-          <!-- copyright -->
-          <div class="copy_right mx-md-auto mb-md-0 mb-3">
-            <p class="text-bl let">
-              Copyright &copy; 2020. SmartEdu All rights reserved.
-            </p>
-          </div>
-          <!-- //copyright -->
-          <!-- move top icon -->
-          <a href="#home" class="move-top text-center">
-            <span class="fa fa-level-up" aria-hidden="true"></span>
-          </a>
-          <!-- //move top icon -->
         </div>
       </div>
-    </div>
-    <!-- //copyright bottom -->
+    </footer>
+    <!-- //copyright footer -->
   </body>
+
+  <script>
+    function login() {
+      location.href = "hello.html";
+    }
+  </script>
 </html>

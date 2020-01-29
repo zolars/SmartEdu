@@ -1,11 +1,82 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 主页{% endblock %} 
+{% extends 'base.html' %} {% block title %}SmartEdu - 登录{% endblock %} {%
+block content %}
 
-{% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
-  </form>
+<script>
+  document.body.style.backgroundColor = "#fff";
+  document.body.style.backgroundImage =
+    "url({{ url_for('static', filename='images/login-bg.png') }})";
+  document.body.style.backgroundSize = "100%";
+  document.body.style.backgroundRepeat = "no-repeat";
+</script>
+
+<div class="py-5"></div>
+<!-- authorize -->
+<div class="authorize py-5" id="authorize">
+  <div class="container pb-xl-5 pb-lg-3">
+    <div class="row">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5 mt-lg-0 mt-5" style="background:hsla(0,0%,100%,.6);">
+        <!-- authorize form grid -->
+
+        <div class="authorize-top1">
+          <form action="#" method="post" class="authorize-wthree-do">
+            <div class="form-group"></div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                  <h3>
+                    <i class="fa fa-sign-in"></i>
+                    欢迎登录
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="请输入用户名"
+                    name="username"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-9">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="请输入密码"
+                    name="password"
+                    required=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <button class="btn btn-cont-w3 btn-block mt-4">
+                  登录
+                </button>
+              </div>
+            </div>
+            <div class="form-group"></div>
+          </form>
+        </div>
+        <!-- //authorize form grid ends here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- //authorize-->
+
 {% endblock %}
