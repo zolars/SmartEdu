@@ -10,11 +10,9 @@ bp = Blueprint('statistics', __name__)
 
 @bp.route('/statistics')
 def statistics():
-    db = get_db()
     return render_template('index.html')
 
 
 @bp.route('/exam')
 def exam():
-    db = get_db()
     return render_template('index.html')

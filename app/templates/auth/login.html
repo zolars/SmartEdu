@@ -4,7 +4,7 @@ block content %}
 <script>
   document.body.style.backgroundColor = "#fff";
   document.body.style.backgroundImage =
-    "url({{ url_for('static', filename='images/login-bg.png') }})";
+    "url({{url_for('static', filename='images/login-bg.png') }})";
   document.body.style.backgroundSize = "100%";
   document.body.style.backgroundRepeat = "no-repeat";
 </script>
@@ -85,7 +85,9 @@ block content %}
 </div>
 
 <script>
-  function register(){location.href = '{{ url_for('auth.register')}}';}
+  function register() {
+    location.href = '{{ url_for('auth.register') }}';
+  }
 </script>
 
 <!-- //authorize-->

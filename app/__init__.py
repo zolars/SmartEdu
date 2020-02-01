@@ -37,8 +37,8 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    from . import pages
-    app.register_blueprint(pages.bp)
+    from . import page
+    app.register_blueprint(page.bp)
 
     from . import statistics
     app.register_blueprint(statistics.bp)

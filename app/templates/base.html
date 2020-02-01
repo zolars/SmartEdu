@@ -10,7 +10,7 @@
       addEventListener(
         "load",
         function() {
-          setTimeout(hideURLbar, 0);
+          setTimeout(hideURLbar, 500);
         },
         false
       );
@@ -24,30 +24,30 @@
     <!-- Custom-Files -->
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/bootstrap.css') }}"
+      href="{{url_for('static', filename='css/bootstrap.css') }}"
     />
     <!-- Bootstrap-Core-CSS -->
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="{{url_for('static', filename='css/style.css') }}"
       type="text/css"
       media="all"
     />
     <!-- Style-CSS -->
     <link
-      href="{{ url_for('static', filename='css/font-awesome.min.css') }}"
+      href="{{url_for('static', filename='css/font-awesome.min.css') }}"
       rel="stylesheet"
     />
 
     <!-- PNotify-CSS -->
     <link
-      href="{{ url_for('static', filename='css/pnotify.css') }}"
+      href="{{url_for('static', filename='css/pnotify.css') }}"
       rel="stylesheet"
     />
 
     <!-- Animate-CSS -->
     <link
-      href="{{ url_for('static', filename='css/animate.css') }}"
+      href="{{url_for('static', filename='css/animate.css') }}"
       rel="stylesheet"
     />
 
@@ -64,23 +64,23 @@
     <!-- JS-Files -->
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/PNotify.js') }}"
+      src="{{url_for('static', filename='js/PNotify.js') }}"
     ></script>
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/PNotifyStyleMaterial.js') }}"
+      src="{{url_for('static', filename='js/PNotifyStyleMaterial.js') }}"
     ></script>
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/PNotifyButtons.js') }}"
+      src="{{url_for('static', filename='js/PNotifyButtons.js') }}"
     ></script>
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/PNotifyConfirm.js') }}"
+      src="{{url_for('static', filename='js/PNotifyConfirm.js') }}"
     ></script>
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/PNotifyMobile.js') }}"
+      src="{{url_for('static', filename='js/PNotifyMobile.js') }}"
     ></script>
   </head>
 
@@ -179,9 +179,9 @@
           >
             <!-- logo -->
             <div id="logo">
-              <a href="{{ url_for('pages.index')}}">
+              <a href="{{ url_for('page.index') }}">
                 <img
-                  src="{{ url_for('static', filename='images/logo.jpg') }}"
+                  src="{{url_for('static', filename='images/logo.jpg') }}"
                   width="63px"
                 />
                 &nbsp;智慧教育平台
@@ -194,7 +194,7 @@
                 <label for="drop" class="toggle">Menu</label>
                 <input type="checkbox" id="drop" />
                 <ul class="menu">
-                  <li><a href="{{ url_for('pages.index')}}">课程主页</a></li>
+                  <li><a href="{{ url_for('page.index') }}">课程主页</a></li>
                   <li>
                     <!-- First Tier Drop Down -->
                     <label for="drop-2" class="toggle toogle-2"
@@ -209,24 +209,24 @@
                     <ul>
                       <li>
                         <a
-                          href="{{ url_for('pages.resources')}}"
+                          href="{{ url_for('page.resources') }}"
                           class="drop-text"
                           >所有资源</a
                         >
                       </li>
                       <li>
-                        <a href="{{ url_for('pages.video')}}" class="drop-text"
+                        <a href="{{ url_for('page.video') }}" class="drop-text"
                           >教学视频</a
                         >
                       </li>
                       <li>
-                        <a href="{{ url_for('pages.book')}}" class="drop-text"
+                        <a href="{{ url_for('page.book') }}" class="drop-text"
                           >书籍课件</a
                         >
                       </li>
                       <li>
                         <a
-                          href="{{ url_for('pages.exercise')}}"
+                          href="{{ url_for('page.exercise') }}"
                           class="drop-text"
                           >练习题目</a
                         >
@@ -247,14 +247,14 @@
                     <ul>
                       <li>
                         <a
-                          href="{{ url_for('statistics.statistics')}}"
+                          href="{{ url_for('statistics.statistics') }}"
                           class="drop-text"
                           >学习统计</a
                         >
                       </li>
                       <li>
                         <a
-                          href="{{ url_for('statistics.exam')}}"
+                          href="{{ url_for('statistics.exam') }}"
                           class="drop-text"
                           >模拟考试</a
                         >
@@ -262,7 +262,7 @@
                     </ul>
                   </li>
 
-                  <li><a href="{{ url_for('pages.homework')}}">作业助手</a></li>
+                  <li><a href="{{ url_for('page.homework') }}">作业助手</a></li>
                 </ul>
               </nav>
             </div>
@@ -289,16 +289,21 @@
               </div>
               <!-- //search -->
               <!-- login -->
+              {% if g.user %}
               <a
                 class="login-w3ls btn"
-                onclick="location.href = '{{ url_for('auth.login')}}';"
+                onclick="location.href = '{{ url_for('auth.myAccount') }}';"
               >
-                {% if g.user %}
                 <span class="fa fa-user" aria-hidden="true"></span>
-                {% else %}
-                <span class="fa fa-sign-in" aria-hidden="true"></span>
-                {% endif %}
               </a>
+              {% else %}
+              <a
+                class="login-w3ls btn"
+                onclick="location.href = '{{ url_for('auth.login') }}';"
+              >
+                <span class="fa fa-sign-in" aria-hidden="true"></span
+              ></a>
+              {% endif %}
               <!-- //login -->
             </div>
           </div>
@@ -350,10 +355,4 @@
     </footer>
     <!-- //copyright footer -->
   </body>
-
-  <script>
-    function login() {
-      location.href = "hello.html";
-    }
-  </script>
 </html>

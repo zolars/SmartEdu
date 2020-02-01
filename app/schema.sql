@@ -56,10 +56,6 @@ CREATE TABLE hw_info (
   week VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE page_info (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE user_auth_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
@@ -75,7 +71,7 @@ CREATE TABLE user_auth_history (
 
 CREATE TABLE res_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL, 
+  user_id INT DEFAULT NULL, 
   FOREIGN KEY (user_id) REFERENCES user_info (id),
   user_ip VARCHAR(16) NOT NULL,
   res_id INT NOT NULL, 
@@ -115,11 +111,10 @@ CREATE TABLE hw_history (
 
 CREATE TABLE page_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL, 
+  user_id INT DEFAULT NULL, 
   FOREIGN KEY (user_id) REFERENCES user_info (id),
   user_ip VARCHAR(16) NOT NULL,
-  page_id INT NOT NULL, 
-  FOREIGN KEY (page_id) REFERENCES page_info (id),
+  page_path VARCHAR(255) NOT NULL,
   time TIMESTAMP NOT NULL
 );
 
@@ -158,8 +153,7 @@ CREATE TABLE exe_statistics (
 );
 
 CREATE TABLE page_statistics (
-  page_id INT NOT NULL, 
-  FOREIGN KEY (page_id) REFERENCES page_info (id),
+  page_path VARCHAR(255) NOT NULL,
   time_span VARCHAR(50) NOT NULL,
   visit_num INT NOT NULL,
   user_num INT NOT NULL

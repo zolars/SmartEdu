@@ -48,6 +48,7 @@ class MySQL:
             for sql in f.read().decode('utf8').split(';'):
                 try:
                     self._cur.execute(sql)
+                    self._conn.commit()
                 except Exception as err:
                     if err.args[0] != 1065:
                         logging.error(err)
@@ -57,6 +58,7 @@ class MySQL:
 
         try:
             self._cur.execute('DROP DATABASE IF EXISTS `smartedu`;')
+            self._conn.commit()
         except Exception as err:
             logging.error(err)
 
@@ -69,9 +71,10 @@ def create_db():
     g.db.create()
 
 
-def clear_db():
+def recreate_db():
     g.db = MySQL()
     g.db.clear()
+    g.db.create()
 
 
 def get_db():
@@ -95,15 +98,15 @@ def create_db_command():
     click.echo('Initialized the database.')
 
 
-@click.command('clear-db')
+@click.command('recreate-db')
 @with_appcontext
-def clear_db_command():
-    '''Clear the existing database.'''
-    clear_db()
-    click.echo('Deleted the database.')
+def recreate_db_command():
+    '''Recreate the existing database.'''
+    recreate_db()
+    click.echo('Recreated the database.')
 
 
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(create_db_command)
-    app.cli.add_command(clear_db_command)
+    app.cli.add_command(recreate_db_command)

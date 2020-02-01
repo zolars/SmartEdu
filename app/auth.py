@@ -6,8 +6,8 @@ import functools
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
 from werkzeug.security import check_password_hash, generate_password_hash
-from app.db import get_db
-import app.pages
+from app.db import get_db, close_db
+import app.page
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -66,10 +66,13 @@ def register():
                         reg_time="now()"))
             db.commit()
             flash('注册成功。欢迎，{username}！'.format(username=username), 'success')
-            return redirect(url_for('pages.index'))
+
+            close_db()
+            return redirect(url_for('page.index'))
 
         flash(error, 'error')
 
+    close_db()
     return render_template('auth/register.html')
 
 
@@ -93,11 +96,19 @@ def login():
             session.clear()
             session['user_id'] = int(user['id'][0])
             flash("您已成功登录！", "success")
-            return redirect(url_for('pages.index'))
+
+            close_db()
+            return redirect(url_for('page.index'))
 
         flash(error, "error")
 
+    close_db()
     return render_template('auth/login.html')
+
+
+@bp.route('/myAccount', methods=('GET', 'POST'))
+def myAccount():
+    return render_template('auth/myAccount.html')
 
 
 @bp.before_app_request
@@ -109,7 +120,20 @@ def load_logged_in_user():
     else:
         g.user = get_db().fetchall(
             'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
-                user_id=user_id)).to_json(orient='index')
+                user_id=user_id)).iloc[0].to_json(orient='index')
+
+        logging.info(user_id, g.user)
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 
 @bp.route('/logout')
