@@ -50,11 +50,6 @@ def register():
             error = '学号{student_id}已注册账号。如有问题，请联系老师或管理员。'.format(
                 student_id=student_id)
 
-        logging.info(
-            db.fetchall(
-                'SELECT id FROM user_info WHERE username = "{username}"'.
-                format(username=username)))
-
         if error is None:
             db.execute(
                 'INSERT INTO user_info (username, student_id, password, role, reg_ip, reg_time) VALUES ("{username}", {student_id}, "{password}", {role}, "{reg_ip}", {reg_time})'
@@ -106,11 +101,12 @@ def login():
     return render_template('auth/login.html')
 
 
-@bp.route('/myAccount', methods=('GET', 'POST'))
-def myAccount():
-    return render_template('auth/myAccount.html')
+@bp.route('/modifyAccount', methods=('GET', 'POST'))
+def modifyAccount():
+    return render_template('auth/modifyAccount.html')
 
 
+# 将登录的用户信息存入g
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -121,8 +117,6 @@ def load_logged_in_user():
         g.user = get_db().fetchall(
             'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
                 user_id=user_id)).iloc[0].to_json(orient='index')
-
-        logging.info(user_id, g.user)
 
 
 def login_required(view):
@@ -139,4 +133,5 @@ def login_required(view):
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    flash("您已成功注销！", "success")
+    return redirect(url_for('page.index'))

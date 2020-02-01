@@ -22,12 +22,6 @@ def record_page_history(page_path, user_ip):
         user_id = json.loads(g.user)['id']
 
     if user_id is not None:
-        logging.info(
-            'INSERT INTO page_history (user_id, user_ip, page_path, time) VALUES ("{user_id}", "{user_ip}", "{page_path}", {time})'
-            .format(user_id=user_id,
-                    user_ip=user_ip,
-                    page_path=page_path,
-                    time="now()"))
         db.execute(
             'INSERT INTO page_history (user_id, user_ip, page_path, time) VALUES ("{user_id}", "{user_ip}", "{page_path}", {time})'
             .format(user_id=user_id,
@@ -36,9 +30,6 @@ def record_page_history(page_path, user_ip):
                     time="now()"))
         db.commit()
     else:
-        logging.info(
-            'INSERT INTO page_history (user_id, user_ip, page_path, time) VALUES (null, "{user_ip}", "{page_path}", {time})'
-            .format(user_ip=user_ip, page_path=page_path, time="now()"))
         db.execute(
             'INSERT INTO page_history (user_id, user_ip, page_path, time) VALUES (null, "{user_ip}", "{page_path}", {time})'
             .format(user_ip=user_ip, page_path=page_path, time="now()"))

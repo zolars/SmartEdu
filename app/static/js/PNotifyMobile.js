@@ -506,4 +506,3 @@ var PNotifyMobile = (function(PNotify) {
   }
   return PNotifyMobile;
 })(PNotify);
-//# sourceMappingURL=PNotifyMobile.js.map

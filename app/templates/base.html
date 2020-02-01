@@ -82,91 +82,137 @@
       type="text/javascript"
       src="{{url_for('static', filename='js/PNotifyMobile.js') }}"
     ></script>
+    <script
+      type="text/javascript"
+      src="{{url_for('static', filename='js/PNotifyAnimate.js') }}"
+    ></script>
   </head>
 
   <body>
     <script>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message  in messages %}
-            {% if category == 'success' %}
-              PNotify.success({
-                title: '成功',
-                text: '{{ message }}',
-                hide: true,
-                delay: 1500,
-                modules: {
-                  Buttons: {
-                    closer: true,
-                    sticker: false
-                  },
-                  Animate: {
-                    animate: true,
-                    inClass: 'rotateInUpRight',
-                    outClass: 'rotateOutUpRight'
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message  in messages %}
+                  {% if category == 'success' %}
+                    PNotify.success({
+                      title: '成功',
+                      text: '{{ message }}',
+                      hide: true,
+                      delay: 1500,
+                      modules: {
+                        Buttons: {
+                          closer: true,
+                          sticker: false
+                        },
+                        Animate: {
+                          animate: true,
+                          inClass: 'rotateInUpRight',
+                          outClass: 'rotateOutUpRight'
+                        }
+                      },
+                    });
+                  {% endif %}
+                  {% if category == 'notice' %}
+                    PNotify.notice({
+                      title: '通知',
+                      text: '{{ message }}',
+                      hide: true,
+                      delay: 1500,
+                      modules: {
+                        Buttons: {
+                          closer: true,
+                          sticker: false
+                        },
+                        Animate: {
+                          animate: true,
+                          inClass: 'rotateInUpRight',
+                          outClass: 'rotateOutUpRight'
+                        }
+                      },
+                    });
+                  {% endif %}
+                  {% if category == 'info' %}
+                    PNotify.info({
+                      title: '信息',
+                      text: '{{ message }}',
+                      hide: true,
+                      delay: 1500,
+                      modules: {
+                        Buttons: {
+                          closer: true,
+                          sticker: false
+                        },
+                        Animate: {
+                          animate: true,
+                          inClass: 'rotateInUpRight',
+                          outClass: 'rotateOutUpRight'
+                        }
+                      },
+                    });
+                  {% endif %}
+                  {% if category == 'error' %}
+                    PNotify.error({
+                      title: '遇到错误',
+                      text: '{{ message }}',
+                      hide: true,
+                      delay: 1500,
+                      modules: {
+                        Buttons: {
+                          closer: true,
+                          sticker: false
+                        },
+                        Animate: {
+                          animate: true,
+                          inClass: 'rotateInUpRight',
+                          outClass: 'rotateOutUpRight'
+                        }
+                      },
+                    });
+                  {% endif %}
+               {% endfor %}
+            {% endif %} {% endwith %}
+
+      function clickAccount(){
+        username = JSON.parse({{ g.user | tojson }})['username']
+        PNotify.notice({
+          title: '登录管理',
+          text: '亲爱的 ' + username + ' , 欢迎使用北邮智慧教育平台！',
+          icon: 'fa fa-user',
+          hide: false,
+          modules: {
+            Buttons: {
+              sticker: false
+            },
+            Animate: {
+              animate: true,
+              inClass: 'rotateInDownRight',
+              outClass: 'rotateOutDownRight'
+            },
+            History: {
+              history: false
+            },
+            Confirm: {
+              confirm: true,
+              buttons: [{
+                  text: '更改用户信息',
+                  click: function() {
+                    PNotify.closeAll();
+                    location.href = "{{ url_for('auth.modifyAccount') }}";
                   }
                 },
-              });
-            {% endif %}
-            {% if category == 'notice' %}
-              PNotify.notice({
-                title: '通知',
-                text: '{{ message }}',
-                hide: true,
-                delay: 1500,
-                modules: {
-                  Buttons: {
-                    closer: true,
-                    sticker: false
-                  },
-                  Animate: {
-                    animate: true,
-                    inClass: 'rotateInUpRight',
-                    outClass: 'rotateOutUpRight'
+                {
+                  text: '注销',
+                  primary: true,
+                  click: function() {
+                    PNotify.closeAll();
+                    location.href = "{{ url_for('auth.logout') }}";
                   }
-                },
-              });
-            {% endif %}
-            {% if category == 'info' %}
-              PNotify.info({
-                title: '信息',
-                text: '{{ message }}',
-                hide: true,
-                delay: 1500,
-                modules: {
-                  Buttons: {
-                    closer: true,
-                    sticker: false
-                  },
-                  Animate: {
-                    animate: true,
-                    inClass: 'rotateInUpRight',
-                    outClass: 'rotateOutUpRight'
-                  }
-                },
-              });
-            {% endif %}
-            {% if category == 'error' %}
-              PNotify.error({
-                title: '遇到错误',
-                text: '{{ message }}',
-                hide: true,
-                delay: 1500,
-                modules: {
-                  Buttons: {
-                    closer: true,
-                    sticker: false
-                  },
-                  Animate: {
-                    animate: true,
-                    inClass: 'rotateInUpRight',
-                    outClass: 'rotateOutUpRight'
-                  }
-                },
-              });
-            {% endif %}
-         {% endfor %}
-      {% endif %} {% endwith %}
+                }
+              ]
+            },
+          }
+        });
+      }
     </script>
 
     <!-- main banner -->
@@ -290,10 +336,7 @@
               <!-- //search -->
               <!-- login -->
               {% if g.user %}
-              <a
-                class="login-w3ls btn"
-                onclick="location.href = '{{ url_for('auth.myAccount') }}';"
-              >
+              <a class="login-w3ls btn" onclick="clickAccount();">
                 <span class="fa fa-user" aria-hidden="true"></span>
               </a>
               {% else %}

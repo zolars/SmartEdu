@@ -984,4 +984,3 @@ var PNotifyConfirm = (function(PNotify) {
   }
   return PNotifyConfirm;
 })(PNotify);
-//# sourceMappingURL=PNotifyConfirm.js.map
