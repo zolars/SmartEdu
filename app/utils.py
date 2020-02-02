@@ -1,4 +1,5 @@
 import json
+import functools
 
 from flask import (flash, g, redirect)
 
@@ -7,7 +8,6 @@ from app.db import get_db, close_db
 
 # Record page_history
 def record_page_history(page_path, user_ip):
-
     db = get_db()
     if g.user == '{}' or g.user is None:
         user_id = None

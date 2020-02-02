@@ -10,7 +10,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.utils import *
 from app.db import get_db, close_db
-import app.page
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -23,9 +22,14 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().fetchall(
-            'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
-                user_id=user_id)).iloc[0].to_json(orient='index')
+        try:
+            g.user = get_db().fetchall(
+                'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
+                    user_id=user_id)).iloc[0].to_json(orient='index')
+        except Exception as e:
+            logging.error(e)
+            session.clear()
+            g.user = None
 
 
 def login_required(view):
@@ -42,7 +46,8 @@ def login_required(view):
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    record_page_history('auth.register', request.remote_addr)
+    record_page_history(page_path='/auth/register',
+                        user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()
 
@@ -99,17 +104,20 @@ def register():
         flash(error, 'error')
         close_db()
 
-    return render_template('auth/register.html')
+    return render_template('/auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
-    record_page_history('auth.login', request.remote_addr)
+    record_page_history(page_path='/auth/login', user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()
 
         username = request.form['username']
         password = request.form['password']
+        os = request.form['os']
+        browser = request.form['browser']
+        resolution = request.form['resolution']
 
         error = None
         user = db.fetchall(
@@ -125,10 +133,37 @@ def login():
             session.clear()
             user_id = int(user['id'][0])
             session['user_id'] = user_id
+
+            # Set the id_active as true
             db.execute(
                 'UPDATE user_info SET id_active = 1 WHERE id = {user_id}'.
                 format(user_id=user_id))
+
+            # Update the table: user_auth_history
+            logging.warning(
+                'INSERT INTO user_auth_history (user_id, user_ip, operation, time, os, browser, resolution)'
+                +
+                'VALUES ("{user_id}", "{user_ip}", "{operation}", {time}, "{os}", "{browser}", "{resolution}")'
+                .format(user_id=user_id,
+                        user_ip=request.remote_addr,
+                        operation=1,
+                        time='now()',
+                        os=os,
+                        browser=browser,
+                        resolution=resolution))
+            db.execute(
+                'INSERT INTO user_auth_history (user_id, user_ip, operation, time, os, browser, resolution)'
+                +
+                'VALUES ("{user_id}", "{user_ip}", "{operation}", {time}, "{os}", "{browser}", "{resolution}")'
+                .format(user_id=user_id,
+                        user_ip=request.remote_addr,
+                        operation=1,
+                        time='now()',
+                        os=os,
+                        browser=browser,
+                        resolution=resolution))
             db.commit()
+
             flash('您已成功登录！', 'success')
 
             close_db()
@@ -137,13 +172,14 @@ def login():
         flash(error, 'error')
         close_db()
 
-    return render_template('auth/login.html')
+    return render_template('/auth/login.html')
 
 
 @bp.route('/modifyAccount', methods=('GET', 'POST'))
 @login_required
 def modifyAccount():
-    record_page_history('auth.modifyAccount', request.remote_addr)
+    record_page_history(page_path='/auth/modifyAccount',
+                        user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()
         user_id = json.loads(g.user)['id']
@@ -215,7 +251,7 @@ def modifyAccount():
         close_db()
         return redirect(url_for('auth.modifyAccount'))
 
-    return render_template('auth/modifyAccount.html')
+    return render_template('/auth/modifyAccount.html')
 
 
 @bp.route('/logout')

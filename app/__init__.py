@@ -40,12 +40,4 @@ def create_app(test_config=None):
     from . import page
     app.register_blueprint(page.bp)
 
-    from . import statistics
-    app.register_blueprint(statistics.bp)
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
     return app
