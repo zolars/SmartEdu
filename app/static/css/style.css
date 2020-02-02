@@ -97,7 +97,11 @@ ol {
 }
 
 .bg-li {
-  background: #f8f9fa;
+  background: #f9f9f9;
+}
+
+.bg-li-1 {
+  background: white;
 }
 
 .bg-li-2 {
@@ -216,7 +220,7 @@ nav ul ul {
   -o-border-radius: 4px;
   -ms-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px;
+  border-radius: 8px;
   z-index: 9;
   /* has to be the same number as the "line-height" of "nav a" */
 }
@@ -228,7 +232,7 @@ nav ul li:hover > ul {
 
 /* Fisrt Tier Dropdown */
 nav ul ul li {
-  width: 170px;
+  width: 85px;
   float: none;
   display: list-item;
   position: relative;
@@ -990,15 +994,15 @@ li.breadcrumb-item {
 
 /* //why choose */
 
-/* team */
-h4.text-team-w3 {
+/* resources */
+h4.text-resources-w3 {
   font-size: 20px;
   font-weight: 700;
   color: #3a3939;
   margin: 1em 0;
 }
 
-ul.team-socil-w3pvts li span {
+ul.resources-socil-w3pvts li span {
   color: #333;
   font-size: 15px;
   margin: 0 6px;
@@ -1009,7 +1013,7 @@ ul.team-socil-w3pvts li span {
   -ms-transition: 0.5s all;
 }
 
-ul.team-socil-w3pvts li span:hover {
+ul.resources-socil-w3pvts li span:hover {
   opacity: 0.8;
   transition: 0.5s all;
   -webkit-transition: 0.5s all;
@@ -1027,14 +1031,14 @@ ul.team-socil-w3pvts li span:hover {
 }
 
 .ab-content-inner {
-  padding: 3em;
+  padding: 2em;
   background: #fff;
   -webkit-box-shadow: 5px 7px 23px 0px rgba(58, 52, 82, 0.16);
   -moz-box-shadow: 5px 7px 23px 0px rgba(58, 52, 82, 0.16);
   box-shadow: 5px 7px 23px 0px rgba(58, 52, 82, 0.16);
 }
 
-/* //team */
+/* //resources */
 /* //about page */
 
 /* faq page */
@@ -1422,7 +1426,7 @@ button.btn-cont-w3 {
     margin-top: 0.8em;
   }
 
-  h4.text-team-w3 {
+  h4.text-resources-w3 {
     font-size: 18px;
   }
 

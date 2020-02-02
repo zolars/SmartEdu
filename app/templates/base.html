@@ -21,19 +21,19 @@
     </script>
     <!-- //Meta tag Keywords -->
 
-    <!-- Custom-Files -->
-    <link
-      rel="stylesheet"
-      href="{{url_for('static', filename='css/bootstrap.css') }}"
-    />
-    <!-- Bootstrap-Core-CSS -->
+    <!-- Custom-CSS -->
     <link
       rel="stylesheet"
       href="{{url_for('static', filename='css/style.css') }}"
       type="text/css"
       media="all"
     />
-    <!-- Style-CSS -->
+    <!-- Bootstrap-Files -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/bootstrap.css') }}"
+    />
+    <!-- FontAwesome-CSS -->
     <link
       href="{{url_for('static', filename='css/font-awesome.min.css') }}"
       rel="stylesheet"
@@ -88,7 +88,7 @@
     ></script>
   </head>
 
-  <body onload="load();">
+  <body onload="load();" class="bg-li">
     <script>
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -217,160 +217,158 @@
       }
     </script>
 
-    <!-- main banner -->
-    <div class="main-top" id="home">
-      <!-- header -->
-      <header>
-        <div class="container-fluid">
-          <div
-            class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3"
-          >
-            <!-- logo -->
-            <div id="logo">
-              <a href="{{ url_for('page.index') }}">
-                <img
-                  src="{{url_for('static', filename='images/logo.jpg') }}"
-                  width="63px"
-                />
-                &nbsp;智慧教育平台
-              </a>
-            </div>
-            <!-- //logo -->
-            <!-- nav -->
-            <div class="nav_w3ls">
-              <nav>
-                <label for="drop" class="toggle">Menu</label>
-                <input type="checkbox" id="drop" />
-                <ul class="menu">
-                  <li><a href="{{ url_for('page.index') }}">课程主页</a></li>
-                  <li>
-                    <!-- First Tier Drop Down -->
-                    <label for="drop-2" class="toggle toogle-2"
-                      >教学资源
-                      <span class="fa fa-angle-down" aria-hidden="true"></span>
-                    </label>
-                    <a href="#"
-                      >教学资源
-                      <span class="fa fa-angle-down" aria-hidden="true"></span
-                    ></a>
-                    <input type="checkbox" id="drop-2" />
-                    <ul>
-                      <li>
-                        <a
-                          href="{{ url_for('page.resources') }}"
-                          class="drop-text"
-                          >所有资源</a
-                        >
-                      </li>
-                      <li>
-                        <a href="{{ url_for('page.video') }}" class="drop-text"
-                          >教学视频</a
-                        >
-                      </li>
-                      <li>
-                        <a href="{{ url_for('page.book') }}" class="drop-text"
-                          >书籍课件</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="{{ url_for('page.exercise') }}"
-                          class="drop-text"
-                          >练习题目</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <!-- First Tier Drop Down -->
-                    <label for="drop-2" class="toggle toogle-2"
-                      >AI助学
-                      <span class="fa fa-angle-down" aria-hidden="true"></span>
-                    </label>
-                    <a href="#"
-                      >AI助学
-                      <span class="fa fa-angle-down" aria-hidden="true"></span
-                    ></a>
-                    <input type="checkbox" id="drop-2" />
-                    <ul>
-                      <li>
-                        <a
-                          href="{{ url_for('page.app') }}"
-                          class="drop-text"
-                          >飞飞搜题</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="{{ url_for('page.exam') }}"
-                          class="drop-text"
-                          >模拟考试</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="{{ url_for('page.statistics') }}"
-                          class="drop-text"
-                          >学习统计</a
-                        >
-                      </li>
-                    </ul>
-                  </li>
+    <!-- header -->
+    <header class="main-top" id="home">
+      <div class="container-fluid">
+        <div
+          class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3"
+        >
+          <!-- logo -->
+          <div id="logo">
+            <a href="{{ url_for('page.index') }}">
+              <img
+                src="{{url_for('static', filename='images/logo.jpg') }}"
+                width="63px"
+              />
+              &nbsp;智慧教育平台
+            </a>
+          </div>
+          <!-- //logo -->
 
-                  <li><a href="{{ url_for('page.homework') }}">作业助手</a></li>
-                </ul>
-              </nav>
-            </div>
-            <!-- //nav -->
-            <div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
-              <!-- search -->
-              <div class="search-w3layouts mr-3">
-                <form
-                  action="#"
-                  method="post"
-                  class="search-bottom-wthree d-flex"
-                >
-                  <input
-                    class="search"
-                    type="search"
-                    placeholder="点此搜索..."
-                    name="keyword"
-                    required=""
-                  />
-                  <button class="form-control btn" type="submit">
-                    <span class="fa fa-search"></span>
-                  </button>
-                </form>
-              </div>
-              <!-- //search -->
-              <!-- login -->
-              {% if g.user %}
-              <a class="login-w3ls btn" onclick="clickAccount();">
-                <span class="fa fa-user" aria-hidden="true"></span>
-              </a>
-              {% else %}
-              <a
-                class="login-w3ls btn"
-                onclick="location.href = '{{ url_for('auth.login') }}';"
+          <!-- nav -->
+          <div class="nav_w3ls">
+            <nav>
+              <label for="drop" class="toggle">Menu</label>
+              <input type="checkbox" id="drop" />
+              <ul class="menu">
+                <li><a href="{{ url_for('page.index') }}">课程主页</a></li>
+                <li>
+                  <!-- First Tier Drop Down -->
+                  <label for="drop-1" class="toggle toogle-2"
+                    >教学资源
+                    <span class="fa fa-angle-down" aria-hidden="true"></span>
+                  </label>
+                  <a href="#"
+                    >教学资源
+                    <span class="fa fa-angle-down" aria-hidden="true"></span
+                  ></a>
+                  <input type="checkbox" id="drop-1" />
+                  <ul>
+                    <li>
+                      <a
+                        href="{{ url_for('page.resources') }}"
+                        class="drop-text"
+                        >所有资源</a
+                      >
+                    </li>
+                    <li>
+                      <a href="{{ url_for('page.video') }}" class="drop-text"
+                        >教学视频</a
+                      >
+                    </li>
+                    <li>
+                      <a href="{{ url_for('page.book') }}" class="drop-text"
+                        >书籍课件</a
+                      >
+                    </li>
+                    <li>
+                      <a href="{{ url_for('page.exercise') }}" class="drop-text"
+                        >练习题目</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <!-- First Tier Drop Down -->
+                  <label for="drop-2" class="toggle toogle-2"
+                    >AI助学
+                    <span class="fa fa-angle-down" aria-hidden="true"></span>
+                  </label>
+                  <a href="#"
+                    >AI助学
+                    <span class="fa fa-angle-down" aria-hidden="true"></span
+                  ></a>
+                  <input type="checkbox" id="drop-2" />
+                  <ul>
+                    <li>
+                      <a href="{{ url_for('page.app') }}" class="drop-text"
+                        >飞飞搜题</a
+                      >
+                    </li>
+                    <li>
+                      <a href="{{ url_for('page.exam') }}" class="drop-text"
+                        >模拟考试</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="{{ url_for('page.statistics') }}"
+                        class="drop-text"
+                        >学习统计</a
+                      >
+                    </li>
+                    <li>
+                      <a href="{{ url_for('page.comments') }}" class="drop-text"
+                        >课程讨论</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+
+                <li><a href="{{ url_for('page.homework') }}">作业助手</a></li>
+              </ul>
+            </nav>
+          </div>
+          <!-- //nav -->
+
+          <div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
+            <!-- search -->
+            <div class="search-w3layouts mr-3">
+              <form
+                action="#"
+                method="post"
+                class="search-bottom-wthree d-flex"
               >
-                <span class="fa fa-sign-in" aria-hidden="true"></span
-              ></a>
-              {% endif %}
-              <!-- //login -->
+                <input
+                  class="search"
+                  type="search"
+                  placeholder="点此搜索..."
+                  name="keyword"
+                  required=""
+                />
+                <button class="form-control btn" type="submit">
+                  <span class="fa fa-search"></span>
+                </button>
+              </form>
             </div>
+            <!-- //search -->
+            <!-- login -->
+            {% if g.user %}
+            <a class="login-w3ls btn" onclick="clickAccount();">
+              <span class="fa fa-user" aria-hidden="true"></span>
+            </a>
+            {% else %}
+            <a
+              class="login-w3ls btn"
+              onclick="location.href = '{{ url_for('auth.login') }}';"
+            >
+              <span class="fa fa-sign-in" aria-hidden="true"></span
+            ></a>
+            {% endif %}
+            <!-- //login -->
           </div>
         </div>
-      </header>
-      <!-- //header -->
-    </div>
-    <!-- //main banner -->
+      </div>
+    </header>
+    <!-- //header -->
+
     <main>
       {% block content %}{% endblock %}
     </main>
 
     <!-- copyright footer -->
     <footer>
-      <div class="copy-bottom bg-li py-4 border-top">
+      <div class="copy-bottom bg-li-1 py-4 border-top">
         <div class="container-fluid">
           <div class="d-md-flex px-md-3 position-relative text-center">
             <!-- footer social icons -->
