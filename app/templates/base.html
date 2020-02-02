@@ -88,7 +88,7 @@
     ></script>
   </head>
 
-  <body>
+  <body onload="load();">
     <script>
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -176,7 +176,8 @@
         username = JSON.parse({{ g.user | tojson }})['username']
         PNotify.notice({
           title: '登录管理',
-          text: '亲爱的 ' + username + ' , 欢迎使用北邮智慧教育平台！',
+          text: '<span>亲爱的 ' + username + ' :</span><br /><br /><span>> 欢迎使用北邮智慧教育平台！</span>',
+          textTrusted: true,
           icon: 'fa fa-user',
           hide: false,
           modules: {
@@ -193,7 +194,8 @@
             },
             Confirm: {
               confirm: true,
-              buttons: [{
+              buttons: [
+                {
                   text: '更改用户信息',
                   click: function() {
                     PNotify.closeAll();
