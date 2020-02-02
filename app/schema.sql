@@ -61,12 +61,11 @@ CREATE TABLE user_auth_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   user_ip VARCHAR(16) NOT NULL,
-  operation INT NOT NULL,
+  operation INT NOT NULL, /* 0 for logout, 1 for login */
   time TIMESTAMP NOT NULL,
-  parent VARCHAR(255) DEFAULT NULL,
   os VARCHAR(255) DEFAULT NULL,
   browser VARCHAR(255) DEFAULT NULL,
-  resolution VARCHAR(255) DEFAULT NULL
+  resolution VARCHAR(255) DEFAULT NULL /* 屏幕分辨率 */
 );
 
 CREATE TABLE res_history (
@@ -78,7 +77,6 @@ CREATE TABLE res_history (
   FOREIGN KEY (res_id) REFERENCES res_info (id),
   operation INT NOT NULL,
   time TIMESTAMP NOT NULL,
-  parent VARCHAR(255) DEFAULT NULL,
   rating INT DEFAULT NULL,
   difficulty INT DEFAULT NULL
 );
@@ -92,7 +90,6 @@ CREATE TABLE exe_history (
   FOREIGN KEY (exe_id) REFERENCES exe_info (id),
   action INT NOT NULL,
   time TIMESTAMP NOT NULL,
-  parent VARCHAR(255) DEFAULT NULL,
   difficulty INT DEFAULT NULL,
   answer_easy_if INT DEFAULT NULL
 );
