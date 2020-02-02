@@ -27,7 +27,7 @@ def index():
 @bp.route('/resources')
 def resources():
     record_page_history(page_path='/resources', user_ip=request.remote_addr)
-    return render_template('/page/index.html')
+    return render_template('/page/resources.html')
 
 
 @bp.route('/video')
@@ -73,4 +73,11 @@ def exam():
 @login_required
 def statistics():
     record_page_history(page_path='/statistics', user_ip=request.remote_addr)
+    return render_template('/page/index.html')
+
+
+@bp.route('/comments')
+@login_required
+def comments():
+    record_page_history(page_path='/comments', user_ip=request.remote_addr)
     return render_template('/page/index.html')

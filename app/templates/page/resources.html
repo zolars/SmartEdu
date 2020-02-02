@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}SmartEdu - 主页{% endblock %} {%
+block content %}
+
+<!-- resources -->
+<section class="resources" id="resources">
+  <div class="container py-xl-5 py-lg-3">
+    <div class="row ab-info second pt-lg-4">
+      <div class="col-lg-4 col-sm-6 text-center mt-lg-0 mt-4">
+        <div class="ab-content-inner">
+          <img
+            src="{{url_for('static', filename='images/b2.png') }}"
+            class="img-fluid"
+          />
+          <div class="ab-info-con">
+            <h4 class="text-resources-w3">Petey Cruiser</h4>
+            <ul class="list-unstyled resources-socil-w3pvts">
+              <li class="col-lg-3 d-inline">
+                <a href="#"><i class="fa fa-star fa-lg"></i></a>
+              </li>
+              <li class="col-lg-3 d-inline">
+                <a href="#"><i class="fa fa-download fa-lg"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- //resources -->
+
+{% endblock %}
