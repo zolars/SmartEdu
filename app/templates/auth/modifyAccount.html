@@ -28,26 +28,30 @@ block content %}
               <div class="row">
                 <div class="col-md-6">
                   <label>
-                    用户名
+                    性别
                   </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="中英文和数字, 不包含空格"
-                    name="username"
-                    required=""
-                  />
+                  <br />
+                  <select name="gender" id="gender">
+                    <option value="-1">未选择</option>
+                    <option value="1" id="male">男性</option>
+                    <option value="0" id="female">女性</option>
+                  </select>
+                  <br />
                 </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
                 <div class="col-md-6">
                   <label>
-                    用户名
+                    姓名
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="中英文和数字, 不包含空格"
-                    name="username"
-                    required=""
+                    placeholder="请输入您的姓名"
+                    id="customer_name"
+                    name="customer_name"
                   />
                 </div>
               </div>
@@ -56,54 +60,26 @@ block content %}
               <div class="row">
                 <div class="col-md-6">
                   <label>
-                    学号
+                    手机号码
                   </label>
                   <input
                     class="form-control"
-                    type="text"
-                    placeholder="请填写10位北邮学号"
-                    name="student_id"
-                    required=""
+                    type="number"
+                    placeholder="请输入您的手机号码"
+                    id="mobile"
+                    name="mobile"
                   />
                 </div>
                 <div class="col-md-6">
                   <label>
-                    学号
+                    电子邮件
                   </label>
                   <input
                     class="form-control"
-                    type="text"
-                    placeholder="请填写10位北邮学号"
-                    name="student_id"
-                    required=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-md-6">
-                  <label>
-                    密码
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="不少于八位"
-                    name="password"
-                    required=""
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label>
-                    密码
-                  </label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="不少于八位"
-                    name="password"
-                    required=""
+                    type="email"
+                    placeholder="请输入您的电子邮件地址"
+                    id="email"
+                    name="email"
                   />
                 </div>
               </div>
@@ -112,26 +88,53 @@ block content %}
               <div class="row">
                 <div class="col-md-6">
                   <label>
-                    密码确认
+                    省份
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="请确保输入的密码相同"
-                    name="password_confirm"
-                    required=""
+                    placeholder="请输入您的省份"
+                    id="province"
+                    name="province"
                   />
                 </div>
                 <div class="col-md-6">
                   <label>
-                    密码确认
+                    城市
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="请确保输入的密码相同"
-                    name="password_confirm"
-                    required=""
+                    placeholder="请输入您的城市"
+                    id="city"
+                    name="city"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-6">
+                  <label>
+                    个性签名
+                  </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="请输入您的个性签名"
+                    id="signature"
+                    name="signature"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label>
+                    生日
+                  </label>
+                  <input
+                    class="form-control"
+                    type="date"
+                    id="birthday"
+                    name="birthday"
                   />
                 </div>
               </div>
@@ -151,5 +154,55 @@ block content %}
   </div>
 </div>
 <!-- //authorize-->
+
+<script>
+  function timestampToTime(timestamp) {
+    var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate());
+    return Y+M+D;
+  }
+  function load() {
+
+    var customer_name = JSON.parse({{ g.user | tojson }})["customer_name"];
+    var mobile = JSON.parse({{ g.user | tojson }})["mobile"];
+    var birthday = timestampToTime(JSON.parse({{ g.user | tojson }})["birthday"]);
+    var email = JSON.parse({{ g.user | tojson }})["email"];
+    var gender = JSON.parse({{ g.user | tojson }})["gender"];
+    var signature = JSON.parse({{ g.user | tojson }})["signature"];
+    var province = JSON.parse({{ g.user | tojson }})["province"];
+    var city = JSON.parse({{ g.user | tojson }})["city"];
+
+    console.log(mobile);
+
+    if (customer_name != null)
+      document.getElementById("customer_name").setAttribute("placeholder", customer_name);
+    if (gender != null)
+      if (gender == 0) {
+        document.getElementById("female").selected = true;
+        document.getElementById("male").selected = false;
+      } else {
+        document.getElementById("female").selected = false;
+        document.getElementById("male").selected = true;
+      }
+    if (mobile != null)
+      document.getElementById("mobile").setAttribute("placeholder", mobile);
+    if (birthday != null)
+      document.getElementById("birthday").value = birthday;
+    if (email != null)
+      document.getElementById("email").setAttribute("placeholder", email);
+    if (gender != null)
+      document.getElementById("gender").setAttribute("placeholder", gender);
+    if (signature != null)
+      document
+        .getElementById("signature")
+        .setAttribute("placeholder", signature);
+    if (province != null)
+      document.getElementById("province").setAttribute("placeholder", province);
+    if (city != null)
+      document.getElementById("city").setAttribute("placeholder", city);
+  }
+</script>
 
 {% endblock %}

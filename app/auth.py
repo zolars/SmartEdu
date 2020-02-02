@@ -1,4 +1,5 @@
 import re
+import json
 import logging
 import pandas as pd
 import functools
@@ -6,15 +7,45 @@ import functools
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app.utils import *
 from app.db import get_db, close_db
 import app.page
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
+# 将登录的用户信息存入g
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().fetchall(
+            'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
+                user_id=user_id)).iloc[0].to_json(orient='index')
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            flash('抱歉，访问此页面请先登录！', 'error')
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    record_page_history('auth.register', request.remote_addr)
     if request.method == 'POST':
+        db = get_db()
+
         username = request.form['username']
         student_id = request.form['student_id']
         password = request.form['password']
@@ -23,9 +54,7 @@ def register():
         role = 1
         reg_ip = request.remote_addr
 
-        db = get_db()
         error = None
-
         if not username:
             error = '请填写用户名！'
         elif ' ' in username:
@@ -52,13 +81,15 @@ def register():
 
         if error is None:
             db.execute(
-                'INSERT INTO user_info (username, student_id, password, role, reg_ip, reg_time) VALUES ("{username}", {student_id}, "{password}", {role}, "{reg_ip}", {reg_time})'
+                'INSERT INTO user_info (username, student_id, password, role, reg_ip, reg_time)'
+                +
+                'VALUES ("{username}", {student_id}, "{password}", {role}, "{reg_ip}", {reg_time})'
                 .format(username=username,
                         student_id=student_id,
                         password=generate_password_hash(password),
                         role=role,
                         reg_ip=reg_ip,
-                        reg_time="now()"))
+                        reg_time='now()'))
             db.commit()
             flash('注册成功。欢迎，{username}！'.format(username=username), 'success')
 
@@ -66,17 +97,20 @@ def register():
             return redirect(url_for('page.index'))
 
         flash(error, 'error')
+        close_db()
 
-    close_db()
     return render_template('auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    record_page_history('auth.login', request.remote_addr)
     if request.method == 'POST':
+        db = get_db()
+
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+
         error = None
         user = db.fetchall(
             'SELECT * FROM user_info WHERE username = "{username}"'.format(
@@ -89,49 +123,104 @@ def login():
 
         if error is None:
             session.clear()
-            session['user_id'] = int(user['id'][0])
-            flash("您已成功登录！", "success")
+            user_id = int(user['id'][0])
+            session['user_id'] = user_id
+            db.execute(
+                'UPDATE user_info SET id_active = 1 WHERE id = {user_id}'.
+                format(user_id=user_id))
+            db.commit()
+            flash('您已成功登录！', 'success')
 
             close_db()
             return redirect(url_for('page.index'))
 
-        flash(error, "error")
+        flash(error, 'error')
+        close_db()
 
-    close_db()
     return render_template('auth/login.html')
 
 
 @bp.route('/modifyAccount', methods=('GET', 'POST'))
+@login_required
 def modifyAccount():
+    record_page_history('auth.modifyAccount', request.remote_addr)
+    if request.method == 'POST':
+        db = get_db()
+        user_id = json.loads(g.user)['id']
+
+        customer_name = request.form['customer_name']
+        if customer_name:
+            db.execute(
+                'UPDATE user_info SET customer_name = "{customer_name}" WHERE id = {user_id}'
+                .format(customer_name=customer_name, user_id=user_id))
+            db.commit()
+
+        mobile = request.form['mobile']
+        if mobile:
+            if (not re.match(r'^\d{11}$', mobile)):
+                flash('请填写正确的十一位手机号码！', 'error')
+            else:
+                db.execute(
+                    'UPDATE user_info SET mobile = "{mobile}" WHERE id = {user_id}'
+                    .format(mobile=mobile, user_id=user_id))
+                db.commit()
+
+        birthday = request.form['birthday']
+        if birthday:
+            db.execute(
+                'UPDATE user_info SET birthday = "{birthday}" WHERE id = {user_id}'
+                .format(birthday=birthday + ' 00:00:00', user_id=user_id))
+            db.commit()
+
+        email = request.form['email']
+        if email:
+            db.execute(
+                'UPDATE user_info SET email = "{email}" WHERE id = {user_id}'.
+                format(email=email, user_id=user_id))
+            db.commit()
+
+        gender = request.form['gender']
+        if gender != '-1':
+            db.execute(
+                'UPDATE user_info SET gender = {gender} WHERE id = {user_id}'.
+                format(gender=gender, user_id=user_id))
+            db.commit()
+        else:
+            db.execute(
+                'UPDATE user_info SET gender = {gender} WHERE id = {user_id}'.
+                format(gender='null', user_id=user_id))
+            db.commit()
+
+        signature = request.form['signature']
+        if signature:
+            db.execute(
+                'UPDATE user_info SET signature = "{signature}" WHERE id = {user_id}'
+                .format(signature=signature, user_id=user_id))
+            db.commit()
+
+        province = request.form['province']
+        if province:
+            db.execute(
+                'UPDATE user_info SET province = "{province}" WHERE id = {user_id}'
+                .format(province=province, user_id=user_id))
+            db.commit()
+
+        city = request.form['city']
+        if city:
+            db.execute(
+                'UPDATE user_info SET city = "{city}" WHERE id = {user_id}'.
+                format(city=city, user_id=user_id))
+            db.commit()
+
+        close_db()
+        return redirect(url_for('auth.modifyAccount'))
+
     return render_template('auth/modifyAccount.html')
 
 
-# 将登录的用户信息存入g
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get('user_id')
-
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().fetchall(
-            'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
-                user_id=user_id)).iloc[0].to_json(orient='index')
-
-
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-
-    return wrapped_view
-
-
 @bp.route('/logout')
+@login_required
 def logout():
     session.clear()
-    flash("您已成功注销！", "success")
+    flash('您已成功注销！', 'success')
     return redirect(url_for('page.index'))

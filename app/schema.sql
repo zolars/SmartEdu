@@ -5,20 +5,20 @@ CREATE TABLE user_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role BOOLEAN NOT NULL,
+  role BOOLEAN NOT NULL, /* 0 for teacher, 1 for student */
   reg_ip VARCHAR(16) NOT NULL,
   reg_time TIMESTAMP NOT NULL,
   birthday TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
   mobile VARCHAR(12) DEFAULT NULL,
-  province VARCHAR(10) DEFAULT NULL,
-  city VARCHAR(10) DEFAULT NULL, 
-  gender BOOLEAN DEFAULT NULL,
-  customer_name VARCHAR(10) DEFAULT NULL,
+  province VARCHAR(255) DEFAULT NULL,
+  city VARCHAR(255) DEFAULT NULL, 
+  gender BOOLEAN DEFAULT NULL, /* 0 for female, 1 for male */
+  customer_name VARCHAR(255) DEFAULT NULL,
   student_id VARCHAR(11) NOT NULL,
-  email VARCHAR(20) DEFAULT NULL,
-  signature VARCHAR(50) DEFAULT NULL,
-  id_active BOOLEAN DEFAULT NULL,
-  id_alive BOOLEAN DEFAULT 0
+  email VARCHAR(255) DEFAULT NULL,
+  signature VARCHAR(255) DEFAULT NULL,
+  id_active BOOLEAN DEFAULT NULL, /* 0 for deactive, 1 for active */
+  id_alive BOOLEAN DEFAULT 1 /* 0 for pause, 1 for alive */
 );
 
 CREATE TABLE res_info (
