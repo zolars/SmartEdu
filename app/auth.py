@@ -140,17 +140,6 @@ def login():
                 format(user_id=user_id))
 
             # Update the table: user_auth_history
-            logging.warning(
-                'INSERT INTO user_auth_history (user_id, user_ip, operation, time, os, browser, resolution)'
-                +
-                'VALUES ("{user_id}", "{user_ip}", "{operation}", {time}, "{os}", "{browser}", "{resolution}")'
-                .format(user_id=user_id,
-                        user_ip=request.remote_addr,
-                        operation=1,
-                        time='now()',
-                        os=os,
-                        browser=browser,
-                        resolution=resolution))
             db.execute(
                 'INSERT INTO user_auth_history (user_id, user_ip, operation, time, os, browser, resolution)'
                 +
@@ -257,6 +246,17 @@ def modifyAccount():
 @bp.route('/logout')
 @login_required
 def logout():
+    db = get_db()
+    user_id = session['user_id']
     session.clear()
+    db.execute(
+        'INSERT INTO user_auth_history (user_id, user_ip, operation, time)' +
+        'VALUES ("{user_id}", "{user_ip}", "{operation}", {time})'.format(
+            user_id=user_id,
+            user_ip=request.remote_addr,
+            operation=0,
+            time='now()'))
+    db.commit()
     flash('您已成功注销！', 'success')
+    close_db()
     return redirect(url_for('page.index'))
