@@ -39,7 +39,7 @@ def resources():
 
     df = db.fetchall('SELECT * FROM chapter_info')
     df = df.sort_values(by="id", ascending=True)
-    logging.warning(df)
+
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
@@ -94,7 +94,7 @@ def video():
 
     df = db.fetchall('SELECT * FROM chapter_info')
     df = df.sort_values(by="id", ascending=True)
-    logging.warning(df)
+
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
@@ -148,7 +148,7 @@ def doc():
 
     df = db.fetchall('SELECT * FROM chapter_info')
     df = df.sort_values(by="id", ascending=True)
-    logging.warning(df)
+
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
