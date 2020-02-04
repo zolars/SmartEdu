@@ -55,8 +55,6 @@ def register():
         student_id = request.form['student_id']
         password = request.form['password']
         password_confirm = request.form['password_confirm']
-        # role = request.form['role']
-        role = 1
         reg_ip = request.remote_addr
 
         error = None
@@ -86,13 +84,12 @@ def register():
 
         if error is None:
             db.execute(
-                'INSERT INTO user_info (username, student_id, password, role, reg_ip, reg_time)'
+                'INSERT INTO user_info (username, student_id, password, reg_ip, reg_time)'
                 +
-                'VALUES ("{username}", {student_id}, "{password}", {role}, "{reg_ip}", {reg_time})'
+                'VALUES ("{username}", {student_id}, "{password}", "{reg_ip}", {reg_time})'
                 .format(username=username,
                         student_id=student_id,
                         password=generate_password_hash(password),
-                        role=role,
                         reg_ip=reg_ip,
                         reg_time='now()'))
             db.commit()

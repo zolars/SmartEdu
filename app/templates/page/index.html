@@ -1,5 +1,11 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 主页{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | 主页{% endblock %} 
+
+{% block bodyParams %}
+class="bg-li"
+{% endblock %}
+
+{% block content %}
+
 <!-- banner -->
 <div class="banner_w3lspvt position-relative">
   <div class="container">
@@ -159,7 +165,7 @@ block content %}
             </div>
             <div class="cards-bottom text-center">
               <div class="cards-h border-bottom p-4">
-                <h4>教材课件</h4>
+                <h4>书籍课件</h4>
               </div>
               <ul class="mt-4">
                 <!-- Todo -->
@@ -168,7 +174,7 @@ block content %}
                 <li>C......</li>
                 <li>D......</li>
               </ul>
-              <a href="#" class="btn button-style mt-4">进入</a>
+              <a href=" {{ url_for("page.doc") }} " class="btn button-style mt-4">进入</a>
             </div>
           </div>
         </div>
@@ -234,7 +240,7 @@ block content %}
                 <li>C......</li>
                 <li>D......</li>
               </ul>
-              <a href="#" class="btn button-style mt-4">进入</a>
+              <a href=" {{ url_for("page.video") }} " class="btn button-style mt-4">进入</a>
             </div>
           </div>
         </div>
@@ -276,9 +282,9 @@ block content %}
             <div class="bg-clr-w3l">
               <span class="fa fa-usd"></span>
             </div>
-            <h5 class="card-title mt-4 mb-3">BALABALABALA</h5>
+            <h5 class="card-title mt-4 mb-3">fileBALA</h5>
             <p class="card-text">
-              BALABALABALABALABALABALABALABALABALABALABALABALA
+              filefilefilefilefilefile
             </p>
           </div>
         </div>
@@ -289,9 +295,9 @@ block content %}
             <div class="bg-clr-w3l">
               <span class="fa fa-lightbulb-o"></span>
             </div>
-            <h5 class="card-title mt-4 mb-3">BALABALABALA</h5>
+            <h5 class="card-title mt-4 mb-3">fileBALA</h5>
             <p class="card-text">
-              BALABALABALABALABALABALABALABALABALABALABALABALA
+              filefilefilefilefilefile
             </p>
           </div>
         </div>

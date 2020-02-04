@@ -1,5 +1,11 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 我的账户{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | 我的账户{% endblock %} 
+
+{% block bodyParams %}
+class="bg-li"
+onload="load();"
+{% endblock %}
+
+{% block content %}
 
 <!-- authorize -->
 <div class="authorize py-5" id="authorize">

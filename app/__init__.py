@@ -40,4 +40,7 @@ def create_app(test_config=None):
     from . import page
     app.register_blueprint(page.bp)
 
+    from . import files
+    app.register_blueprint(files.bp)
+
     return app
