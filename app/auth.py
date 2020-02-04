@@ -26,8 +26,8 @@ def load_logged_in_user():
             g.user = get_db().fetchall(
                 'SELECT * FROM user_info WHERE id = "{user_id}"'.format(
                     user_id=user_id)).iloc[0].to_json(orient='index')
-        except Exception as e:
-            logging.error(e)
+        except Exception as err:
+            logging.error(err)
             session.clear()
             g.user = None
 
