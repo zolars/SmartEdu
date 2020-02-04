@@ -21,6 +21,11 @@
     </script>
     <!-- //Meta tag Keywords -->
 
+    <!-- Bootstrap-Files -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/bootstrap.css') }}"
+    />
     <!-- Custom-CSS -->
     <link
       rel="stylesheet"
@@ -28,11 +33,10 @@
       type="text/css"
       media="all"
     />
-    <!-- Bootstrap-Files -->
-    <link
+    <!-- <link
       rel="stylesheet"
-      href="{{url_for('static', filename='css/bootstrap.css') }}"
-    />
+      href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+    /> -->
     <!-- FontAwesome-CSS -->
     <link
       href="{{url_for('static', filename='css/font-awesome.min.css') }}"
@@ -56,7 +60,7 @@
 
     <!-- Web-Fonts -->
     <link
-      href="http://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=devanagari,latin-ext"
+      href="{{url_for('static', filename='css/webfonts.css') }}"
       rel="stylesheet"
     />
     <!-- //Web-Fonts -->
@@ -88,7 +92,7 @@
     ></script>
   </head>
 
-  <body onload="load();" class="bg-li">
+  <body {% block bodyParams %} {% endblock %}>
     <script>
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -241,7 +245,9 @@
               <label for="drop" class="toggle">Menu</label>
               <input type="checkbox" id="drop" />
               <ul class="menu">
-                <li><a href="{{ url_for('page.index') }}">课程主页</a></li>
+                <li>
+                  <a href="{{ url_for('page.index') }}" style="font-size: 14px;">课程主页</a>
+                </li>
                 <li>
                   <!-- First Tier Drop Down -->
                   <label for="drop-1" class="toggle toogle-2"
@@ -267,7 +273,7 @@
                       >
                     </li>
                     <li>
-                      <a href="{{ url_for('page.book') }}" class="drop-text"
+                      <a href="{{ url_for('page.doc') }}" class="drop-text"
                         >书籍课件</a
                       >
                     </li>
@@ -315,7 +321,9 @@
                   </ul>
                 </li>
 
-                <li><a href="{{ url_for('page.homework') }}">作业助手</a></li>
+                <li>
+                  <a href="{{ url_for('page.homework') }}" style="font-size: 14px;">作业助手</a>
+                </li>
               </ul>
             </nav>
           </div>
@@ -362,12 +370,12 @@
     </header>
     <!-- //header -->
 
-    <main>
+    <main {% block mainParams %} {% endblock %}>
       {% block content %}{% endblock %}
     </main>
 
     <!-- copyright footer -->
-    <footer>
+    <footer >
       <div class="copy-bottom bg-li-1 py-4 border-top">
         <div class="container-fluid">
           <div class="d-md-flex px-md-3 position-relative text-center">

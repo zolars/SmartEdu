@@ -5,7 +5,6 @@ CREATE TABLE user_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  role BOOLEAN NOT NULL, /* 0 for teacher, 1 for student */
   reg_ip VARCHAR(16) NOT NULL,
   reg_time TIMESTAMP NOT NULL,
   birthday TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -21,16 +20,27 @@ CREATE TABLE user_info (
   id_alive BOOLEAN DEFAULT 1 /* 0 for pause, 1 for alive */
 );
 
+CREATE TABLE admin_info (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE chapter_info (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) UNIQUE NOT NULL
+);
+
 CREATE TABLE res_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) NOT NULL,
-  chapter INT NOT NULL,
-  difficulty INT NOT NULL,
+  context VARCHAR(255) NOT NULL, /* include cover.jpg and context */
+  chapter_id INT NOT NULL,
+  FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
+  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
   enter_user INT NOT NULL, 
-  FOREIGN KEY (enter_user) REFERENCES user_info (id),
-  enter_time TIMESTAMP NOT NULL,
+  FOREIGN KEY (enter_user) REFERENCES admin_info (id),
+  enter_time TIMESTAMP DEFAULT now(),
   title VARCHAR(255) NOT NULL,
-  type VARCHAR(10) NOT NULL,
+  type INT NOT NULL, /* 1 for video, 2 for doc, 3 for other */
   rating INT NOT NULL,
   description VARCHAR(255) DEFAULT NULL,
   duration INT DEFAULT NULL
@@ -38,21 +48,24 @@ CREATE TABLE res_info (
 
 CREATE TABLE exe_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context_prob VARCHAR(255) NOT NULL,
-  context_ans VARCHAR(255) NOT NULL,
-  chapter INT NOT NULL,
-  difficulty INT NOT NULL,
+  context VARCHAR(255) NOT NULL, /* include prob.jpg and ans.jpg */
+  chapter_id INT NOT NULL,
+  FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
+  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
   enter_user INT NOT NULL,
-  enter_time TIMESTAMP NOT NULL
+  FOREIGN KEY (enter_user) REFERENCES admin_info (id),
+  enter_time TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE hw_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) NOT NULL,
-  chapter INT NOT NULL,
-  difficulty INT NOT NULL,
+  context VARCHAR(255) NOT NULL, /* include cover.jpg and context */
+  chapter_id INT NOT NULL,
+  FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
+  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
   enter_user INT NOT NULL,
-  enter_time TIMESTAMP NOT NULL,
+  FOREIGN KEY (enter_user) REFERENCES admin_info (id),
+  enter_time TIMESTAMP DEFAULT now(),
   week VARCHAR(50) NOT NULL
 );
 

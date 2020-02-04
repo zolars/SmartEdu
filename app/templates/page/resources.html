@@ -1,32 +1,82 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 主页{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | {{ type }} {% endblock %}
+{% block bodyParams %} class="bg-li" onload="load();" {% endblock %} {% block
+content %}
+
+<!-- banner -->
+<div class="banner_w3lspvt-2">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-header" style="padding-bottom:0px;">
+      {{ type }}
+    </li>
+  </ol>
+  <ol class="breadcrumb">
+    {% for chapter_name in chapter_names %}
+    <li class="breadcrumb-item" aria-current="page">
+      <a
+        name="chapter"
+        onclick="filter({{ loop.index0 }})"
+        style="cursor: pointer;"
+        >{{ chapter_name }}</a
+      >
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+<!-- //banner -->
 
 <!-- resources -->
-<section class="resources" id="resources">
-  <div class="container py-xl-5 py-lg-3">
-    <div class="row ab-info second pt-lg-4">
-      <div class="col-lg-4 col-sm-6 text-center mt-lg-0 mt-4">
-        <div class="ab-content-inner">
+<div class="container py-xl-5 py-lg-3">
+  <div class="inner_sec_info_w3_info mt-3">
+    <div class="row card-grid-main">
+      {% for item in items %}
+      <div class="col-lg-3 col-sm-6 card-info p-3">
+        <div
+          class="cards bg-wh"
+          onclick="window.open( '{{ url_for('files.download', filetype=item.filetype, filepath=item.filepath) }}');"
+        >
           <img
-            src="{{url_for('static', filename='images/b2.png') }}"
+            src="{{ url_for('files.cover', filetype=item.filetype, filepath=item.filepath) }}"
             class="img-fluid"
+            style="
+                border-top-left-radius: 10px;
+                border-top-right-radius:10px;
+              "
           />
-          <div class="ab-info-con">
-            <h4 class="text-resources-w3">Petey Cruiser</h4>
-            <ul class="list-unstyled resources-socil-w3pvts">
-              <li class="col-lg-3 d-inline">
-                <a href="#"><i class="fa fa-star fa-lg"></i></a>
-              </li>
-              <li class="col-lg-3 d-inline">
-                <a href="#"><i class="fa fa-download fa-lg"></i></a>
-              </li>
-            </ul>
+          <div class="cards-context p-3">
+            <h4 class="text-team-w3" style="margin-bottom: 10px;">
+              <i
+                class="
+              {% if item.filetype == 'video' %}
+                fa fa-video-camera
+              {% elif item.filetype == 'doc' %}
+                fa fa-book
+              {% endif %}
+              "
+              ></i>
+              {{ item.title }}
+            </h4>
+            <span><i class="fa fa-clock-o"></i> {{ item.enter_time }} </span>
+            <br />
+            <span><i class="fa fa-user"> {{ item.enter_username }} </i></span>
           </div>
         </div>
       </div>
+      {% endfor %}
     </div>
   </div>
-</section>
+</div>
 <!-- //resources -->
+<script>
+  function load() {
+    var chapters = document.getElementsByName("chapter");
+    chapters[{{ chapter_focused }}].setAttribute('class','font-weight-bold');
+  }
 
+  function filter(chapter) {
+    if (chapter == 0)
+      chapter='all'
+    location.href = '{{ url_for("page." + url) }}?chapter='+chapter;
+
+  }
+</script>
 {% endblock %}

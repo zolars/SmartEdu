@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import datetime as dt
 
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    url_for)
@@ -24,22 +25,168 @@ def index():
     return render_template('/page/index.html')
 
 
-@bp.route('/resources')
+@bp.route('/resources', methods=('GET', 'POST'))
 def resources():
     record_page_history(page_path='/resources', user_ip=request.remote_addr)
-    return render_template('/page/resources.html')
+
+    db = get_db()
+
+    chapter_focused = request.args.get("chapter")
+    if chapter_focused != 'all' and chapter_focused:
+        chapter_focused = int(chapter_focused)
+    else:
+        chapter_focused = 0
+
+    df = db.fetchall('SELECT * FROM chapter_info')
+    df = df.sort_values(by="id", ascending=True)
+    logging.warning(df)
+    chapter_names = ['全部章节'] + df.name.tolist()
+
+    items = []
+    for index, row in db.fetchall('SELECT * FROM res_info').iterrows():
+        title = row['title']
+        if row['type'] == 1:
+            filetype = 'video'
+        elif row['type'] == 2:
+            filetype = 'doc'
+        elif row['type'] == 3:
+            filetype = 'other'
+        filepath = row['context']
+        enter_time = str(row['enter_time'])[0:10]
+        df = db.fetchall(
+            'SELECT username FROM admin_info WHERE id={user_id}'.format(
+                user_id=row['enter_user']))
+        enter_username = df.iloc[0].username
+        chapter_id = row['chapter_id']
+
+        if chapter_focused == 0 or chapter_focused == chapter_id:
+            items.append({
+                'title': title,
+                'filetype': filetype,
+                'filepath': filepath,
+                "enter_time": enter_time,
+                "enter_username": enter_username
+            })
+
+    dict = {
+        'type': '所有资源',
+        'chapter_focused': chapter_focused,
+        'chapter_names': chapter_names,
+        'items': items,
+        'url': 'resources'
+    }
+
+    close_db()
+    return render_template('/page/resources.html', **dict)
 
 
 @bp.route('/video')
 def video():
     record_page_history(page_path='/video', user_ip=request.remote_addr)
-    return render_template('/page/index.html')
+
+    db = get_db()
+
+    chapter_focused = request.args.get("chapter")
+    if chapter_focused != 'all' and chapter_focused:
+        chapter_focused = int(chapter_focused)
+    else:
+        chapter_focused = 0
+
+    df = db.fetchall('SELECT * FROM chapter_info')
+    df = df.sort_values(by="id", ascending=True)
+    logging.warning(df)
+    chapter_names = ['全部章节'] + df.name.tolist()
+
+    items = []
+    for index, row in db.fetchall('SELECT * FROM res_info').iterrows():
+        title = row['title']
+        if row['type'] == 1:
+            filetype = 'video'
+        else:
+            continue
+
+        filepath = row['context']
+        enter_time = str(row['enter_time'])[0:10]
+        df = db.fetchall(
+            'SELECT username FROM admin_info WHERE id={user_id}'.format(
+                user_id=row['enter_user']))
+        enter_username = df.iloc[0].username
+        chapter_id = row['chapter_id']
+
+        if chapter_focused == 0 or chapter_focused == chapter_id:
+            items.append({
+                'title': title,
+                'filetype': filetype,
+                'filepath': filepath,
+                "enter_time": enter_time,
+                "enter_username": enter_username
+            })
+
+    dict = {
+        'type': '教学视频',
+        'chapter_focused': chapter_focused,
+        'chapter_names': chapter_names,
+        'items': items,
+        'url': 'video'
+    }
+
+    close_db()
+    return render_template('/page/resources.html', **dict)
 
 
-@bp.route('/book')
-def book():
-    record_page_history(page_path='/book', user_ip=request.remote_addr)
-    return render_template('/page/index.html')
+@bp.route('/doc')
+def doc():
+    record_page_history(page_path='/doc', user_ip=request.remote_addr)
+
+    db = get_db()
+
+    chapter_focused = request.args.get("chapter")
+    if chapter_focused != 'all' and chapter_focused:
+        chapter_focused = int(chapter_focused)
+    else:
+        chapter_focused = 0
+
+    df = db.fetchall('SELECT * FROM chapter_info')
+    df = df.sort_values(by="id", ascending=True)
+    logging.warning(df)
+    chapter_names = ['全部章节'] + df.name.tolist()
+
+    items = []
+    for index, row in db.fetchall(
+            'SELECT * FROM res_info ORDER BY id').iterrows():
+        title = row['title']
+        if row['type'] == 2:
+            filetype = 'doc'
+        else:
+            continue
+
+        filepath = row['context']
+        enter_time = str(row['enter_time'])[0:10]
+        df = db.fetchall(
+            'SELECT username FROM admin_info WHERE id={user_id}'.format(
+                user_id=row['enter_user']))
+        enter_username = df.iloc[0].username
+        chapter_id = row['chapter_id']
+
+        if chapter_focused == 0 or chapter_focused == chapter_id:
+            items.append({
+                'title': title,
+                'filetype': filetype,
+                'filepath': filepath,
+                "enter_time": enter_time,
+                "enter_username": enter_username
+            })
+
+    dict = {
+        'type': '书籍课件',
+        'chapter_focused': chapter_focused,
+        'chapter_names': chapter_names,
+        'items': items,
+        'url': 'doc'
+    }
+
+    close_db()
+    return render_template('/page/resources.html', **dict)
 
 
 @bp.route('/exercise')

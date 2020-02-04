@@ -1,13 +1,15 @@
-{% extends 'base.html' %} {% block title %}SmartEdu - 注册{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | 注册{% endblock %} 
 
-<script>
-  document.body.style.backgroundColor = "#fff";
-  document.body.style.backgroundImage =
-    "url({{url_for('static', filename='images/login-bg.png') }})";
-  document.body.style.backgroundSize = "100%";
-  document.body.style.backgroundRepeat = "no-repeat";
-</script>
+{% block mainParams %}
+style="
+  background-color: #fff; 
+  background-image: url({{url_for('static', filename='images/login-bg.png') }});
+  background-size: 100%;
+  background-repeat: no-repeat;
+"
+{% endblock %}
+
+{% block content %}
 
 <!-- authorize -->
 <div class="authorize py-5" id="authorize">
