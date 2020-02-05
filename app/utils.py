@@ -28,6 +28,7 @@ def record_page_history(pagepath, user_ip):
     close_db()
 
 
+# Record res_history
 def record_res_history(filepath,
                        user_ip,
                        operation,
@@ -35,17 +36,13 @@ def record_res_history(filepath,
                        difficulty="null"):
 
     db = get_db()
-    if g.user == '{}' or g.user is None:
-        user_id = None
-    else:
+    if (g.user != '{}') and (g.user is not None):
         user_id = json.loads(g.user)['id']
 
-    df = db.fetchall(
-        'SELECT id FROM res_info WHERE context="{filepath}"'.format(
-            filepath=filepath))
-    res_id = df.id[0]
-
-    if user_id is not None:
+        df = db.fetchall(
+            'SELECT id FROM res_info WHERE context="{filepath}"'.format(
+                filepath=filepath))
+        res_id = df.id[0]
         db.execute(
             'INSERT INTO res_history (user_id, user_ip, res_id, operation, time, rating, difficulty) VALUES ({user_id}, "{user_ip}", {res_id}, {operation}, now(), {rating}, {difficulty})'
             .format(user_id=user_id,

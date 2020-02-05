@@ -2,6 +2,14 @@
 {% block bodyParams %} class="bg-li" onload="load();" {% endblock %} {% block
 content %}
 
+<style>
+  .ui-pnotify-container {
+    padding: 1.4em;
+    z-index: 0;
+  }
+
+</style>
+
 <!-- banner -->
 <div class="banner_w3lspvt-2">
   <ol class="breadcrumb">
@@ -32,7 +40,17 @@ content %}
       <div class="col-lg-3 col-sm-6 card-info p-3">
         <div
           class="cards bg-wh"
-          onclick="window.open( '{{ url_for('files.download', filetype=item.filetype, filepath=item.filepath) }}');"
+          onclick="showDialog(
+            title='{{ item.title }}', 
+            description='{{ item.description }}', 
+            filetype='{{ item.filetype }}', 
+            enter_time='{{ item.enter_time }}',
+            enter_username='{{ item.enter_username }}',
+            download_url='{{ url_for("files.download", filetype=item.filetype, filepath=item.filepath) }}',
+            star_url='{{ url_for("files.star", filepath=item.filepath) }}',
+            check_stared_url='{{ url_for("files.check_stared", filepath=item.filepath) }}',
+            rating_url='{{ url_for("files.rating", filepath=item.filepath) }}'
+          );"
         >
           <img
             src="{{ url_for('files.cover', filetype=item.filetype, filepath=item.filepath) }}"
@@ -61,22 +79,283 @@ content %}
           </div>
         </div>
       </div>
+
       {% endfor %}
     </div>
   </div>
 </div>
 <!-- //resources -->
+
 <script>
   function load() {
     var chapters = document.getElementsByName("chapter");
-    chapters[{{ chapter_focused }}].setAttribute('class','font-weight-bold');
+    chapters[ {{ chapter_focused }} ].setAttribute('class','font-weight-bold');
   }
-
+  
   function filter(chapter) {
-    if (chapter == 0)
-      chapter='all'
-    location.href = '{{ url_for("page." + url) }}?chapter='+chapter;
-
+    if (chapter == 0) chapter = "all";
+    location.href = '{{ url_for("page." + url) }}?chapter=' + chapter;
+  }
+  
+  function showDialog(
+    title,
+    description,
+    filetype,
+    enter_time,
+    enter_username,
+    download_url,
+    star_url,
+    check_stared_url,
+    rating_url
+  ) {
+    if (filetype == "video") {
+      var icon = "fa fa-video-camera fa-lg";
+    } else if (filetype == "doc") {
+      var icon = "fa fa-book fa-lg";
+    }
+    if (description == "None") {
+      description = "暂无";
+    }
+    var stared = "";
+    $.ajax({
+      url: check_stared_url,
+      type: "post",
+      async: true,
+      success: function(response) {
+        if (response == "stared") {
+          stared = "取消收藏";
+        } else if (response == "unstared") {
+          stared = "收藏";
+        }
+        PNotify.info({
+          title: "&nbsp;" + title,
+          titleTrusted: true,
+          styling: "bootstrap4",
+          text:
+            "<br /><strong>> 资源介绍 : &nbsp; </strong><br /><br /> &emsp;" +
+            description +
+            "<br /><br /><strong>> 录入时间 : &nbsp; </strong>" +
+            enter_time +
+            "<br /><br /><strong>> 录入用户 : &nbsp; </strong>" +
+            enter_username +
+            "<br /><br />",
+          textTrusted: true,
+          icon: icon,
+          hide: false,
+          stack: {
+            modal: true,
+            overlayClose: true
+          },
+          modules: {
+            Buttons: {
+              closer: true,
+              sticker: false
+            },
+            History: {
+              history: false
+            },
+            Confirm: {
+              confirm: true,
+              buttons: [
+                {% if g.user %}
+                  {
+                    text: stared,
+                    click: function(notice) {
+                      $.ajax({
+                        url: star_url,
+                        type: "post",
+                        async: true,
+                        success: function(response) {
+                          if (response == "stared") {
+                            options = notice.options;
+                            options.data.modules.Confirm.buttons[0].text = "取消收藏";
+                            notice.update(options);
+                          }  else if (response == "unstared") {
+                            options = notice.options;
+                            options.data.modules.Confirm.buttons[0].text = "收藏";
+                            notice.update(options);
+                          }                  
+                        }
+                      });                
+                    }
+                  },
+                  {
+                    text: "评价",
+                    click: function(notice) {
+                      notice.update({
+                        text: "<br /><strong>> 请对该资源的质量和难度进行评价</strong><br /><br />" +
+                          "<strong>> 资源质量 : &nbsp; </strong>" + 
+                          "<select id='rating'>" + 
+                          "  <option value='' style='color: #b6b6b6' disabled selected>请选择评分</option>" +
+                          "  <option value='1'>1分</option>" + 
+                          "  <option value='2'>2分</option>" + 
+                          "  <option value='3'>3分</option>" + 
+                          "  <option value='4'>4分</option>" + 
+                          "  <option value='5'>5分</option>" + 
+                          "</select>" + 
+                          "<br /><br />" +
+                          "<strong>> 资源难度 : &nbsp; </strong>" + 
+                          "<select id='difficulty'>" + 
+                          "  <option value='' style='color: #b6b6b6' disabled selected>请选择难度</option>" +
+                          "  <option value='1'>简单</option>" + 
+                          "  <option value='2'>中等</option>" + 
+                          "  <option value='3'>困难</option>" +
+                          "</select>" + 
+                          "<br /><br />",
+                        icon: true,
+                        type: "info",
+                        modules: {
+                          Buttons: {
+                            closer: false,
+                            sticker: false
+                          },
+                          Confirm: {
+                            confirm: true,
+                            buttons: [
+                              {
+                                text: "取消",
+                                click: function(notice) {
+                                  notice.update({
+                                    title: false,
+                                    text: ' 没有记录评分！',
+                                    icon: true,
+                                    type: 'error',
+                                    hide: true,
+                                    modules: {
+                                      Confirm: {
+                                        confirm: false
+                                      },
+                                      Buttons: {
+                                        closer: true,
+                                        sticker: false
+                                      }
+                                    }
+                                  });
+                                }
+                              },
+                              {
+                                text: "确认",
+                                primary: true,
+                                click: function(notice) {
+  
+                                  var rating = null;
+                                  var option = $("#rating option:selected");
+                                  rating = option.val()
+                                  var difficulty = null;
+                                  var option = $("#difficulty option:selected");
+                                  difficulty = option.val()
+                                  data = { rating: rating, difficulty: difficulty };
+  
+                                  $.ajax({
+                                    url: rating_url,
+                                    type: "post",
+                                    data: data,
+                                    async: true,
+                                    success: function(response) {
+                                      if (response == "success") {
+                                        notice.update({
+                                          title: false,
+                                          text: '感谢您的评分！',
+                                          icon: true,
+                                          type: 'success',
+                                          hide: true,
+                                          modules: {
+                                            Confirm: {
+                                              confirm: false
+                                            },
+                                            Buttons: {
+                                              closer: true,
+                                              sticker: false
+                                            }
+                                          }
+                                        });
+                                      } else if (response == "overwrite") {
+                                        notice.update({
+                                          title: false,
+                                          text: '已覆盖上次的评分！',
+                                          icon: true,
+                                          type: 'success',
+                                          hide: true,
+                                          modules: {
+                                            Confirm: {
+                                              confirm: false
+                                            },
+                                            Buttons: {
+                                              closer: true,
+                                              sticker: false
+                                            }
+                                          }
+                                        });
+                                      } else if (response == "unselected") {
+                                        notice.update({
+                                          title: false,
+                                          text: '评分失败！请先选择评价再提交。',
+                                          icon: true,
+                                          type: 'error',
+                                          hide: true,
+                                          modules: {
+                                            Confirm: {
+                                              confirm: false
+                                            },
+                                            Buttons: {
+                                              closer: true,
+                                              sticker: false
+                                            }
+                                          }
+                                        });
+                                      } else {
+                                        notice.update({
+                                          title: false,
+                                          text: '评分失败！请反馈或联系管理员。',
+                                          icon: true,
+                                          type: 'error',
+                                          hide: true,
+                                          modules: {
+                                            Confirm: {
+                                              confirm: false
+                                            },
+                                            Buttons: {
+                                              closer: true,
+                                              sticker: false
+                                            }
+                                          }
+                                        });
+                                      }
+                                      }              
+                                    }
+                                  );   
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      });
+                    }
+                  },
+                  {
+                    text: "下载",
+                    primary: true,
+                    click: function(notice) {
+                      window.open(download_url);
+                    }
+                  }
+                {% else %}
+                  {
+                    text: "登录后查看",
+                    primary: true,
+                    click: function(notice) {
+                      window.open( '{{ url_for("auth.login") }}' );
+                    }
+                  }
+                {% endif %}
+              ]
+            }
+          }
+        });
+      }
+    });    
   }
 </script>
+
+
 {% endblock %}
