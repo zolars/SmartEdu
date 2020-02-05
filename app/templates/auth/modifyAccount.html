@@ -180,8 +180,6 @@ onload="load();"
     var province = JSON.parse({{ g.user | tojson }})["province"];
     var city = JSON.parse({{ g.user | tojson }})["city"];
 
-    console.log(mobile);
-
     if (customer_name != null)
       document.getElementById("customer_name").setAttribute("placeholder", customer_name);
     if (gender != null)

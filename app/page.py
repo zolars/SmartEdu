@@ -52,7 +52,7 @@ def resources():
             filetype = 'doc'
         elif row['type'] == 3:
             filetype = 'other'
-        filepath = row['context']
+        context = row['context']
         enter_time = str(row['enter_time'])[0:10]
         df = db.fetchall(
             'SELECT username FROM admin_info WHERE id={user_id}'.format(
@@ -65,7 +65,7 @@ def resources():
             items.append({
                 'title': title,
                 'filetype': filetype,
-                'filepath': filepath,
+                'context': context,
                 'enter_time': enter_time,
                 'enter_username': enter_username,
                 'description': description
@@ -108,7 +108,7 @@ def video():
         else:
             continue
 
-        filepath = row['context']
+        context = row['context']
         enter_time = str(row['enter_time'])[0:10]
         df = db.fetchall(
             'SELECT username FROM admin_info WHERE id={user_id}'.format(
@@ -121,7 +121,7 @@ def video():
             items.append({
                 'title': title,
                 'filetype': filetype,
-                'filepath': filepath,
+                'context': context,
                 'enter_time': enter_time,
                 'enter_username': enter_username,
                 'description': description
@@ -164,7 +164,7 @@ def doc():
         else:
             continue
 
-        filepath = row['context']
+        context = row['context']
         enter_time = str(row['enter_time'])[0:10]
         df = db.fetchall(
             'SELECT username FROM admin_info WHERE id={user_id}'.format(
@@ -177,7 +177,7 @@ def doc():
             items.append({
                 'title': title,
                 'filetype': filetype,
-                'filepath': filepath,
+                'context': context,
                 'enter_time': enter_time,
                 'enter_username': enter_username,
                 'description': description

@@ -29,7 +29,7 @@ def record_page_history(pagepath, user_ip):
 
 
 # Record res_history
-def record_res_history(filepath,
+def record_res_history(context,
                        user_ip,
                        operation,
                        rating="null",
@@ -40,8 +40,8 @@ def record_res_history(filepath,
         user_id = json.loads(g.user)['id']
 
         df = db.fetchall(
-            'SELECT id FROM res_info WHERE context="{filepath}"'.format(
-                filepath=filepath))
+            'SELECT id FROM res_info WHERE context="{context}"'.format(
+                context=context))
         res_id = df.id[0]
         db.execute(
             'INSERT INTO res_history (user_id, user_ip, res_id, operation, time, rating, difficulty) VALUES ({user_id}, "{user_ip}", {res_id}, {operation}, now(), {rating}, {difficulty})'
