@@ -46,8 +46,7 @@ def login_required(view):
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-    record_page_history(page_path='/auth/register',
-                        user_ip=request.remote_addr)
+    record_page_history(pagepath='/auth/register', user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()
 
@@ -106,7 +105,7 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
-    record_page_history(page_path='/auth/login', user_ip=request.remote_addr)
+    record_page_history(pagepath='/auth/login', user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()
 
@@ -164,7 +163,7 @@ def login():
 @bp.route('/modifyAccount', methods=('GET', 'POST'))
 @login_required
 def modifyAccount():
-    record_page_history(page_path='/auth/modifyAccount',
+    record_page_history(pagepath='/auth/modifyAccount',
                         user_ip=request.remote_addr)
     if request.method == 'POST':
         db = get_db()

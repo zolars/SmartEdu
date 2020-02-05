@@ -6,7 +6,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    url_for)
 from werkzeug.exceptions import abort
 
-from app.utils import *
+from app.utils import record_page_history
 from app.db import get_db, close_db
 from app.auth import login_required
 
@@ -15,7 +15,7 @@ bp = Blueprint('page', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
-    record_page_history(page_path='/', user_ip=request.remote_addr)
+    record_page_history(pagepath='/', user_ip=request.remote_addr)
     if request.method == 'POST':
         keyword = request.form['keyword']
         # Todo
@@ -27,7 +27,7 @@ def index():
 
 @bp.route('/resources', methods=('GET', 'POST'))
 def resources():
-    record_page_history(page_path='/resources', user_ip=request.remote_addr)
+    record_page_history(pagepath='/resources', user_ip=request.remote_addr)
 
     db = get_db()
 
@@ -43,7 +43,7 @@ def resources():
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
-    for index, row in db.fetchall('SELECT * FROM res_info').iterrows():
+    for _, row in db.fetchall('SELECT * FROM res_info').iterrows():
         title = row['title']
         if row['type'] == 1:
             filetype = 'video'
@@ -82,7 +82,7 @@ def resources():
 
 @bp.route('/video')
 def video():
-    record_page_history(page_path='/video', user_ip=request.remote_addr)
+    record_page_history(pagepath='/video', user_ip=request.remote_addr)
 
     db = get_db()
 
@@ -98,7 +98,7 @@ def video():
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
-    for index, row in db.fetchall('SELECT * FROM res_info').iterrows():
+    for _, row in db.fetchall('SELECT * FROM res_info').iterrows():
         title = row['title']
         if row['type'] == 1:
             filetype = 'video'
@@ -136,7 +136,7 @@ def video():
 
 @bp.route('/doc')
 def doc():
-    record_page_history(page_path='/doc', user_ip=request.remote_addr)
+    record_page_history(pagepath='/doc', user_ip=request.remote_addr)
 
     db = get_db()
 
@@ -152,8 +152,7 @@ def doc():
     chapter_names = ['全部章节'] + df.name.tolist()
 
     items = []
-    for index, row in db.fetchall(
-            'SELECT * FROM res_info ORDER BY id').iterrows():
+    for _, row in db.fetchall('SELECT * FROM res_info ORDER BY id').iterrows():
         title = row['title']
         if row['type'] == 2:
             filetype = 'doc'
@@ -192,39 +191,39 @@ def doc():
 @bp.route('/exercise')
 @login_required
 def exercise():
-    record_page_history(page_path='/exercise', user_ip=request.remote_addr)
+    record_page_history(pagepath='/exercise', user_ip=request.remote_addr)
     return render_template('/page/index.html')
 
 
 @bp.route('/homework')
 @login_required
 def homework():
-    record_page_history(page_path='/homework', user_ip=request.remote_addr)
+    record_page_history(pagepath='/homework', user_ip=request.remote_addr)
     return render_template('/page/index.html')
 
 
 @bp.route('/app')
 def app():
-    record_page_history(page_path='/app', user_ip=request.remote_addr)
+    record_page_history(pagepath='/app', user_ip=request.remote_addr)
     return render_template('/page/index.html')
 
 
 @bp.route('/exam')
 @login_required
 def exam():
-    record_page_history(page_path='/exam', user_ip=request.remote_addr)
+    record_page_history(pagepath='/exam', user_ip=request.remote_addr)
     return render_template('/page/index.html')
 
 
 @bp.route('/statistics')
 @login_required
 def statistics():
-    record_page_history(page_path='/statistics', user_ip=request.remote_addr)
+    record_page_history(pagepath='/statistics', user_ip=request.remote_addr)
     return render_template('/page/index.html')
 
 
 @bp.route('/comments')
 @login_required
 def comments():
-    record_page_history(page_path='/comments', user_ip=request.remote_addr)
+    record_page_history(pagepath='/comments', user_ip=request.remote_addr)
     return render_template('/page/index.html')
