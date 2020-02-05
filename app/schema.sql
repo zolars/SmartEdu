@@ -1,4 +1,4 @@
-CREATE DATABASE smartedu;
+CREATE DATABASE smartedu CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE smartedu;
 
 CREATE TABLE user_info (
@@ -32,7 +32,7 @@ CREATE TABLE chapter_info (
 
 CREATE TABLE res_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) NOT NULL, /* include cover.jpg and context */
+  context VARCHAR(255) UNIQUE NOT NULL, /* include cover.jpg and context */
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
   difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
@@ -48,7 +48,7 @@ CREATE TABLE res_info (
 
 CREATE TABLE exe_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) NOT NULL, /* include prob.jpg and ans.jpg */
+  context VARCHAR(255) UNIQUE NOT NULL, /* include prob.jpg and ans.jpg */
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
   difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
@@ -59,7 +59,7 @@ CREATE TABLE exe_info (
 
 CREATE TABLE hw_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) NOT NULL, /* include cover.jpg and context */
+  context VARCHAR(255) UNIQUE NOT NULL, /* include cover.jpg and context */
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
   difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
@@ -88,7 +88,7 @@ CREATE TABLE res_history (
   user_ip VARCHAR(16) NOT NULL,
   res_id INT NOT NULL, 
   FOREIGN KEY (res_id) REFERENCES res_info (id),
-  operation INT NOT NULL,
+  operation INT NOT NULL, /* 0 for popupping from collection; 1 for adding into collection; 2 for download; 3 for rating */
   time TIMESTAMP NOT NULL,
   rating INT DEFAULT NULL,
   difficulty INT DEFAULT NULL
@@ -124,7 +124,7 @@ CREATE TABLE page_history (
   user_id INT DEFAULT NULL, 
   FOREIGN KEY (user_id) REFERENCES user_info (id),
   user_ip VARCHAR(16) NOT NULL,
-  page_path VARCHAR(255) NOT NULL,
+  pagepath VARCHAR(255) NOT NULL,
   time TIMESTAMP NOT NULL
 );
 
@@ -163,7 +163,7 @@ CREATE TABLE exe_statistics (
 );
 
 CREATE TABLE page_statistics (
-  page_path VARCHAR(255) NOT NULL,
+  pagepath VARCHAR(255) NOT NULL,
   time_span VARCHAR(50) NOT NULL,
   visit_num INT NOT NULL,
   user_num INT NOT NULL

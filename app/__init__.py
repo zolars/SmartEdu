@@ -5,6 +5,9 @@ import time
 from flask import Flask
 from app.config import config
 
+if not os.path.exists('./log/'):
+    os.makedirs('./log/')
+
 logging.basicConfig(filename='./log/app.log',
                     filemode="a+",
                     format="%(asctime)s %(levelname)s : %(message)s",
