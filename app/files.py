@@ -13,21 +13,21 @@ from app.auth import login_required
 bp = Blueprint('files', __name__)
 
 
-@bp.route('/download/<filetype>/<filepath>', methods=('GET', 'POST'))
+@bp.route('/download/<filetype>/<context>', methods=('GET', 'POST'))
 @login_required
-def download(filetype, filepath):
-    record_res_history(filepath=filepath,
+def download(filetype, context):
+    record_res_history(context=context,
                        user_ip=request.remote_addr,
                        operation=2)
     directory = os.getcwd()
     filename = ''
-    for temp in os.listdir(directory + '/files/' + filetype + '/' + filepath):
+    for temp in os.listdir(directory + '/files/' + filetype + '/' + context):
         if temp != 'cover.png' and temp != '.DS_Store':
             filename = temp
 
     response = make_response(
         send_from_directory(directory,
-                            './files/' + filetype + '/' + filepath + '/' +
+                            './files/' + filetype + '/' + context + '/' +
                             filename,
                             as_attachment=True))
     response.headers["Content-Disposition"] = " filename={}".format(
@@ -36,25 +36,25 @@ def download(filetype, filepath):
     return response
 
 
-@bp.route('/star/<filepath>', methods=('GET', 'POST'))
+@bp.route('/star/<context>', methods=('GET', 'POST'))
 @login_required
-def star(filepath):
-    record_res_history(filepath=filepath,
+def star(context):
+    record_res_history(context=context,
                        user_ip=request.remote_addr,
                        operation=1)
-    return check_stared(filepath)
+    return check_stared(context)
 
 
 # Check star status with { user_id, res_id }
-@bp.route('/check_stared/<filepath>', methods=('GET', 'POST'))
-def check_stared(filepath):
+@bp.route('/check_stared/<context>', methods=('GET', 'POST'))
+def check_stared(context):
     db = get_db()
     if (g.user != '{}') and (g.user is not None):
         user_id = json.loads(g.user)['id']
 
         df = db.fetchall(
-            'SELECT id FROM res_info WHERE context="{filepath}"'.format(
-                filepath=filepath))
+            'SELECT id FROM res_info WHERE context="{context}"'.format(
+                context=context))
         res_id = df.id[0]
 
         df = db.fetchall(
@@ -73,19 +73,19 @@ def check_stared(filepath):
         return "unstared"
 
 
-@bp.route('/rating/<filepath>', methods=('GET', 'POST'))
+@bp.route('/rating/<context>', methods=('GET', 'POST'))
 @login_required
-def rating(filepath):
+def rating(context):
     if request.method == 'POST':
         rating = request.form["rating"]
         difficulty = request.form["difficulty"]
         if (rating != "" and difficulty != ""):
-            record_res_history(filepath=filepath,
+            record_res_history(context=context,
                                user_ip=request.remote_addr,
                                operation=3,
                                rating='"' + rating + '"',
                                difficulty='"' + difficulty + '"')
-            if check_rating(filepath) > 0:
+            if check_rating(context) > 0:
                 return 'overwrite'
             else:
                 return 'success'
@@ -96,14 +96,14 @@ def rating(filepath):
 
 
 # Check rating status with { user_id, res_id }
-def check_rating(filepath):
+def check_rating(context):
     db = get_db()
     if (g.user != '{}') and (g.user is not None):
         user_id = json.loads(g.user)['id']
 
         df = db.fetchall(
-            'SELECT id FROM res_info WHERE context="{filepath}"'.format(
-                filepath=filepath))
+            'SELECT id FROM res_info WHERE context="{context}"'.format(
+                context=context))
         res_id = df.id[0]
 
         df = db.fetchall(
@@ -120,11 +120,10 @@ def check_rating(filepath):
         return False
 
 
-@bp.route('/cover/<filetype>/<filepath>', methods=('GET', 'POST'))
-def cover(filetype, filepath):
+@bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))
+def cover(filetype, context):
     import base64
     img_stream = ''
-    with open('./files/' + filetype + '/' + filepath + '/cover.png',
-              'rb') as f:
+    with open('./files/' + filetype + '/' + context + '/cover.png', 'rb') as f:
         img_stream = f.read()
     return img_stream

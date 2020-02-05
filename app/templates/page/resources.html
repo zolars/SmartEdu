@@ -46,14 +46,14 @@ content %}
             filetype='{{ item.filetype }}', 
             enter_time='{{ item.enter_time }}',
             enter_username='{{ item.enter_username }}',
-            download_url='{{ url_for("files.download", filetype=item.filetype, filepath=item.filepath) }}',
-            star_url='{{ url_for("files.star", filepath=item.filepath) }}',
-            check_stared_url='{{ url_for("files.check_stared", filepath=item.filepath) }}',
-            rating_url='{{ url_for("files.rating", filepath=item.filepath) }}'
+            download_url='{{ url_for("files.download", filetype=item.filetype, context=item.context) }}',
+            star_url='{{ url_for("files.star", context=item.context) }}',
+            check_stared_url='{{ url_for("files.check_stared", context=item.context) }}',
+            rating_url='{{ url_for("files.rating", context=item.context) }}'
           );"
         >
           <img
-            src="{{ url_for('files.cover', filetype=item.filetype, filepath=item.filepath) }}"
+            src="{{ url_for('files.cover', filetype=item.filetype, context=item.context) }}"
             class="img-fluid"
             style="
                 border-top-left-radius: 10px;
