@@ -105,6 +105,7 @@ venv.bak/
 
 # personal
 /files
+/test
 .vscode
 .idea
 .DS_Store

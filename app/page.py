@@ -7,6 +7,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
 from werkzeug.exceptions import abort
 
 from app.utils import record_page_history
+from app.files import check_stared
 from app.db import get_db, close_db
 from app.auth import login_required
 
@@ -58,14 +59,16 @@ def resources():
                 user_id=row['enter_user']))
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
+        description = row['description']
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
                 'title': title,
                 'filetype': filetype,
                 'filepath': filepath,
-                "enter_time": enter_time,
-                "enter_username": enter_username
+                'enter_time': enter_time,
+                'enter_username': enter_username,
+                'description': description
             })
 
     dict = {
@@ -112,14 +115,16 @@ def video():
                 user_id=row['enter_user']))
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
+        description = row['description']
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
                 'title': title,
                 'filetype': filetype,
                 'filepath': filepath,
-                "enter_time": enter_time,
-                "enter_username": enter_username
+                'enter_time': enter_time,
+                'enter_username': enter_username,
+                'description': description
             })
 
     dict = {
@@ -166,14 +171,16 @@ def doc():
                 user_id=row['enter_user']))
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
+        description = row['description']
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
                 'title': title,
                 'filetype': filetype,
                 'filepath': filepath,
-                "enter_time": enter_time,
-                "enter_username": enter_username
+                'enter_time': enter_time,
+                'enter_username': enter_username,
+                'description': description
             })
 
     dict = {

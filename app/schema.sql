@@ -88,10 +88,10 @@ CREATE TABLE res_history (
   user_ip VARCHAR(16) NOT NULL,
   res_id INT NOT NULL, 
   FOREIGN KEY (res_id) REFERENCES res_info (id),
-  operation INT NOT NULL, /* 0 for popupping from collection; 1 for adding into collection; 2 for download; 3 for rating */
+  operation INT NOT NULL, /* 1 for star; 2 for download; 3 for rating */
   time TIMESTAMP NOT NULL,
-  rating INT DEFAULT NULL,
-  difficulty INT DEFAULT NULL
+  rating INT DEFAULT NULL, /* from 1 to 5 */
+  difficulty INT DEFAULT NULL /* 1 for easy, 2 for normal, 3 for difficult */
 );
 
 CREATE TABLE exe_history (
