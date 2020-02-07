@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block title %}SmartEdu | 查看答案 {% endblock %}
+{% block bodyParams %} class="bg-li-4" {% endblock %} {% block
+content %}
+
+<style>
+  .ui-pnotify-container {
+    padding: 1.4em;
+    z-index: 0;
+  }
+
+</style>
+
+<!-- banner -->
+<div class="banner_w3lspvt-2">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-header" style="padding-top:1.5em; padding-bottom:0px;">
+      查看答案
+    </li>
+  </ol>
+</div>
+<!-- //banner -->
+
+<!-- resources -->
+<div class="container py-xl-5 py-lg-3">
+  <div class="row card-grid-main">
+    {% for item in items %}
+      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <img
+          src="{{ url_for('exe.prob_img', context=item.context) }}"
+          class="img-fluid" 
+          style="border-radius: 0;"
+        />  
+        <img
+        src="{{ url_for('exe.ans_img', context=item.context) }}"
+        class="img-fluid" 
+        style="border-radius: 0;"
+        />   
+      </div>     
+      <div style="padding: 1em">
+       
+      </div>  
+    {% endfor %}
+  </div>
+</div>
+<!-- //resources -->
+
+{% endblock %}

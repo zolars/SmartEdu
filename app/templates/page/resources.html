@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block title %}SmartEdu | {{ type }} {% endblock %}
-{% block bodyParams %} class="bg-li" onload="load();" {% endblock %} {% block
+{% block bodyParams %} class="bg-li-5" onload="load();" {% endblock %} {% block
 content %}
 
 <style>
@@ -13,7 +13,7 @@ content %}
 <!-- banner -->
 <div class="banner_w3lspvt-2">
   <ol class="breadcrumb">
-    <li class="breadcrumb-header" style="padding-bottom:0px;">
+    <li class="breadcrumb-header" style="padding-top:1.5em; padding-bottom:0px;">
       {{ type }}
     </li>
   </ol>
@@ -46,14 +46,14 @@ content %}
             filetype='{{ item.filetype }}', 
             enter_time='{{ item.enter_time }}',
             enter_username='{{ item.enter_username }}',
-            download_url='{{ url_for("files.download", filetype=item.filetype, context=item.context) }}',
-            star_url='{{ url_for("files.star", context=item.context) }}',
-            check_stared_url='{{ url_for("files.check_stared", context=item.context) }}',
-            rating_url='{{ url_for("files.rating", context=item.context) }}'
+            download_url='{{ url_for("res.download", filetype=item.filetype, context=item.context) }}',
+            star_url='{{ url_for("res.star", context=item.context) }}',
+            check_stared_url='{{ url_for("res.check_stared", context=item.context) }}',
+            rating_url='{{ url_for("res.rating", context=item.context) }}'
           );"
         >
           <img
-            src="{{ url_for('files.cover', filetype=item.filetype, context=item.context) }}"
+            src="{{ url_for('res.cover', filetype=item.filetype, context=item.context) }}"
             class="img-fluid"
             style="
                 border-top-left-radius: 10px;
@@ -120,7 +120,7 @@ content %}
     $.ajax({
       url: check_stared_url,
       type: "post",
-      async: true,
+      async: false,
       success: function(response) {
         if (response == "stared") {
           stared = "取消收藏";
@@ -164,7 +164,7 @@ content %}
                       $.ajax({
                         url: star_url,
                         type: "post",
-                        async: true,
+                        async: false,
                         success: function(response) {
                           if (response == "stared") {
                             options = notice.options;
@@ -250,7 +250,7 @@ content %}
                                     url: rating_url,
                                     type: "post",
                                     data: data,
-                                    async: true,
+                                    async: false,
                                     success: function(response) {
                                       if (response == "success") {
                                         notice.update({

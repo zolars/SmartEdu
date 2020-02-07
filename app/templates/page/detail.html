@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block title %}SmartEdu | 作业详情 {% endblock %} {%
+block bodyParams %} class="bg-li-4"" {% endblock %} {% block content %}
+
+<style>
+  .ui-pnotify-container {
+    padding: 1.4em;
+    z-index: 0;
+  }
+</style>
+
+<!-- banner -->
+<div class="banner_w3lspvt-2">
+  <ol class="breadcrumb">
+    <li
+      class="breadcrumb-header"
+      style="padding-top:1.5em; padding-bottom:0px;"
+    >
+      作业详情
+    </li>
+  </ol>
+</div>
+<!-- //banner -->
+
+<!-- resources -->
+<div class="container py-xl-5 py-lg-3">
+  <div class="row card-grid-main">
+    <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+      <img
+        src="{{ url_for('hw.hw_img', context=context) }}"
+        class="img-fluid"
+        style="border-radius: 0;"
+      />
+    </div>
+    <div style="padding: 1em; width: 100%;%">
+      <div
+        class="about-grid-main"
+        style="padding: 1.5em; width: 100%; background-color:  #dff0f0;"
+      >
+        {% if not show_ans %}
+        <strong style="font-size: 18px; text-align: center;"
+          >在此请提交你的作业&emsp;
+        </strong>
+        <form method=post enctype=multipart/form-data>
+          <input type="file" name="file" />
+          <button
+            class="btn btn-cont-w3 btn-block mt-4"
+            style="padding: 8px 20px; max-width: 100px;"
+          >
+            提交
+          </button>
+        </form>
+        {% else %}
+        <strong style="font-size: 18px; text-align: center;"
+          >您已提交该作业！&emsp;
+        </strong>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!-- //resources -->
+
+  {% endblock %}
+</div>

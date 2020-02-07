@@ -43,7 +43,13 @@ def create_app(test_config=None):
     from . import page
     app.register_blueprint(page.bp)
 
-    from . import files
-    app.register_blueprint(files.bp)
+    from . import res
+    app.register_blueprint(res.bp)
+
+    from . import exe
+    app.register_blueprint(exe.bp)
+
+    from . import hw
+    app.register_blueprint(hw.bp)
 
     return app

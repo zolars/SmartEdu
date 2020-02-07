@@ -48,6 +48,7 @@ def login_required(view):
 def register():
     record_page_history(pagepath='/auth/register', user_ip=request.remote_addr)
     if request.method == 'POST':
+
         db = get_db()
 
         username = request.form['username']
