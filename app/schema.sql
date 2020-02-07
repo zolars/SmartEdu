@@ -11,13 +11,13 @@ CREATE TABLE user_info (
   mobile VARCHAR(12) DEFAULT NULL,
   province VARCHAR(255) DEFAULT NULL,
   city VARCHAR(255) DEFAULT NULL, 
-  gender BOOLEAN DEFAULT NULL, /* 0 for female, 1 for male */
+  gender BOOLEAN DEFAULT NULL, -- 0 for female, 1 for male 
   customer_name VARCHAR(255) DEFAULT NULL,
   student_id VARCHAR(11) NOT NULL,
   email VARCHAR(255) DEFAULT NULL,
   signature VARCHAR(255) DEFAULT NULL,
-  id_active BOOLEAN DEFAULT NULL, /* 0 for deactive, 1 for active */
-  id_alive BOOLEAN DEFAULT 1 /* 0 for pause, 1 for alive */
+  id_active BOOLEAN DEFAULT NULL, -- 0 for deactive, 1 for active 
+  id_alive BOOLEAN DEFAULT 1 -- 0 for pause, 1 for alive 
 );
 
 CREATE TABLE admin_info (
@@ -32,15 +32,15 @@ CREATE TABLE chapter_info (
 
 CREATE TABLE res_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) UNIQUE NOT NULL, /* include cover.jpg and context */
+  context VARCHAR(255) UNIQUE NOT NULL, -- include cover.jpg and context 
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
-  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
+  difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
   enter_user INT NOT NULL, 
   FOREIGN KEY (enter_user) REFERENCES admin_info (id),
   enter_time TIMESTAMP DEFAULT now(),
   title VARCHAR(255) NOT NULL,
-  type INT NOT NULL, /* 1 for video, 2 for doc, 3 for other */
+  type INT NOT NULL, -- 1 for video, 2 for doc, 3 for other 
   rating INT NOT NULL,
   description VARCHAR(255) DEFAULT NULL,
   duration INT DEFAULT NULL
@@ -48,10 +48,11 @@ CREATE TABLE res_info (
 
 CREATE TABLE exe_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) UNIQUE NOT NULL, /* include prob.jpg and ans.jpg */
+  context VARCHAR(255) UNIQUE NOT NULL, -- include prob.jpg and ans.jpg 
+  ans VARCHAR(2) NOT NULL, -- A B C D 
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
-  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
+  difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
   enter_user INT NOT NULL,
   FOREIGN KEY (enter_user) REFERENCES admin_info (id),
   enter_time TIMESTAMP DEFAULT now()
@@ -59,26 +60,25 @@ CREATE TABLE exe_info (
 
 CREATE TABLE hw_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  context VARCHAR(255) UNIQUE NOT NULL, /* include cover.jpg and context */
+  context VARCHAR(255) UNIQUE NOT NULL, -- include cover.jpg and context 
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
-  difficulty INT NOT NULL, /* 1 for easy, 2 for normal, 3 for difficult */
+  difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
   enter_user INT NOT NULL,
   FOREIGN KEY (enter_user) REFERENCES admin_info (id),
   enter_time TIMESTAMP DEFAULT now(),
   week VARCHAR(50) NOT NULL
 );
 
-
 CREATE TABLE user_auth_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   user_ip VARCHAR(16) NOT NULL,
-  operation INT NOT NULL, /* 0 for logout, 1 for login */
+  operation INT NOT NULL, -- 0 for logout, 1 for login 
   time TIMESTAMP NOT NULL,
   os VARCHAR(255) DEFAULT NULL,
   browser VARCHAR(255) DEFAULT NULL,
-  resolution VARCHAR(255) DEFAULT NULL /* 屏幕分辨率 */
+  resolution VARCHAR(255) DEFAULT NULL -- 屏幕分辨率 
 );
 
 CREATE TABLE res_history (
@@ -88,10 +88,10 @@ CREATE TABLE res_history (
   user_ip VARCHAR(16) NOT NULL,
   res_id INT NOT NULL, 
   FOREIGN KEY (res_id) REFERENCES res_info (id),
-  operation INT NOT NULL, /* 1 for star; 2 for download; 3 for rating */
+  operation INT NOT NULL,   -- 1 for star, 2 for download, 3 for rating 
   time TIMESTAMP NOT NULL,
-  rating INT DEFAULT NULL, /* from 1 to 5 */
-  difficulty INT DEFAULT NULL /* 1 for easy, 2 for normal, 3 for difficult */
+  rating INT DEFAULT NULL, -- from 1 to 5
+  difficulty INT DEFAULT NULL -- 1 for easy, 2 for normal, 3 for difficult
 );
 
 CREATE TABLE exe_history (
@@ -101,7 +101,7 @@ CREATE TABLE exe_history (
   user_ip VARCHAR(16) NOT NULL,
   exe_id INT NOT NULL, 
   FOREIGN KEY (exe_id) REFERENCES exe_info (id),
-  action INT NOT NULL,
+  operation INT NOT NULL,   -- 1 for star, 2 for check_ans, 3 for rating, 
   time TIMESTAMP NOT NULL,
   difficulty INT DEFAULT NULL,
   answer_easy_if INT DEFAULT NULL
@@ -114,9 +114,8 @@ CREATE TABLE hw_history (
   user_ip VARCHAR(16) NOT NULL,
   hw_id INT NOT NULL, 
   FOREIGN KEY (hw_id) REFERENCES hw_info (id),
-  action INT NOT NULL,
-  time TIMESTAMP NOT NULL,
-  context VARCHAR(255) DEFAULT NULL
+  operation INT NOT NULL,
+  time TIMESTAMP NOT NULL
 );
 
 CREATE TABLE page_history (

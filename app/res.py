@@ -7,10 +7,9 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
 from werkzeug.exceptions import abort
 
 from app.db import get_db, close_db
-from app.utils import record_res_history
 from app.auth import login_required
 
-bp = Blueprint('files', __name__)
+bp = Blueprint('res', __name__)
 
 
 @bp.route('/download/<filetype>/<context>', methods=('GET', 'POST'))
@@ -95,6 +94,15 @@ def rating(context):
         return 'error'
 
 
+@bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))
+def cover(filetype, context):
+    import base64
+    img_stream = ''
+    with open('./files/' + filetype + '/' + context + '/cover.png', 'rb') as f:
+        img_stream = f.read()
+    return img_stream
+
+
 # Check rating status with { user_id, res_id }
 def check_rating(context):
     db = get_db()
@@ -120,10 +128,29 @@ def check_rating(context):
         return False
 
 
-@bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))
-def cover(filetype, context):
-    import base64
-    img_stream = ''
-    with open('./files/' + filetype + '/' + context + '/cover.png', 'rb') as f:
-        img_stream = f.read()
-    return img_stream
+# Record res_history
+def record_res_history(context,
+                       user_ip,
+                       operation,
+                       rating="null",
+                       difficulty="null"):
+
+    db = get_db()
+    if (g.user != '{}') and (g.user is not None):
+        user_id = json.loads(g.user)['id']
+
+        df = db.fetchall(
+            'SELECT id FROM res_info WHERE context="{context}"'.format(
+                context=context))
+        res_id = df.id[0]
+        db.execute(
+            'INSERT INTO res_history (user_id, user_ip, res_id, operation, time, rating, difficulty) VALUES ({user_id}, "{user_ip}", {res_id}, {operation}, now(), {rating}, {difficulty})'
+            .format(user_id=user_id,
+                    user_ip=user_ip,
+                    res_id=res_id,
+                    operation=operation,
+                    rating=rating,
+                    difficulty=difficulty))
+        db.commit()
+
+    close_db()
