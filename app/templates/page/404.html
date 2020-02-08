@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %}SmartEdu | 404 {% endblock %} {%
+block bodyParams %} {% endblock %} {% block content %}
+
+<!-- 404 -->
+<div class="error pb-5 pt-2 text-center" id="card">
+  <div class="container pb-xl-5 pb-lg-3">
+    <img
+      src="{{ url_for('static', filename='images/404.png') }}"
+      alt=""
+      class="img-fluid"
+      style="width:40%;"
+    />
+    <h3 class="title-w3 text-bl my-3 font-weight-bold text-capitalize">
+      Oops! This page can’t be found.
+    </h3>
+    <a href="{{ url_for('page.index') }}" class="btn button-style mt-5"
+      >Back To Home</a
+    >
+  </div>
+</div>
+<!-- //404 -->
+
+{% endblock %}

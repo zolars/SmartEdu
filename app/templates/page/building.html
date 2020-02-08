@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %}SmartEdu | building {% endblock %} {%
+block bodyParams %} {% endblock %} {% block content %}
+
+<!-- building -->
+<div class="error pb-5 pt-2 text-center" id="card">
+  <div class="container pb-xl-5 pb-lg-3">
+    <img
+      src="{{ url_for('static', filename='images/building.png') }}"
+      alt=""
+      class="img-fluid"
+      style="width:35%;"
+    />
+    <h3 class="title-w3 text-bl my-3 font-weight-bold text-capitalize">
+      This page is coming soon : )
+    </h3>
+    <a href="{{ url_for('page.index') }}" class="btn button-style mt-5"
+      >Back To Home</a
+    >
+  </div>
+</div>
+<!-- //building -->
+
+{% endblock %}

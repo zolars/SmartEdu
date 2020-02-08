@@ -100,31 +100,39 @@ ol {
   background: #f9f9f9;
 }
 
-.bg-li-1 {
-  background: white;
+.bg-color-1 {
+  background-image: linear-gradient(rgb(248, 227, 227), #929292);
 }
 
-.bg-li-2 {
+.bg-color-2 {
   background-image: linear-gradient(hsl(360, 72%, 65%), #9198e5);
 }
 
-.bg-li-3 {
+.bg-color-3 {
   background-image: linear-gradient(#31e5b8, hsl(197, 72%, 65%));
 }
 
-.bg-li-4 {
-  background-color: #ccf3ff42;
+.bg-color-4 {
+  background-image: linear-gradient(#31e5b8, hsl(197, 72%, 65%));
+}
+
+.bg-color-green {
+  background-color: #ccffe042;
   background-image: url(../images/bg-point.png);
 }
 
-.bg-li-5 {
+.bg-color-blue {
   background-color: #c7e9ff42;
   background-image: url(../images/bg-point-2.png);
 }
 
-.bg-li-6 {
+.bg-color-yellow {
   background-color: #fbffc742;
   background-image: url(../images/bg-point-2.png);
+}
+
+.bg-color-red {
+  background-color: #ffc7d842;
 }
 
 .bg-wh {
@@ -247,7 +255,7 @@ nav ul li:hover > ul {
 
 /* Fisrt Tier Dropdown */
 nav ul ul li {
-  width: 85px;
+  width: 115px;
   float: none;
   display: list-item;
   position: relative;
@@ -963,7 +971,7 @@ li.breadcrumb-header {
   color: rgb(1, 179, 16);
   text-shadow: 0 2px 12px rgba(11, 173, 38, 0.28);
   letter-spacing: 1px;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 li.breadcrumb-item a,
