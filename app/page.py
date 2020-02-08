@@ -7,13 +7,11 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    url_for)
 from werkzeug.exceptions import abort
 
-from app.utils import get_chapter_names, record_page_history
+from app.utils import *
 from app.res import check_stared
 from app.hw import record_hw_history, check_submitted
 from app.db import get_db, close_db
 from app.auth import login_required
-
-from app.api import *
 
 bp = Blueprint('page', __name__)
 
@@ -69,7 +67,7 @@ def resources():
             })
 
     dict = {
-        'type': '所有资源',
+        'type': 'All',
         'chapter_focused': chapter_focused,
         'chapter_names': chapter_names,
         'items': items,
@@ -117,7 +115,7 @@ def video():
             })
 
     dict = {
-        'type': '教学视频',
+        'type': 'Video',
         'chapter_focused': chapter_focused,
         'chapter_names': chapter_names,
         'items': items,
@@ -165,7 +163,7 @@ def doc():
             })
 
     dict = {
-        'type': '书籍课件',
+        'type': 'Courseware',
         'chapter_focused': chapter_focused,
         'chapter_names': chapter_names,
         'items': items,
@@ -378,21 +376,21 @@ def exam():
         items.append({'context': context})
         close_db()
     dict = {'items': items, 'url': 'exam'}
-    return render_template('/page/ai_exercises.html', **dict)
+    return render_template('/page/building.html', **dict)
 
 
 @bp.route('/statistics')
 @login_required
 def statistics():
     record_page_history(pagepath='/statistics', user_ip=request.remote_addr)
-    return render_template('/page/index.html')
+    return render_template('/page/statistics.html')
 
 
 @bp.route('/comments')
 @login_required
 def comments():
     record_page_history(pagepath='/comments', user_ip=request.remote_addr)
-    return render_template('/page/index.html')
+    return render_template('/page/building.html')
 
 
 def allowed_file(filename):

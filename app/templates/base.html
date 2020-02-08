@@ -238,7 +238,7 @@
                 src="{{url_for('static', filename='images/logo.jpg') }}"
                 width="63px"
               />
-              &nbsp;智慧教育平台
+              &nbsp;电路智慧教育平台
             </a>
           </div>
           <!-- //logo -->
@@ -250,16 +250,18 @@
               <input type="checkbox" id="drop" />
               <ul class="menu">
                 <li>
-                  <a href="{{ url_for('page.index') }}" style="font-size: 14px;">课程主页</a>
+                  <a href="{{ url_for('page.index') }}" style="font-size: 14px;"
+                    >Home Page</a
+                  >
                 </li>
                 <li>
                   <!-- First Tier Drop Down -->
                   <label for="drop-1" class="toggle toogle-2"
-                    >教学资源
+                    >Course Materials
                     <span class="fa fa-angle-down" aria-hidden="true"></span>
                   </label>
                   <a href="#"
-                    >教学资源
+                    >Course Materials
                     <span class="fa fa-angle-down" aria-hidden="true"></span
                   ></a>
                   <input type="checkbox" id="drop-1" />
@@ -268,22 +270,24 @@
                       <a
                         href="{{ url_for('page.resources') }}"
                         class="drop-text"
-                        >所有资源</a
+                        >All</a
                       >
                     </li>
                     <li>
                       <a href="{{ url_for('page.video') }}" class="drop-text"
-                        >教学视频</a
+                        >Video</a
                       >
                     </li>
                     <li>
                       <a href="{{ url_for('page.doc') }}" class="drop-text"
-                        >书籍课件</a
+                        >Courseware</a
                       >
                     </li>
                     <li>
-                      <a href="{{ url_for('page.exercises') }}" class="drop-text"
-                        >练习题目</a
+                      <a
+                        href="{{ url_for('page.exercises') }}"
+                        class="drop-text"
+                        >Exercises</a
                       >
                     </li>
                   </ul>
@@ -291,42 +295,48 @@
                 <li>
                   <!-- First Tier Drop Down -->
                   <label for="drop-2" class="toggle toogle-2"
-                    >AI助学
+                    >AI Education
                     <span class="fa fa-angle-down" aria-hidden="true"></span>
                   </label>
                   <a href="#"
-                    >AI助学
+                    >AI Education
                     <span class="fa fa-angle-down" aria-hidden="true"></span
                   ></a>
                   <input type="checkbox" id="drop-2" />
                   <ul>
                     <li>
-                      <a href="{{ url_for('page.ai_exercises') }}" class="drop-text"
-                        >个性练习</a
+                      <a
+                        href="{{ url_for('page.ai_exercises') }}"
+                        class="drop-text"
+                        >Personality exercise</a
                       >
                     </li>
                     <li>
                       <a href="{{ url_for('page.exam') }}" class="drop-text"
-                        >模拟考试</a
+                        >Mock Exams</a
                       >
                     </li>
                     <li>
                       <a
                         href="{{ url_for('page.statistics') }}"
                         class="drop-text"
-                        >学习统计</a
+                        >Learning Statistics</a
                       >
                     </li>
                     <li>
                       <a href="{{ url_for('page.comments') }}" class="drop-text"
-                        >课程讨论</a
+                        >Talk & Comments</a
                       >
                     </li>
                   </ul>
                 </li>
 
                 <li>
-                  <a href="{{ url_for('page.homework') }}" style="font-size: 14px;">作业助手</a>
+                  <a
+                    href="{{ url_for('page.homework') }}"
+                    style="font-size: 14px;"
+                    >Homework</a
+                  >
                 </li>
               </ul>
             </nav>
@@ -344,7 +354,7 @@
                 <input
                   class="search"
                   type="search"
-                  placeholder="点此搜索..."
+                  placeholder="Search..."
                   name="keyword"
                   required=""
                 />
@@ -379,8 +389,8 @@
     </main>
 
     <!-- copyright footer -->
-    <footer >
-      <div class="copy-bottom bg-li-1 py-4 border-top">
+    <footer>
+      <div class="copy-bottom bg-wh py-4 border-top">
         <div class="container-fluid">
           <div class="d-md-flex px-md-3 position-relative text-center">
             <!-- footer social icons -->

@@ -2,7 +2,7 @@ import os
 import logging
 import time
 
-from flask import Flask
+from flask import (Flask, render_template)
 from app.config import config
 
 if not os.path.exists('./log/'):
@@ -51,5 +51,13 @@ def create_app(test_config=None):
 
     from . import hw
     app.register_blueprint(hw.bp)
+
+    from . import statistics
+    app.register_blueprint(statistics.bp)
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        # note that we set the 404 status explicitly
+        return render_template('/page/404.html'), 404
 
     return app
