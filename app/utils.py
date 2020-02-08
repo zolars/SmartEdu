@@ -22,3 +22,25 @@ def get_chapter_names(chapter_focused):
     close_db()
 
     return chapter_focused, chapter_names
+
+
+# Record page_history
+def record_page_history(pagepath, user_ip):
+    db = get_db()
+    if g.user == '{}' or g.user is None:
+        user_id = None
+    else:
+        user_id = json.loads(g.user)['id']
+
+    if user_id is not None:
+        db.execute(
+            'INSERT INTO page_history (user_id, user_ip, pagepath, time) VALUES ({user_id}, "{user_ip}", "{pagepath}", now())'
+            .format(user_id=user_id, user_ip=user_ip, pagepath=pagepath))
+        db.commit()
+    else:
+        db.execute(
+            'INSERT INTO page_history (user_id, user_ip, pagepath, time) VALUES (null, "{user_ip}", "{pagepath}", now())'
+            .format(user_ip=user_ip, pagepath=pagepath))
+        db.commit()
+
+    close_db()

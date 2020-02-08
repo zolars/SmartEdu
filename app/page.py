@@ -7,7 +7,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    url_for)
 from werkzeug.exceptions import abort
 
-from app.utils import get_chapter_names
+from app.utils import get_chapter_names, record_page_history
 from app.res import check_stared
 from app.hw import record_hw_history, check_submitted
 from app.db import get_db, close_db
@@ -400,25 +400,3 @@ def allowed_file(filename):
 
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-# Record page_history
-def record_page_history(pagepath, user_ip):
-    db = get_db()
-    if g.user == '{}' or g.user is None:
-        user_id = None
-    else:
-        user_id = json.loads(g.user)['id']
-
-    if user_id is not None:
-        db.execute(
-            'INSERT INTO page_history (user_id, user_ip, pagepath, time) VALUES ({user_id}, "{user_ip}", "{pagepath}", now())'
-            .format(user_id=user_id, user_ip=user_ip, pagepath=pagepath))
-        db.commit()
-    else:
-        db.execute(
-            'INSERT INTO page_history (user_id, user_ip, pagepath, time) VALUES (null, "{user_ip}", "{pagepath}", now())'
-            .format(user_ip=user_ip, pagepath=pagepath))
-        db.commit()
-
-    close_db()
