@@ -467,6 +467,7 @@ def comments():
 
             close_db()
 
+            flash('Your comment has been posted!', 'success')
             return 'success'
 
         else:

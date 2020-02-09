@@ -103,7 +103,6 @@
                 {% for category, message  in messages %}
                   {% if category == 'success' %}
                     PNotify.success({
-                      // title: '成功',
                       text: '{{ message }}',
                       hide: true,
                       delay: 1500,
@@ -122,7 +121,7 @@
                   {% endif %}
                   {% if category == 'notice' %}
                     PNotify.notice({
-                      title: '通知',
+                      title: 'Notice',
                       text: '{{ message }}',
                       hide: true,
                       delay: 1500,
@@ -141,7 +140,7 @@
                   {% endif %}
                   {% if category == 'info' %}
                     PNotify.info({
-                      title: '信息',
+                      title: 'Message',
                       text: '{{ message }}',
                       hide: true,
                       delay: 1500,
@@ -160,7 +159,7 @@
                   {% endif %}
                   {% if category == 'error' %}
                     PNotify.error({
-                      title: '遇到错误',
+                      title: 'Error',
                       text: '{{ message }}',
                       hide: true,
                       delay: 1500,
