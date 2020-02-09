@@ -183,8 +183,8 @@
       function clickAccount(){
         username = JSON.parse({{ g.user | tojson }})['username']
         PNotify.notice({
-          title: '登录管理',
-          text: '<span>亲爱的 ' + username + ' :</span><br /><br /><span>> 欢迎使用北邮智慧教育平台！</span>',
+          title: 'User Account',
+          text: '<span>Dear ' + username + ' :</span><br /><br /><span>> Welcome to use BUPT SmartEdu ! </span>',
           textTrusted: true,
           icon: 'fa fa-user',
           hide: false,
@@ -204,14 +204,14 @@
               confirm: true,
               buttons: [
                 {
-                  text: '更改用户信息',
+                  text: 'Manage User Information',
                   click: function() {
                     PNotify.closeAll();
                     location.href = "{{ url_for('auth.modifyAccount') }}";
                   }
                 },
                 {
-                  text: '注销',
+                  text: 'Logout',
                   primary: true,
                   click: function() {
                     PNotify.closeAll();
@@ -330,7 +330,6 @@
                     </li>
                   </ul>
                 </li>
-
                 <li>
                   <a
                     href="{{ url_for('page.homework') }}"
@@ -345,7 +344,7 @@
 
           <div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
             <!-- search -->
-            <div class="search-w3layouts mr-3">
+            <div class="search-w3layouts mr-3" style="visibility: hidden;">
               <form
                 action="#"
                 method="post"
@@ -364,6 +363,7 @@
               </form>
             </div>
             <!-- //search -->
+
             <!-- login -->
             {% if g.user %}
             <a class="login-w3ls btn" onclick="clickAccount();">

@@ -39,7 +39,8 @@ def check_ans():
             db = get_db()
             record_exe_history(context=context,
                                user_ip=request.remote_addr,
-                               operation=2)
+                               operation=2,
+                               ans=ans)
             df = db.fetchall(
                 'SELECT ans FROM exe_info WHERE context="{context}"'.format(
                     context=context))
@@ -61,6 +62,7 @@ def check_ans():
 def record_exe_history(context,
                        user_ip,
                        operation,
+                       ans="null",
                        difficulty="null",
                        answer_easy_if="null"):
     db = get_db()
@@ -72,11 +74,12 @@ def record_exe_history(context,
                 context=context))
         exe_id = df.id[0]
         db.execute(
-            'INSERT INTO exe_history (user_id, user_ip, exe_id, operation, time, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {difficulty}, {answer_easy_if})'
+            'INSERT INTO exe_history (user_id, user_ip, exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
             .format(user_id=user_id,
                     user_ip=user_ip,
                     exe_id=exe_id,
                     operation=operation,
+                    ans='"' + ans + '"',
                     difficulty=difficulty,
                     answer_easy_if=answer_easy_if))
         db.commit()

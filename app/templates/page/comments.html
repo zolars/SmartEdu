@@ -1,0 +1,113 @@
+{% extends 'base.html' %} {% block title %}SmartEdu | Talk & Comments {%
+endblock %} {% block bodyParams %} class="bg-color-red" onload="load();" {%
+endblock %} {% block content %}
+
+<style>
+  .ui-pnotify-container {
+    padding: 1.4em;
+    z-index: 0;
+  }
+</style>
+
+<!-- banner -->
+<div class="banner_w3lspvt-2">
+  <ol class="breadcrumb">
+    <li
+      class="breadcrumb-header"
+      style="padding-top:1.5em; padding-bottom:0px;"
+    >
+      Talk & Comments
+    </li>
+  </ol>
+</div>
+<!-- //banner -->
+
+<!-- resources -->
+<div class="container py-xl-5 py-lg-3">
+  <div
+    class="about-grid-main"
+    style="padding: 1.5em; width: 100%; border-radius: 10px;"
+  >
+    <strong style="font-size: 18px;">Click Here To Post ~&emsp; </strong>
+    <button
+      class="btn btn-cont-w3 btn-block mt-4"
+      style="padding: 8px 20px; max-width: 100px;"
+      onclick="post();"
+    >
+      POST
+    </button>
+  </div>
+  <div style="padding: 1em"></div>
+  {% for item in items %}
+  <div
+    class="about-grid-main"
+    style="padding: 1.5em; width: 100%; border-radius: 10px;"
+  >
+    <i class="fa fa-user"></i>
+    <strong style="font-size: 18px;"
+      >&nbsp;{{ item.username }}&nbsp;:&nbsp;</strong
+    >
+    <span>
+      {{ item.comment }}
+    </span>
+  </div>
+  <div style="padding: 1em"></div>
+  {% endfor %}
+</div>
+
+<!-- //resources -->
+
+<script>
+  function load() {
+    $(".about-grid-main").each(function() {
+      var R = Math.floor(Math.random() * 255);
+      var G = Math.floor(Math.random() * 255);
+      var B = Math.floor(Math.random() * 255);
+      $(this).css(
+        "background-color",
+        "rgb(" + R + "," + G + "," + B + ", 20%)"
+      );
+    });
+  }
+
+  function post() {
+    var notice = PNotify.notice({
+      title: "Post a comment",
+      text: "> Please input your comment on the course:",
+      icon: "fa fa-question-circle",
+      hide: false,
+      stack: {
+        modal: true,
+        overlayClose: false
+      },
+      modules: {
+        Buttons: {
+          closer: false,
+          sticker: false
+        },
+        History: {
+          history: false
+        },
+        Confirm: {
+          prompt: true
+        }
+      }
+    });
+    notice.on("pnotify.confirm", function(e) {
+      data = { comment: e.value };
+      $.ajax({
+        type: "POST",
+        url: "{{ url_for('page.comments') }}",
+        data: data,
+        success: function(response) {
+          location.reload();
+        }
+      });
+    });
+    notice.on("pnotify.cancel", function(e) {
+      notice.close();
+    });
+  }
+</script>
+
+{% endblock %}

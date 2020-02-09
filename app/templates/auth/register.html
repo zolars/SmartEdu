@@ -24,10 +24,10 @@ style="
             <div class="form-group">
               <div class="row">
                 <div class="col-md-2"></div>
-                <div class="col-md-7">
+                <div class="col-md-9">
                   <h3>
                     <i class="fa fa-user"></i>
-                    欢迎注册
+                    Create an account
                   </h3>
                 </div>
               </div>
@@ -37,12 +37,12 @@ style="
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
                   <label>
-                    用户名
+                    Username
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="中英文和数字, 不包含空格"
+                    placeholder="Without any spaces"
                     name="username"
                     required=""
                   />
@@ -54,12 +54,12 @@ style="
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
                   <label>
-                    学号
+                    Student ID
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    placeholder="请填写10位北邮学号"
+                    placeholder="BUPT Student ID"
                     name="student_id"
                     required=""
                   />
@@ -71,12 +71,12 @@ style="
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
                   <label>
-                    密码
+                    Password
                   </label>
                   <input
                     class="form-control"
                     type="password"
-                    placeholder="不少于八位"
+                    placeholder="At least 8 characters"
                     name="password"
                     required=""
                   />
@@ -88,12 +88,12 @@ style="
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
                   <label>
-                    密码确认
+                    Password Confirm
                   </label>
                   <input
                     class="form-control"
                     type="password"
-                    placeholder="请确保输入的密码相同"
+                    placeholder="Repeat the password"
                     name="password_confirm"
                     required=""
                   />
@@ -101,18 +101,18 @@ style="
               </div>
             </div>
             <div class="row mt-2">
-              <div class="col-md-3"></div>
+              <div class="col-md-2"></div>
               <a
                 onclick="location.href = '{{ url_for('auth.login')}}';"
                 style="cursor:pointer"
-                >&emsp;已有账号？马上登录！&emsp;</a
+                >&emsp;I have an account! Sign in now.&emsp;</a
               >
             </div>
             <div class="row mt-3">
               <div class="col-md-3"></div>
               <div class="col-md-6">
                 <button class="btn btn-cont-w3 btn-block">
-                  完成注册
+                  Sign up
                 </button>
               </div>
             </div>

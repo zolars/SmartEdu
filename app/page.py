@@ -9,7 +9,8 @@ from werkzeug.exceptions import abort
 
 from app.utils import *
 from app.res import check_stared
-from app.hw import record_hw_history, check_submitted
+from app.exe import record_exe_history
+from app.hw import record_hw_history, record_sp_exe_history, check_submitted
 from app.db import get_db, close_db
 from app.auth import login_required
 
@@ -22,10 +23,9 @@ def index():
     if request.method == 'POST':
         keyword = request.form['keyword']
         # Todo
-        logging.info("Search for " + keyword)
-        return redirect(url_for('page.index'))
-
-    return render_template('/page/index.html')
+        return render_template('/page/search.html')
+    else:
+        return render_template('/page/index.html')
 
 
 @bp.route('/resources', methods=('GET', 'POST'))
@@ -229,8 +229,7 @@ def answer():
         return render_template('/page/answer.html', **dict)
 
     else:
-        flash("目前无法访问该页面！", "error")
-        return redirect(url_for('page.index'))
+        abort(404)
 
 
 @bp.route('/homework')
@@ -252,6 +251,14 @@ def homework():
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
         week = row['week']
+        if week[-1] == '1':
+            week += 'st'
+        elif week[-1] == '2':
+            week += 'nd'
+        elif week[-1] == '3':
+            week += 'rd'
+        else:
+            week += 'th'
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
@@ -290,10 +297,20 @@ def detail(context):
     chapter_id = row['chapter_id']
     week = row['week']
 
-    submitted, time = check_submitted(context)
-    if request.method == 'POST' and (not submitted):
-        show_ans = True
+    ids = row['sp_exe_ids'].split(',')
 
+    items = []
+    for id in ids:
+        df = db.fetchall(
+            'SELECT context, ans_formula FROM sp_exe_info WHERE id={id}'.
+            format(id=id))
+        sp_context = df.iloc[0].context
+        ans_formula = df.iloc[0].ans_formula
+        items.append({'context': sp_context, 'ans_formula': ans_formula})
+
+    submitted, time = check_submitted(context, operation=1)
+    if request.method == 'POST' and (not submitted):
+        show_sp_exe = True
         if 'file' not in request.files:
             flash('您没有上传文件，请先选择要上传的文件。', 'error')
             return redirect(request.url)
@@ -318,22 +335,49 @@ def detail(context):
             flash('请检查选择的文件格式！', 'error')
             return redirect(request.url)
 
-        submitted, time = check_submitted(context)
-        flash("您已于{}成功提交作业！".format(time.strftime('%Y.%m.%d %H:%M:%S')),
-              "success")
+        submitted, time = check_submitted(context, operation=1)
+        flash(
+            "You have submitted the file at {}!".format(
+                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
+    elif submitted:
+        show_sp_exe = True
+        flash(
+            "You have submitted the file at {}!".format(
+                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
+    else:
+        show_sp_exe = False
+
+    submitted, time = check_submitted(context, operation=2)
+    if request.method == 'POST' and (not submitted):
+        show_ans = True
+
+        record_hw_history(request.remote_addr, 2, context)
+        for item in items:
+            record_sp_exe_history(context=item['context'],
+                                  user_ip=request.remote_addr,
+                                  operation=2,
+                                  ans=request.form[item['context']])
+
+        submitted, time = check_submitted(context, operation=2)
+        flash(
+            "You have submitted the Multiple-Choice at {}!".format(
+                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
     elif submitted:
         show_ans = True
-        flash("您已于{}成功提交作业！".format(time.strftime('%Y.%m.%d %H:%M:%S')),
-              "success")
+        flash(
+            "You have submitted the Multiple-Choice at {}!".format(
+                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
     else:
         show_ans = False
 
     dict = {
         'context': context,
+        'items': items,
         'enter_time': enter_time,
         'enter_username': enter_username,
         'week': week,
         'url': 'detail',
+        'show_sp_exe': show_sp_exe,
         'show_ans': show_ans
     }
 
@@ -360,7 +404,7 @@ def ai_exercises():
     return render_template('/page/ai_exercises.html', **dict)
 
 
-@bp.route('/exam')
+@bp.route('/exam', methods=('GET', 'POST'))
 @login_required
 def exam():
     record_page_history(pagepath='/exam', user_ip=request.remote_addr)
@@ -368,6 +412,8 @@ def exam():
     ids = get_prob_ids('exam')
 
     items = []
+    done = 0
+    score = 0
     for id in ids:
         db = get_db()
         df = db.fetchall(
@@ -375,8 +421,24 @@ def exam():
         context = df.iloc[0].context
         items.append({'context': context})
         close_db()
-    dict = {'items': items, 'url': 'exam'}
-    return render_template('/page/building.html', **dict)
+
+        if request.method == 'POST':
+            done = 1
+            ans = request.form[context]
+            record_exe_history(context=context,
+                               user_ip=request.remote_addr,
+                               operation=2,
+                               ans=ans)
+            df = db.fetchall(
+                'SELECT ans FROM exe_info WHERE context="{context}"'.format(
+                    context=context))
+            if ans == df.ans[0]:
+                score += 1
+
+    score = str(score) + " / " + str(len(items))
+
+    dict = {'items': items, 'done': done, 'score': score, 'url': 'exam'}
+    return render_template('/page/exam.html', **dict)
 
 
 @bp.route('/statistics')
@@ -386,11 +448,40 @@ def statistics():
     return render_template('/page/statistics.html')
 
 
-@bp.route('/comments')
+@bp.route('/comments', methods=('GET', 'POST'))
 @login_required
 def comments():
     record_page_history(pagepath='/comments', user_ip=request.remote_addr)
-    return render_template('/page/building.html')
+
+    if (g.user != '{}') and (g.user is not None):
+        user_id = json.loads(g.user)['id']
+        db = get_db()
+
+        if request.method == 'POST':
+            comment = request.form['comment']
+
+            db.execute(
+                'INSERT INTO cmt_history (user_id, time, comment) VALUES ({user_id}, now(), "{comment}")'
+                .format(user_id=user_id, comment=comment))
+            db.commit()
+
+            close_db()
+
+            return 'success'
+
+        else:
+            items = []
+            for _, row in db.fetchall(
+                    'SELECT * FROM cmt_history ORDER BY id').iterrows():
+                df = db.fetchall(
+                    'SELECT username FROM user_info WHERE id={user_id}'.format(
+                        user_id=row['user_id']))
+                username = df.iloc[0].username
+                comment = row['comment']
+                items.append({'username': username, 'comment': comment})
+
+            dict = {'items': items}
+            return render_template('/page/comments.html', **dict)
 
 
 def allowed_file(filename):

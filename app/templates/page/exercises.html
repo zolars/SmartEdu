@@ -45,7 +45,7 @@ content %}
       </div>     
       <div style="padding: 1em">
         <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
-          <strong style="font-size: 18px;">请选择你的答案 :&emsp; </strong>
+          <strong style="font-size: 18px;">Please give your answer :&emsp; </strong>
           <input type="radio" name={{ item.context }} value="A">&emsp;A&emsp;&emsp;
           <input type="radio" name={{ item.context }} value="B">&emsp;B&emsp;&emsp;
           <input type="radio" name={{ item.context }} value="C">&emsp;C&emsp;&emsp;
@@ -55,12 +55,11 @@ content %}
             style="padding: 8px 20px; max-width: 100px;"
             onclick="submit(context='{{ item.context }}');"
           >
-            提交
+            Submit
           </button>
         </div>
       </div>  
     {% endfor %}
-
   </div>
 </div>
 <!-- //resources -->
@@ -139,7 +138,7 @@ function submit(context) {
                     [context]
                   );
                 }
-              },
+              },     
               {
                 text: "Cancel",
                 click: function(notice) {
