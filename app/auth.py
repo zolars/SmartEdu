@@ -93,7 +93,9 @@ def register():
                         reg_ip=reg_ip,
                         reg_time='now()'))
             db.commit()
-            flash('注册成功。欢迎，{username}！'.format(username=username), 'success')
+            flash(
+                'Success to sign up! Welcome.{username}！'.format(
+                    username=username), 'success')
 
             close_db()
             return redirect(url_for('page.index'))
@@ -150,7 +152,7 @@ def login():
                         resolution=resolution))
             db.commit()
 
-            flash('您已成功登录！', 'success')
+            flash('You have signed in!', 'success')
 
             close_db()
             return redirect(url_for('page.index'))
@@ -254,6 +256,6 @@ def logout():
             operation=0,
             time='now()'))
     db.commit()
-    flash('您已成功注销！', 'success')
+    flash('You have logged out!', 'success')
     close_db()
     return redirect(url_for('page.index'))
