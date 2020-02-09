@@ -53,7 +53,7 @@ def get_prob_ids(type):
         if type == "exam":
             return [1, 3, 5]
         if type == "ai_exercises":
-            return [2, 4]
+            return [2, 3, 4]
 
     else:
         return []

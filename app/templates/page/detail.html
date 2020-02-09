@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %}SmartEdu | 作业详情 {% endblock %} {%
+{% extends 'base.html' %} {% block title %}SmartEdu | Homework {% endblock %} {%
 block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
 
 <style>
@@ -15,7 +15,7 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
       class="breadcrumb-header"
       style="padding-top:1.5em; padding-bottom:0px;"
     >
-      作业详情
+      Homework
     </li>
   </ol>
 </div>
@@ -24,21 +24,117 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
 <!-- resources -->
 <div class="container py-xl-5 py-lg-3">
   <div class="row card-grid-main">
-    <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-      <img
-        src="{{ url_for('hw.hw_img', context=context) }}"
-        class="img-fluid"
-        style="border-radius: 0;"
-      />
-    </div>
+    {% if not show_sp_exe and not show_ans %}
+      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <img
+          src="{{ url_for('hw.hw_img', context=context) }}"
+          class="img-fluid"
+          style="border-radius: 0;"
+        />
+      </div>
+    {% elif show_sp_exe and not show_ans %}
+      {% for item in items %}
+        <form method=post>
+        <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+          <img
+          src="{{ url_for('hw.sp_prob_img', context=item.context) }}"
+          class="img-fluid" 
+          style="border-radius: 0;"
+          />   
+        </div>     
+        <div style="padding: 1em">
+          <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
+            <strong style="font-size: 18px;">Please give your answer :&emsp; </strong>
+            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>0" value="">
+            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>0"></span>
+            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>1" value="">
+            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>1"></span>
+            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>2" value="">
+            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>2"></span>
+            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>3" value="">
+            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>3"></span>
+          </div>
+        </div>  
+      {% endfor %}
+      <script>    
+        var notice = PNotify.notice({
+          title: 'Input R',
+          text: '> Please input random number R:',
+          icon: 'fa fa-question-circle',
+          hide: false,
+          stack: {
+            modal: true,
+            overlayClose: false
+          },
+          modules: {
+            Buttons: {
+              closer: false,
+              sticker: false
+            },
+            History: {
+              history: false
+            },
+            Confirm: {
+              prompt: true,   
+            }
+          }
+        });
+        notice.on('pnotify.confirm', function(e) {
+          notice.close();
+          var r = e.value;
+          var re = /^[0-9]+.?[0-9]*/;
+          if (!re.test(r)) {
+            PNotify.error("Please enter a number.");
+            location.reload();
+      　　 }
+          
+          {% for item in items %}
+            var correct_ans = parseInt(Math.random() * 4);
+            for (var i = 0; i < 4; i++) {
+              if (i == correct_ans) {
+                var answer = parseInt({{ item.ans_formula }});
+                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
+                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+              } else {
+                var answer = parseInt({{ item.ans_formula }}) + parseInt(Math.random() * 401 - 200);
+                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
+                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+              }
+            }  
+          {% endfor %}
+
+        });
+        notice.on('pnotify.cancel', function(e) {  
+          location.reload();
+        });
+      </script>
+    {% elif show_sp_exe and show_ans %}
+      {% for item in items %}
+        <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+          <img
+            src="{{ url_for('hw.sp_prob_img', context=item.context) }}"
+            class="img-fluid" 
+            style="border-radius: 0;"
+          />  
+          <img
+          src="{{ url_for('hw.sp_ans_img', context=item.context) }}"
+          class="img-fluid" 
+          style="border-radius: 0;"
+          />   
+        </div>     
+        <div style="padding: 1em">  
+        </div>  
+      {% endfor %}
+    {% endif %}
+    
     <div style="padding: 1em; width: 100%;%">
       <div
         class="about-grid-main"
         style="padding: 1.5em; width: 100%; background-color:  #dff0f0;"
       >
-        {% if not show_ans %}
-        <strong style="font-size: 18px; text-align: center;"
-          >在此请提交你的作业&emsp;
+        {% if not show_sp_exe and not show_ans %}
+        <strong style="font-size: 18px;"
+          >Submit your homework here!&emsp;
         </strong>
         <form method=post enctype=multipart/form-data>
           <input type="file" name="file" />
@@ -46,12 +142,24 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
             class="btn btn-cont-w3 btn-block mt-4"
             style="padding: 8px 20px; max-width: 100px;"
           >
-            提交
+            Submit
           </button>
         </form>
-        {% else %}
-        <strong style="font-size: 18px; text-align: center;"
-          >您已提交该作业！&emsp;
+        {% elif show_sp_exe and not show_ans  %}
+        <strong style="font-size: 18px;"
+          >Submit your answer here!&emsp;
+        </strong>
+        <button
+          class="btn btn-cont-w3 btn-block mt-4"
+          style="padding: 8px 20px; max-width: 100px;"
+        >
+          Submit
+        </button>
+        </form>
+     
+        {% elif show_sp_exe and show_ans %}
+        <strong style="font-size: 18px;"
+          >Your have submitted the homework, Thank you!&emsp;
         </strong>
         {% endif %}
       </div>

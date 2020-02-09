@@ -58,9 +58,22 @@ CREATE TABLE exe_info (
   enter_time TIMESTAMP DEFAULT now()
 );
 
+CREATE TABLE sp_exe_info (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  context VARCHAR(255) UNIQUE NOT NULL, -- include prob.jpg and ans.jpg 
+  ans_formula VARCHAR(255) NOT NULL,
+  chapter_id INT NOT NULL,
+  FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
+  difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
+  enter_user INT NOT NULL,
+  FOREIGN KEY (enter_user) REFERENCES admin_info (id),
+  enter_time TIMESTAMP DEFAULT now()
+);
+
 CREATE TABLE hw_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
   context VARCHAR(255) UNIQUE NOT NULL, -- include cover.jpg and context 
+  sp_exe_ids VARCHAR(255) NOT NULL,
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
   difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
@@ -103,6 +116,21 @@ CREATE TABLE exe_history (
   FOREIGN KEY (exe_id) REFERENCES exe_info (id),
   operation INT NOT NULL,   -- 1 for star, 2 for check_ans, 3 for rating, 
   time TIMESTAMP NOT NULL,
+  ans VARCHAR(2) DEFAULT NULL, -- A B C D 
+  difficulty INT DEFAULT NULL,
+  answer_easy_if INT DEFAULT NULL
+);
+
+CREATE TABLE sp_exe_history (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL, 
+  FOREIGN KEY (user_id) REFERENCES user_info (id),
+  user_ip VARCHAR(16) NOT NULL,
+  exe_id INT NOT NULL, 
+  FOREIGN KEY (exe_id) REFERENCES exe_info (id),
+  operation INT NOT NULL,   -- 1 for star, 2 for check_ans, 3 for rating, 
+  time TIMESTAMP NOT NULL,
+  ans BOOLEAN DEFAULT NULL, -- A B C D 
   difficulty INT DEFAULT NULL,
   answer_easy_if INT DEFAULT NULL
 );
@@ -114,7 +142,7 @@ CREATE TABLE hw_history (
   user_ip VARCHAR(16) NOT NULL,
   hw_id INT NOT NULL, 
   FOREIGN KEY (hw_id) REFERENCES hw_info (id),
-  operation INT NOT NULL,
+  operation INT NOT NULL, -- 1 for pdf update, 2 for options
   time TIMESTAMP NOT NULL
 );
 
@@ -131,7 +159,7 @@ CREATE TABLE cmt_history (
   id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL, 
   FOREIGN KEY (user_id) REFERENCES user_info (id),
-  operate_time TIMESTAMP NOT NULL,
+  time TIMESTAMP NOT NULL,
   comment VARCHAR(255) NOT NULL
 );
 
