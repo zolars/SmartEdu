@@ -73,15 +73,74 @@ def record_exe_history(context,
             'SELECT id FROM exe_info WHERE context="{context}"'.format(
                 context=context))
         exe_id = df.id[0]
-        db.execute(
-            'INSERT INTO exe_history (user_id, user_ip, exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
-            .format(user_id=user_id,
-                    user_ip=user_ip,
-                    exe_id=exe_id,
-                    operation=operation,
-                    ans='"' + ans + '"',
-                    difficulty=difficulty,
-                    answer_easy_if=answer_easy_if))
-        db.commit()
+        if operation == 2:
+            db.execute(
+                'INSERT INTO exe_history (user_id, user_ip, exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
+                .format(user_id=user_id,
+                        user_ip=user_ip,
+                        exe_id=exe_id,
+                        operation=operation,
+                        ans='"' + ans + '"',
+                        difficulty=difficulty,
+                        answer_easy_if=answer_easy_if))
+            db.commit()
+        elif operation == 3:
+            db.execute(
+                'INSERT INTO exe_history (user_id, user_ip, exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
+                .format(user_id=user_id,
+                        user_ip=user_ip,
+                        exe_id=exe_id,
+                        operation=operation,
+                        ans=ans,
+                        difficulty=difficulty,
+                        answer_easy_if=answer_easy_if))
+            db.commit()
 
     close_db()
+
+
+@bp.route('/exe_rating/<context>', methods=('GET', 'POST'))
+@login_required
+def rating(context):
+    if request.method == 'POST':
+        difficulty = request.form["difficulty"]
+        answer_easy_if = request.form["answer_easy_if"]
+        if (difficulty != "" and answer_easy_if != ""):
+            record_exe_history(context=context,
+                               user_ip=request.remote_addr,
+                               operation=3,
+                               difficulty='"' + difficulty + '"',
+                               answer_easy_if='"' + answer_easy_if + '"')
+            if check_rating(context) > 0:
+                return 'overwrite'
+            else:
+                return 'success'
+        else:
+            return 'unselected'
+    else:
+        return 'error'
+
+
+# Check rating status with { user_id, exe_id }
+def check_rating(context):
+    db = get_db()
+    if (g.user != '{}') and (g.user is not None):
+        user_id = json.loads(g.user)['id']
+
+        df = db.fetchall(
+            'SELECT id FROM exe_info WHERE context="{context}"'.format(
+                context=context))
+        exe_id = df.id[0]
+
+        df = db.fetchall(
+            'SELECT user_id FROM exe_history WHERE user_id="{user_id}" AND operation=3 AND exe_id={exe_id}'
+            .format(user_id=user_id, exe_id=exe_id))
+        amount = len(df)
+
+        close_db()
+
+        return amount - 1
+
+    else:
+        close_db()
+        return False
