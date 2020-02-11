@@ -47,8 +47,8 @@ content %}
             enter_time='{{ item.enter_time }}',
             enter_username='{{ item.enter_username }}',
             download_url='{{ url_for("res.download", filetype=item.filetype, context=item.context) }}',
-            star_url='{{ url_for("res.star", context=item.context) }}',
-            check_stared_url='{{ url_for("res.check_stared", context=item.context) }}',
+            star_url='{{ url_for("res.mark", context=item.context) }}',
+            check_marked_url='{{ url_for("res.check_marked", context=item.context) }}',
             rating_url='{{ url_for("res.rating", context=item.context) }}'
           );"
         >
@@ -105,7 +105,7 @@ content %}
     enter_username,
     download_url,
     star_url,
-    check_stared_url,
+    check_marked_url,
     rating_url
   ) {
     if (filetype == "video") {
@@ -116,16 +116,16 @@ content %}
     if (description == "None") {
       description = "There is no description for this resource : (";
     }
-    var stared = "";
+    var marked = "";
     $.ajax({
-      url: check_stared_url,
+      url: check_marked_url,
       type: "post",
       async: false,
       success: function(response) {
-        if (response == "stared") {
-          stared = "Unmark";
-        } else if (response == "unstared") {
-          stared = "Mark";
+        if (response == "marked") {
+          marked = "Unmark";
+        } else if (response == "unmarked") {
+          marked = "Mark";
         }
         PNotify.info({
           title: "&nbsp;" + title,
@@ -159,18 +159,18 @@ content %}
               buttons: [
                 {% if g.user %}
                   {
-                    text: stared,
+                    text: marked,
                     click: function(notice) {
                       $.ajax({
                         url: star_url,
                         type: "post",
                         async: false,
                         success: function(response) {
-                          if (response == "stared") {
+                          if (response == "marked") {
                             options = notice.options;
                             options.data.modules.Confirm.buttons[0].text = "Unmark";
                             notice.update(options);
-                          }  else if (response == "unstared") {
+                          }  else if (response == "unmarked") {
                             options = notice.options;
                             options.data.modules.Confirm.buttons[0].text = "Mark";
                             notice.update(options);
