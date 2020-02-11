@@ -17,7 +17,7 @@ def get_chapter_names(chapter_focused):
     df = db.fetchall('SELECT * FROM chapter_info')
     df = df.sort_values(by="id", ascending=True)
 
-    chapter_names = ['全部章节'] + df.name.tolist()
+    chapter_names = ['All Chapters'] + df.name.tolist()
 
     close_db()
 

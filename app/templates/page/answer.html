@@ -1,19 +1,21 @@
-{% extends 'base.html' %} {% block title %}SmartEdu | Check Answer {% endblock %}
-{% block bodyParams %} class="bg-color-green" {% endblock %} {% block
-content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | Check Answer {% endblock
+%} {% block bodyParams %} class="bg-color-green" {% endblock %} {% block content
+%}
 
 <style>
   .ui-pnotify-container {
     padding: 1.4em;
     z-index: 0;
   }
-
 </style>
 
 <!-- banner -->
 <div class="banner_w3lspvt-2">
   <ol class="breadcrumb">
-    <li class="breadcrumb-header" style="padding-top:1.5em; padding-bottom:0px;">
+    <li
+      class="breadcrumb-header"
+      style="padding-top:1.5em; padding-bottom:0px;"
+    >
       Check Answer
     </li>
   </ol>
@@ -24,24 +26,202 @@ content %}
 <div class="container py-xl-5 py-lg-3">
   <div class="row card-grid-main">
     {% for item in items %}
-      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-        <img
-          src="{{ url_for('exe.prob_img', context=item.context) }}"
-          class="img-fluid" 
-          style="border-radius: 0;"
-        />  
-        <img
-        src="{{ url_for('exe.ans_img', context=item.context) }}"
-        class="img-fluid" 
+    <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+      <img
+        src="{{ url_for('exe.prob_img', context=item.context) }}"
+        class="img-fluid"
         style="border-radius: 0;"
-        />   
-      </div>     
-      <div style="padding: 1em">
-       
-      </div>  
+      />
+      <img
+        src="{{ url_for('exe.ans_img', context=item.context) }}"
+        class="img-fluid"
+        style="border-radius: 0;"
+      />
+    </div>
+    <div style="padding: 1em"></div>
+
+    <div
+      class="about-grid-main"
+      style="padding: 1.5em; width: 100%; background-color:  #dff0f0;"
+    >
+      <strong style="font-size: 18px;"
+        >Please rate the quality and difficulty of the resource:&emsp;
+      </strong>
+      <button
+        class="btn btn-cont-w3 btn-block mt-4"
+        style="padding: 8px 20px; max-width: 100px;"
+        onclick="rating(rating_url='{{ url_for("exe.rating", context=item.context) }}');"
+      >
+        Rating
+      </button>
+    </div>
     {% endfor %}
   </div>
 </div>
 <!-- //resources -->
+
+<script>
+  function rating(rating_url) {
+    PNotify.notice({
+      title: "&nbsp;Rating",
+      titleTrusted: true,
+      styling: "bootstrap4",
+      text:
+        "<br /><strong>> Please rate the quality and difficulty of the resource:</strong><br /><br />" +
+        "<strong>> Is the Answer easy enough?</strong><br />" +
+        "<select id='answer_easy_if'>" +
+        "  <option value='' style='color: #b6b6b6' disabled selected>Choose one</option>" +
+        "  <option value='1'>1 score</option>" +
+        "  <option value='2'>2 score</option>" +
+        "  <option value='3'>3 score</option>" +
+        "  <option value='4'>4 score</option>" +
+        "  <option value='5'>5 score</option>" +
+        "</select>" +
+        "<br /><br />" +
+        "<strong>> How about the difficulty?</strong><br />" +
+        "<select id='difficulty'>" +
+        "  <option value='' style='color: #b6b6b6' disabled selected>Choose one</option>" +
+        "  <option value='1'>Easy</option>" +
+        "  <option value='2'>Normal</option>" +
+        "  <option value='3'>Difficulty</option>" +
+        "</select>" +
+        "<br /><br />",
+      textTrusted: true,
+      icon: true,
+      type: "info",
+      hide: false,
+      stack: {
+        modal: true,
+        overlayClose: true
+      },
+      modules: {
+        Buttons: {
+          closer: false,
+          sticker: false
+        },
+        Confirm: {
+          confirm: true,
+          buttons: [
+            {
+              text: "Cancel",
+              click: function(notice) {
+                notice.update({
+                  title: false,
+                  text: " The rating wasn't saved.",
+                  icon: true,
+                  type: "error",
+                  hide: true,
+                  modules: {
+                    Confirm: {
+                      confirm: false
+                    },
+                    Buttons: {
+                      closer: true,
+                      sticker: false
+                    }
+                  }
+                });
+              }
+            },
+            {
+              text: "OK",
+              primary: true,
+              click: function(notice) {
+                var answer_easy_if = null;
+                var option = $("#answer_easy_if option:selected");
+                answer_easy_if = option.val();
+                var difficulty = null;
+                var option = $("#difficulty option:selected");
+                difficulty = option.val();
+                data = {
+                  answer_easy_if: answer_easy_if,
+                  difficulty: difficulty
+                };
+
+                $.ajax({
+                  url: rating_url,
+                  type: "post",
+                  data: data,
+                  async: false,
+                  success: function(response) {
+                    if (response == "success") {
+                      notice.update({
+                        title: false,
+                        text: "Thank you for your rating!",
+                        icon: true,
+                        type: "success",
+                        hide: true,
+                        modules: {
+                          Confirm: {
+                            confirm: false
+                          },
+                          Buttons: {
+                            closer: true,
+                            sticker: false
+                          }
+                        }
+                      });
+                    } else if (response == "overwrite") {
+                      notice.update({
+                        title: false,
+                        text: "Your rating has been update!",
+                        icon: true,
+                        type: "success",
+                        hide: true,
+                        modules: {
+                          Confirm: {
+                            confirm: false
+                          },
+                          Buttons: {
+                            closer: true,
+                            sticker: false
+                          }
+                        }
+                      });
+                    } else if (response == "unselected") {
+                      notice.update({
+                        title: false,
+                        text: "Rating failed. Please choose your rating first.",
+                        icon: true,
+                        type: "error",
+                        hide: true,
+                        modules: {
+                          Confirm: {
+                            confirm: false
+                          },
+                          Buttons: {
+                            closer: true,
+                            sticker: false
+                          }
+                        }
+                      });
+                    } else {
+                      notice.update({
+                        title: false,
+                        text: "Rating failed. Please contact administrator.",
+                        icon: true,
+                        type: "error",
+                        hide: true,
+                        modules: {
+                          Confirm: {
+                            confirm: false
+                          },
+                          Buttons: {
+                            closer: true,
+                            sticker: false
+                          }
+                        }
+                      });
+                    }
+                  }
+                });
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+</script>
 
 {% endblock %}

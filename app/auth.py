@@ -36,7 +36,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            flash('抱歉，访问此页面请先登录！', 'error')
+            flash('Sorry, you have to sign in first.', 'error')
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
@@ -59,27 +59,28 @@ def register():
 
         error = None
         if not username:
-            error = '请填写用户名！'
+            error = 'Please enter the username!'
         elif ' ' in username:
-            error = '用户名必须为中英文和数字, 不能包含空格！'
+            error = 'The username cannot include spaces!'
         elif not re.match(r'^\d{10}$', student_id):
-            error = '请填写正确的学号！'
+            error = 'Please enter correct BUPT student ID!'
         elif not password:
-            error = '请填写密码！'
+            error = 'Please enter the password!'
         elif len(password) < 8:
-            error = '密码不能少于8位！'
+            error = 'The password must be longer than 8 characters.'
         elif password_confirm != password:
-            error = '请确认填写的密码是否相同！'
+            error = 'Please confirm the password!'
         elif len(
                 db.fetchall(
                     'SELECT id FROM user_info WHERE username = "{username}"'.
                     format(username=username))) > 0:
-            error = '用户{username}已存在，请更改用户名。'.format(username=username)
+            error = 'User {username} exists, please try again with another username.'.format(
+                username=username)
         elif len(
                 db.fetchall(
                     'SELECT id FROM user_info WHERE student_id = "{student_id}"'
                     .format(student_id=student_id))) > 0:
-            error = '学号{student_id}已注册账号。如有问题，请联系老师或管理员。'.format(
+            error = 'Student ID {student_id} has signed up. If there are any problems, please contact administrator or teacher.'.format(
                 student_id=student_id)
 
         if error is None:
@@ -124,9 +125,9 @@ def login():
                 username=username))
 
         if len(user) == 0:
-            error = '该用户未注册，请先注册！'
+            error = 'The user have not been created, please sign up first.'
         elif not check_password_hash(user['password'][0], password):
-            error = '密码错误，请确认填写无误。'
+            error = 'Invalid password, please check your password.'
 
         if error is None:
             session.clear()
@@ -182,7 +183,7 @@ def modifyAccount():
         mobile = request.form['mobile']
         if mobile:
             if (not re.match(r'^\d{11}$', mobile)):
-                flash('请填写正确的十一位手机号码！', 'error')
+                flash('Please input the correct mobile number.', 'error')
             else:
                 db.execute(
                     'UPDATE user_info SET mobile = "{mobile}" WHERE id = {user_id}'

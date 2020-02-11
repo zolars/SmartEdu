@@ -35,6 +35,15 @@ def download(filetype, context):
     return response
 
 
+@bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))
+def cover(filetype, context):
+    import base64
+    img_stream = ''
+    with open('./files/' + filetype + '/' + context + '/cover.png', 'rb') as f:
+        img_stream = f.read()
+    return img_stream
+
+
 @bp.route('/star/<context>', methods=('GET', 'POST'))
 @login_required
 def star(context):
@@ -92,15 +101,6 @@ def rating(context):
             return 'unselected'
     else:
         return 'error'
-
-
-@bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))
-def cover(filetype, context):
-    import base64
-    img_stream = ''
-    with open('./files/' + filetype + '/' + context + '/cover.png', 'rb') as f:
-        img_stream = f.read()
-    return img_stream
 
 
 # Check rating status with { user_id, res_id }

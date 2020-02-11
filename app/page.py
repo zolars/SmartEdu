@@ -67,7 +67,7 @@ def resources():
             })
 
     dict = {
-        'type': 'All',
+        'type': 'All Course Materials',
         'chapter_focused': chapter_focused,
         'chapter_names': chapter_names,
         'items': items,
