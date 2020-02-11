@@ -8,7 +8,7 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
 from werkzeug.exceptions import abort
 
 from app.utils import *
-from app.res import check_stared
+from app.res import check_marked
 from app.exe import record_exe_history
 from app.hw import record_hw_history, record_sp_exe_history, check_submitted
 from app.db import get_db, close_db

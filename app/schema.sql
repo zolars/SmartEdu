@@ -101,7 +101,7 @@ CREATE TABLE res_history (
   user_ip VARCHAR(16) NOT NULL,
   res_id INT NOT NULL, 
   FOREIGN KEY (res_id) REFERENCES res_info (id),
-  operation INT NOT NULL,   -- 1 for star, 2 for download, 3 for rating 
+  operation INT NOT NULL,   -- 1 for mark, 2 for download, 3 for rating 
   time TIMESTAMP NOT NULL,
   rating INT DEFAULT NULL, -- from 1 to 5
   difficulty INT DEFAULT NULL -- 1 for easy, 2 for normal, 3 for difficult
@@ -114,7 +114,7 @@ CREATE TABLE exe_history (
   user_ip VARCHAR(16) NOT NULL,
   exe_id INT NOT NULL, 
   FOREIGN KEY (exe_id) REFERENCES exe_info (id),
-  operation INT NOT NULL,   -- 1 for star, 2 for check_ans, 3 for rating, 
+  operation INT NOT NULL,   -- 1 for mark, 2 for check_ans, 3 for rating, 
   time TIMESTAMP NOT NULL,
   ans VARCHAR(2) DEFAULT NULL, -- A B C D 
   difficulty INT DEFAULT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE sp_exe_history (
   user_ip VARCHAR(16) NOT NULL,
   exe_id INT NOT NULL, 
   FOREIGN KEY (exe_id) REFERENCES exe_info (id),
-  operation INT NOT NULL,   -- 1 for star, 2 for check_ans, 3 for rating, 
+  operation INT NOT NULL,   -- 1 for mark, 2 for check_ans, 3 for rating, 
   time TIMESTAMP NOT NULL,
   ans BOOLEAN DEFAULT NULL, -- A B C D 
   difficulty INT DEFAULT NULL,

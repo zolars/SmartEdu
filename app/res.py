@@ -44,18 +44,18 @@ def cover(filetype, context):
     return img_stream
 
 
-@bp.route('/star/<context>', methods=('GET', 'POST'))
+@bp.route('/mark/<context>', methods=('GET', 'POST'))
 @login_required
-def star(context):
+def mark(context):
     record_res_history(context=context,
                        user_ip=request.remote_addr,
                        operation=1)
-    return check_stared(context)
+    return check_marked(context)
 
 
-# Check star status with { user_id, res_id }
-@bp.route('/check_stared/<context>', methods=('GET', 'POST'))
-def check_stared(context):
+# Check mark status with { user_id, res_id }
+@bp.route('/check_marked/<context>', methods=('GET', 'POST'))
+def check_marked(context):
     db = get_db()
     if (g.user != '{}') and (g.user is not None):
         user_id = json.loads(g.user)['id']
@@ -73,15 +73,15 @@ def check_stared(context):
         close_db()
 
         if amount % 2 == 1:
-            return "stared"
+            return "marked"
         else:
-            return "unstared"
+            return "unmarked"
     else:
         close_db()
-        return "unstared"
+        return "unmarked"
 
 
-@bp.route('/rating/<context>', methods=('GET', 'POST'))
+@bp.route('/res_rating/<context>', methods=('GET', 'POST'))
 @login_required
 def rating(context):
     if request.method == 'POST':
