@@ -39,8 +39,22 @@
    $ conda env update -f environment.yml
    ```
 
-4. Run flask application.
+4. Test running flask application.
    ```
+   $ conda activate smartedu
+   $ export FLASK_APP=app
    $ flask run
    $ flask recreate-db
+   ```
+
+5. Deploy the nginx.
+   ```
+   $ cp ./config/smartedu.conf /etc/nginx/conf.d/
+   $ sudo service nginx restart
+   ```
+
+6. Run the app with gunicorn.
+   ```
+   $ conda activate smartedu
+   $ gunicorn -c ./config/gunicorn.conf.py wsgi:app
    ```
