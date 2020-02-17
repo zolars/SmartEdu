@@ -1,10 +1,27 @@
 {% extends 'base.html' %} {% block title %}SmartEdu | Video {% endblock %} {%
 block bodyParams %} {% endblock %} {% block content %}
 
-<link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.6.0/skins/default/aliplayer-min.css" />
-<script type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.6.0/aliplayer-min.js"></script>
-
-<div class="prism-player" id="J_prismPlayer"></div>
-<script>var player = new Aliplayer({ id: "J_prismPlayer", autoplay: true, vid: "{{ vid }}", playauth: "{{ playauth }}", cover: '' }); </script>
-<!-- width: "1920px", height: "1280px", -->
+<link
+  rel="stylesheet"
+  href="//g.alicdn.com/de/prismplayer/2.6.0/skins/default/aliplayer-min.css"
+/>
+<script
+  type="text/javascript"
+  src="//g.alicdn.com/de/prismplayer/2.6.0/aliplayer-min.js"
+></script>
+<div class="container py-xl-5 py-lg-3">
+  <div class="row card-grid-main">
+    <div class="prism-player" id="J_prismPlayer"></div>
+  </div>
+</div>
+<script>
+  var player = new Aliplayer({
+    id: "J_prismPlayer",
+    autoplay: true,
+    height: "540px",
+    vid: "{{ vid }}",
+    playauth: "{{ playauth }}",
+    cover: ""
+  });
+</script>
 {% endblock %}
