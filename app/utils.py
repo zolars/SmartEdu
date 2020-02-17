@@ -5,6 +5,9 @@ from flask import (flash, g, redirect)
 
 from app.db import get_db, close_db
 
+from aliyunsdkcore.client import AcsClient
+from aliyunsdkvod.request.v20170321 import GetVideoPlayAuthRequest
+
 
 def get_chapter_names(chapter_focused):
     db = get_db()
@@ -57,3 +60,24 @@ def get_prob_ids(type):
 
     else:
         return []
+
+
+def init_vod_client(accessKeyId='LTAI4FnKKApEWXhNSzKp5ZGV',
+                    accessKeySecret='cW5zECBcXOkzcgGIxeooPwFaWs5Uau'):
+    regionId = 'cn-beijing'  # 点播服务接入区域
+    connectTimeout = 3  # 连接超时，单位为秒
+    return AcsClient(accessKeyId,
+                     accessKeySecret,
+                     regionId,
+                     auto_retry=True,
+                     max_retry_time=3,
+                     timeout=connectTimeout)
+
+
+def get_video_playauth(clt, videoId):
+    request = GetVideoPlayAuthRequest.GetVideoPlayAuthRequest()
+    request.set_accept_format('JSON')
+    request.set_VideoId(videoId)
+    request.set_AuthInfoTimeout(3000)
+    response = json.loads(clt.do_action_with_exception(request))
+    return response['PlayAuth']

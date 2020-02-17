@@ -8,6 +8,7 @@ from werkzeug.exceptions import abort
 
 from app.db import get_db, close_db
 from app.auth import login_required
+from app.utils import init_vod_client, get_video_playauth
 
 bp = Blueprint('res', __name__)
 
@@ -24,15 +25,28 @@ def download(filetype, context):
         if temp != 'cover.png' and temp != '.DS_Store':
             filename = temp
 
-    response = make_response(
-        send_from_directory(directory,
-                            './files/' + filetype + '/' + context + '/' +
-                            filename,
-                            as_attachment=True))
-    response.headers["Content-Disposition"] = " filename={}".format(
-        filename.encode().decode('latin-1'))  # attachment;
+    if filetype == 'video':
+        vid = open('./files/' + filetype + '/' + context + '/' + filename,
+                   "r").readline()
+        try:
+            clt = init_vod_client()
+            playAuth = get_video_playauth(clt, vid)
+            print(playAuth)
+        except Exception as e:
+            print(e)
 
-    return response
+        dict = {'vid': vid, 'playAuth': playAuth}
+        return render_template('/page/video.html', **dict)
+    else:
+        response = make_response(
+            send_from_directory(directory,
+                                './files/' + filetype + '/' + context + '/' +
+                                filename,
+                                as_attachment=True))
+        response.headers["Content-Disposition"] = " filename={}".format(
+            filename.encode().decode('latin-1'))  # attachment;
+
+        return response
 
 
 @bp.route('/cover/<filetype>/<context>', methods=('GET', 'POST'))

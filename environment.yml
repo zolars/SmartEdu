@@ -12,3 +12,5 @@ dependencies:
       - pymysql
       - gunicorn
       - gevent
+      - aliyun-python-sdk-core
+      - aliyun-python-sdk-vod
