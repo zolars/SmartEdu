@@ -30,12 +30,11 @@ def download(filetype, context):
                    "r").readline()
         try:
             clt = init_vod_client()
-            playAuth = get_video_playauth(clt, vid)
-            print(playAuth)
+            playauth = get_video_playauth(clt, vid)
         except Exception as e:
             print(e)
 
-        dict = {'vid': vid, 'playAuth': playAuth}
+        dict = {'vid': vid, 'playauth': playauth}
         return render_template('/page/video.html', **dict)
     else:
         response = make_response(
