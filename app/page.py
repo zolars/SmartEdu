@@ -329,8 +329,10 @@ def detail(context):
                                      file.filename))
                     record_hw_history(request.remote_addr, 1, context)
                 except Exception as err:
-                    flash("抱歉，操作失败，请联系管理员，错误信息：" + err.message, "error")
-                    return redirect(page.index)
+                    flash(
+                        "Sorry, the file has existed. Please contact the administrator!"
+                        + err.message, "error")
+                    return redirect(url_for('page.index'))
         else:
             flash('请检查选择的文件格式！', 'error')
             return redirect(request.url)
@@ -351,13 +353,15 @@ def detail(context):
     if request.method == 'POST' and (not submitted):
         show_ans = True
 
+        try:
+            for item in items:
+                record_sp_exe_history(context=item['context'],
+                                      user_ip=request.remote_addr,
+                                      operation=2,
+                                      ans=request.form[item['context']])
+        except Exception as err:
+            return redirect(request.url)
         record_hw_history(request.remote_addr, 2, context)
-        for item in items:
-            record_sp_exe_history(context=item['context'],
-                                  user_ip=request.remote_addr,
-                                  operation=2,
-                                  ans=request.form[item['context']])
-
         submitted, time = check_submitted(context, operation=2)
         flash(
             "You have submitted the Multiple-Choice at {}!".format(
