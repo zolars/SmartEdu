@@ -77,11 +77,10 @@ class="bg-li"
           />
           <h4 class="my-4">热门视频</h4>
           <ul class="mt-4">
-            <!-- Todo -->
-            <li>A......</li>
-            <li>B......</li>
-            <li>C......</li>
-            <li>D......</li>
+            <li>{{ hot_video[0] }}<li>
+            <li>{{ hot_video[1] }}</li>
+            <li>{{ hot_video[2] }}</li>
+            <li>{{ hot_video[3] }}</li>
           </ul>
           <a href="{{ url_for('page.video') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -95,11 +94,10 @@ class="bg-li"
           />
           <h4 class="my-4">热门课件</h4>
           <ul class="mt-4">
-            <!-- Todo -->
-            <li>A......</li>
-            <li>B......</li>
-            <li>C......</li>
-            <li>D......</li>
+            <li>{{ hot_doc[0] }}</li>
+            <li>{{ hot_doc[1] }}</li>
+            <li>{{ hot_doc[2] }}</li>
+            <li>{{ hot_doc[3] }}</li>
           </ul>
           <a href="{{ url_for('page.doc') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -113,11 +111,10 @@ class="bg-li"
           />
           <h4 class="my-4">热门习题</h4>
           <ul class="mt-4">
-            <!-- Todo -->
-            <li>A......</li>
-            <li>B......</li>
-            <li>C......</li>
-            <li>D......</li>
+            <li>{{ hot_exercise[0] }}</li>
+            <li>{{ hot_exercise[1] }}</li>
+            <li>{{ hot_exercise[2] }}</li>
+            <li>{{ hot_exercise[3] }}</li>
           </ul>
           <a href="{{ url_for('page.exercises') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -168,11 +165,10 @@ class="bg-li"
                 <h4>Courseware</h4>
               </div>
               <ul class="mt-4">
-                <!-- Todo -->
-                <li>A......</li>
-                <li>B......</li>
-                <li>C......</li>
-                <li>D......</li>
+                <li>{{ new_doc[0] }}</li>
+                <li>{{ new_doc[1] }}</li>
+                <li>{{ new_doc[2] }}</li>
+                <li>{{ new_doc[3] }}</li>
               </ul>
               <a href=" {{ url_for("page.doc") }} " class="btn button-style mt-4">进入</a>
             </div>
@@ -190,11 +186,10 @@ class="bg-li"
                 <h4>Homework</h4>
               </div>
               <ul class="mt-4">
-                <!-- Todo -->
-                <li>A......</li>
-                <li>B......</li>
-                <li>C......</li>
-                <li>D......</li>
+                <li>{{ new_homework[0] }}</li>
+                <li>{{ new_homework[1] }}</li>
+                <li>{{ new_homework[2] }}</li>
+                <li>{{ new_homework[3] }}</li>
               </ul>
               <a href="{{ url_for('page.homework') }}" class="btn button-style mt-4">进入</a>
             </div>
@@ -212,11 +207,10 @@ class="bg-li"
                 <h4>Exams</h4>
               </div>
               <ul class="mt-4">
-                <!-- Todo -->
-                <li>A......</li>
-                <li>B......</li>
-                <li>C......</li>
-                <li>D......</li>
+                <li>{{ new_exam[0] }}</li>
+                <li>{{ new_exam[1] }}</li>
+                <li>{{ new_exam[2] }}</li>
+                <li>{{ new_exam[3] }}</li>
               </ul>
               <a href="{{ url_for('page.exam') }}" class="btn button-style mt-4">进入</a>
             </div>
@@ -234,11 +228,10 @@ class="bg-li"
                 <h4>Video</h4>
               </div>
               <ul class="mt-4">
-                <!-- Todo -->
-                <li>A......</li>
-                <li>B......</li>
-                <li>C......</li>
-                <li>D......</li>
+                <li>{{ new_video[0] }}</li>
+                <li>{{ new_video[1] }}</li>
+                <li>{{ new_video[2] }}</li>
+                <li>{{ new_video[3] }}</li>
               </ul>
               <a href=" {{ url_for("page.video") }} " class="btn button-style mt-4">进入</a>
             </div>
@@ -265,13 +258,10 @@ class="bg-li"
               <span class="fa fa-line-chart"></span>
             </div>
             <h5 class="card-title mt-4 mb-3">
-              电路分析基础（Electric Circuits）
+              {{ new_doc[0] }}
             </h5>
             <p class="card-text">
-              本书是该课程的指定教材，主要含有以下内容：<br />
-              电路变量与电路元件<br />
-              简单电阻电路分析<br />
-              ...
+              {{ description[0] }}
             </p>
           </div>
         </div>
@@ -282,9 +272,9 @@ class="bg-li"
             <div class="bg-clr-w3l">
               <span class="fa fa-usd"></span>
             </div>
-            <h5 class="card-title mt-4 mb-3">fileBALA</h5>
+            <h5 class="card-title mt-4 mb-3">{{ new_doc[1] }}</h5>
             <p class="card-text">
-              filefilefilefilefilefile
+              {{ description[1] }}
             </p>
           </div>
         </div>
@@ -295,9 +285,9 @@ class="bg-li"
             <div class="bg-clr-w3l">
               <span class="fa fa-lightbulb-o"></span>
             </div>
-            <h5 class="card-title mt-4 mb-3">fileBALA</h5>
+            <h5 class="card-title mt-4 mb-3">{{ new_doc[2] }}</h5>
             <p class="card-text">
-              filefilefilefilefilefile
+              {{ description[2] }}
             </p>
           </div>
         </div>
@@ -329,29 +319,29 @@ class="bg-li"
         </div>
         <div class="row mt-5">
           <div class="col-sm-4 count-w3ls">
-            <h4>1000+</h4>
+            <h4>{{ visit_amount[0] }}+</h4>
             <p>第一章点击量</p>
           </div>
           <div class="col-sm-4 count-w3ls mt-sm-0 mt-3">
-            <h4>480+</h4>
+            <h4>{{ visit_amount[1] }}+</h4>
             <p>第二章点击量</p>
           </div>
           <div class="col-sm-4 count-w3ls mt-sm-0 mt-3">
-            <h4>600+</h4>
+            <h4>{{ visit_amount[2] }}+</h4>
             <p>第三章点击量</p>
           </div>
         </div>
         <div class="row mt-sm-5 mt-4">
           <div class="col-sm-4 count-w3ls">
-            <h4>480+</h4>
+            <h4>{{ visit_amount[3] }}+</h4>
             <p>第四章点击量</p>
           </div>
           <div class="col-sm-4 count-w3ls mt-sm-0 mt-3">
-            <h4>600+</h4>
+            <h4>{{ visit_amount[4] }}+</h4>
             <p>第五章点击量</p>
           </div>
           <div class="col-sm-4 count-w3ls mt-sm-0 mt-3">
-            <h4>1000+</h4>
+            <h4>{{ visit_amount[5] }}+</h4>
             <p>第六章点击量</p>
           </div>
         </div>
@@ -411,9 +401,9 @@ class="bg-li"
     </section> -->
 <!-- //partners -->
 
+<!-- 
 <div class="py-5">
   <div class="container py-xl-5 py-lg-3">
-    <!-- feedback -->
     <div class="feedback mx-auto">
       <div class="icon-effect-w3">
         <span class="fa fa-envelope"></span>
@@ -437,9 +427,8 @@ class="bg-li"
         </div>
       </form>
     </div>
-    <!-- //feedback -->
   </div>
-</div>
+</div> -->
 
 <div class="py-5"></div>
 

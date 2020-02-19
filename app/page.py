@@ -20,12 +20,14 @@ bp = Blueprint('page', __name__)
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     record_page_history(pagepath='/', user_ip=request.remote_addr)
+    with open("./files/index.json", 'r') as index_json:
+        index_json = json.load(index_json)
+    dict = index_json
     if request.method == 'POST':
         keyword = request.form['keyword']
-        # Todo
         return render_template('/page/search.html')
     else:
-        return render_template('/page/index.html')
+        return render_template('/page/index.html', **dict)
 
 
 @bp.route('/resources', methods=('GET', 'POST'))
@@ -449,6 +451,13 @@ def exam():
 @login_required
 def statistics():
     record_page_history(pagepath='/statistics', user_ip=request.remote_addr)
+    return render_template('/page/statistics.html')
+
+
+@bp.route('/features')
+@login_required
+def features():
+    record_page_history(pagepath='/features', user_ip=request.remote_addr)
     return render_template('/page/statistics.html')
 
 
