@@ -483,7 +483,12 @@ def comments():
                         user_id=row['user_id']))
                 username = df.iloc[0].username
                 comment = row['comment']
-                items.append({'username': username, 'comment': comment})
+                time = row['time']
+                items.append({
+                    'username': username,
+                    'comment': comment,
+                    'time': time
+                })
 
             dict = {'items': items}
             return render_template('/page/comments.html', **dict)
