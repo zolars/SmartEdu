@@ -1,5 +1,5 @@
 # 并行工作进程数
-workers = 1
+workers = 8
 # 指定每个工作者的线程数
 threads = 2
 # 监听内网端口5000
@@ -13,7 +13,7 @@ worker_connections = 2000
 # 设置进程文件目录
 pidfile = '/home/SmartEdu/log/gunicorn.pid'
 # 设置访问日志和错误信息日志路径
-accesslog = '/home/SmartEdu/log/gunicorn_acess.log'
+accesslog = '/home/SmartEdu/log/gunicorn_access.log'
 errorlog = '/home/SmartEdu/log/gunicorn_error.log'
 # 设置日志记录水平
 loglevel = 'warning'
