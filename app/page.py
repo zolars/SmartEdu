@@ -195,10 +195,18 @@ def exercises():
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
         difficulty = row['difficulty']
+        ans_A = row['ans_A']
+        ans_B = row['ans_B']
+        ans_C = row['ans_C']
+        ans_D = row['ans_D']
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
                 'context': context,
+                'ans_A': ans_A,
+                'ans_B': ans_B,
+                'ans_C': ans_C,
+                'ans_D': ans_D,
                 'enter_time': enter_time,
                 'enter_username': enter_username,
                 'difficulty': difficulty
@@ -401,12 +409,21 @@ def ai_exercises():
     items = []
     for id in ids:
         db = get_db()
-        df = db.fetchall(
-            'SELECT context FROM exe_info WHERE id={id}'.format(id=id))
+        df = db.fetchall('SELECT * FROM exe_info WHERE id={id}'.format(id=id))
         context = df.iloc[0].context
-        items.append({'context': context})
+        ans_A = df.iloc[0].ans_A
+        ans_B = df.iloc[0].ans_B
+        ans_C = df.iloc[0].ans_C
+        ans_D = df.iloc[0].ans_D
+        items.append({
+            'context': context,
+            'ans_A': ans_A,
+            'ans_B': ans_B,
+            'ans_C': ans_C,
+            'ans_D': ans_D
+        })
         close_db()
-    dict = {'items': items, 'url': 'exam'}
+    dict = {'items': items, 'url': 'ai_exercises'}
     return render_template('/page/ai_exercises.html', **dict)
 
 
@@ -422,10 +439,19 @@ def exam():
     score = 0
     for id in ids:
         db = get_db()
-        df = db.fetchall(
-            'SELECT context FROM exe_info WHERE id={id}'.format(id=id))
+        df = db.fetchall('SELECT * FROM exe_info WHERE id={id}'.format(id=id))
         context = df.iloc[0].context
-        items.append({'context': context})
+        ans_A = df.iloc[0].ans_A
+        ans_B = df.iloc[0].ans_B
+        ans_C = df.iloc[0].ans_C
+        ans_D = df.iloc[0].ans_D
+        items.append({
+            'context': context,
+            'ans_A': ans_A,
+            'ans_B': ans_B,
+            'ans_C': ans_C,
+            'ans_D': ans_D
+        })
         close_db()
 
         if request.method == 'POST':
