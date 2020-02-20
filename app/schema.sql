@@ -50,6 +50,10 @@ CREATE TABLE exe_info (
   id INT PRIMARY KEY AUTO_INCREMENT,
   context VARCHAR(255) UNIQUE NOT NULL, -- include prob.jpg and ans.jpg 
   ans VARCHAR(2) NOT NULL, -- A B C D 
+  ans_A VARCHAR(255) NOT NULL, -- A
+  ans_B VARCHAR(255) NOT NULL, -- B
+  ans_C VARCHAR(255) NOT NULL, -- C
+  ans_D VARCHAR(255) NOT NULL, -- D
   chapter_id INT NOT NULL,
   FOREIGN KEY (chapter_id) REFERENCES chapter_info (id),
   difficulty INT NOT NULL, -- 1 for easy, 2 for normal, 3 for difficult 
