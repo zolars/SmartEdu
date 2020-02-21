@@ -76,12 +76,12 @@ def record_sp_exe_history(context,
         df = db.fetchall(
             'SELECT id FROM sp_exe_info WHERE context="{context}"'.format(
                 context=context))
-        exe_id = df.id[0]
+        sp_exe_id = df.id[0]
         db.execute(
-            'INSERT INTO sp_exe_history (user_id, user_ip, exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
+            'INSERT INTO sp_exe_history (user_id, user_ip, sp_exe_id, operation, time, ans, difficulty, answer_easy_if) VALUES ({user_id}, "{user_ip}", {sp_exe_id}, {operation}, now(), {ans}, {difficulty}, {answer_easy_if})'
             .format(user_id=user_id,
                     user_ip=user_ip,
-                    exe_id=exe_id,
+                    sp_exe_id=sp_exe_id,
                     operation=operation,
                     ans=ans,
                     difficulty=difficulty,

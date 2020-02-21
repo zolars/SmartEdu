@@ -84,6 +84,7 @@ CREATE TABLE hw_info (
   enter_user INT NOT NULL,
   FOREIGN KEY (enter_user) REFERENCES admin_info (id),
   enter_time TIMESTAMP DEFAULT now(),
+  expire_time TIMESTAMP NOT NULL ,
   week VARCHAR(50) NOT NULL
 );
 
@@ -130,8 +131,8 @@ CREATE TABLE sp_exe_history (
   user_id INT NOT NULL, 
   FOREIGN KEY (user_id) REFERENCES user_info (id),
   user_ip VARCHAR(16) NOT NULL,
-  exe_id INT NOT NULL, 
-  FOREIGN KEY (exe_id) REFERENCES exe_info (id),
+  sp_exe_id INT NOT NULL, 
+  FOREIGN KEY (sp_exe_id) REFERENCES sp_exe_info (id),
   operation INT NOT NULL,   -- 1 for mark, 2 for check_ans, 3 for rating, 
   time TIMESTAMP NOT NULL,
   ans BOOLEAN DEFAULT NULL, -- A B C D 

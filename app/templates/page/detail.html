@@ -11,10 +11,7 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
 <!-- banner -->
 <div class="banner_w3lspvt-2">
   <ol class="breadcrumb">
-    <li
-      class="breadcrumb-header"
-      style="padding-top:1.5em; padding-bottom:0px;"
-    >
+    <li class="breadcrumb-header" style="padding-top:1.5em; padding-bottom:0px;">
       Homework
     </li>
   </ol>
@@ -25,38 +22,30 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
 <div class="container py-xl-5 py-lg-3">
   <div class="row card-grid-main">
     {% if not show_sp_exe and not show_ans %}
-      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-        <img
-          src="{{ url_for('hw.hw_img', context=context) }}"
-          class="img-fluid"
-          style="border-radius: 0;"
-        />
-      </div>
+    <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+      <img src="{{ url_for('hw.hw_img', context=context) }}" class="img-fluid" style="border-radius: 0;" />
+    </div>
     {% elif show_sp_exe and not show_ans %}
-      {% for item in items %}
-        <form method=post>
-        <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-          <img
-          src="{{ url_for('hw.sp_prob_img', context=item.context) }}"
-          class="img-fluid" 
-          style="border-radius: 0;"
-          />   
-        </div>     
-        <div style="padding: 1em">
-          <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
-            <strong style="font-size: 18px;">Please give your answer :&emsp; </strong>
-            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>0" value="">
-            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>0"></span>
-            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>1" value="">
-            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>1"></span>
-            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>2" value="">
-            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>2"></span>
-            <input type="radio" name="{{ item.context }}" id="{{ item.context }}>3" value="">
-            <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>3"></span>
-          </div>
-        </div>  
+    {% for item in items %}
+    <form method=post>
+      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <img src="{{ url_for('hw.sp_prob_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;" />
+      </div>
+      <div style="padding: 1em">
+        <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
+          <strong style="font-size: 18px;">Please give your answer :&emsp; </strong>
+          <input type="radio" name="{{ item.context }}" id="{{ item.context }}>0" value="">
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>0"></span>
+          <input type="radio" name="{{ item.context }}" id="{{ item.context }}>1" value="">
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>1"></span>
+          <input type="radio" name="{{ item.context }}" id="{{ item.context }}>2" value="">
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>2"></span>
+          <input type="radio" name="{{ item.context }}" id="{{ item.context }}>3" value="">
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>3"></span>
+        </div>
+      </div>
       {% endfor %}
-      <script>    
+      <script>
         var notice = PNotify.notice({
           title: 'Input R',
           text: '> Please input random number R:',
@@ -75,97 +64,166 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
               history: false
             },
             Confirm: {
-              prompt: true,   
+              prompt: true,
             }
           }
         });
-        notice.on('pnotify.confirm', function(e) {
+        notice.on('pnotify.confirm', function (e) {
           notice.close();
           var r = e.value;
           var re = /^[0-9]+.?[0-9]*/;
           if (!re.test(r)) {
             PNotify.error("Please enter a number.");
             location.reload();
-      　　 }
-          
+          }
+
           {% for item in items %}
-            var correct_ans = parseInt(Math.random() * 4);
-            for (var i = 0; i < 4; i++) {
-              if (i == correct_ans) {
-                var answer = parseInt({{ item.ans_formula }});
-                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
-                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+          var correct_ans = parseInt(Math.random() * 4);
+          for (var i = 0; i < 4; i++) {
+            if (i == correct_ans) {
+              var answer = parseInt({{ item.ans_formula }});
+        $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
+        $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               } else {
-                var answer = parseInt({{ item.ans_formula }}) + parseInt(Math.random() * 401 - 200);
-                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
-                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+          var answer = parseInt({{ item.ans_formula }}) + parseInt(Math.random() * 401 - 200);
+        $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
+        $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               }
-            }  
-          {% endfor %}
+            }
+        {% endfor %}
 
         });
-        notice.on('pnotify.cancel', function(e) {  
+        notice.on('pnotify.cancel', function (e) {
           location.reload();
         });
       </script>
-    {% elif show_sp_exe and show_ans %}
+      {% elif show_sp_exe and show_ans %}
       {% for item in items %}
-        <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-          <img
-            src="{{ url_for('hw.sp_prob_img', context=item.context) }}"
-            class="img-fluid" 
-            style="border-radius: 0;"
-          />  
-          <img
-          src="{{ url_for('hw.sp_ans_img', context=item.context) }}"
-          class="img-fluid" 
-          style="border-radius: 0;"
-          />   
-        </div>     
-        <div style="padding: 1em">  
-        </div>  
+      <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <img src="{{ url_for('hw.sp_prob_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;" />
+        <img name="ans_img" src="{{ url_for('hw.sp_ans_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;"/>
+      </div>
+      <div style="padding: 1em">
+      </div>
       {% endfor %}
-    {% endif %}
-    
-    <div style="padding: 1em; width: 100%;%">
-      <div
-        class="about-grid-main"
-        style="padding: 1.5em; width: 100%; background-color:  #dff0f0;"
-      >
-        {% if not show_sp_exe and not show_ans %}
-        <strong style="font-size: 18px;"
-          >Submit your homework here!&emsp;
-        </strong>
-        <form method=post enctype=multipart/form-data>
-          <input type="file" name="file" />
-          <button
-            class="btn btn-cont-w3 btn-block mt-4"
-            style="padding: 8px 20px; max-width: 100px;"
-          >
+      {% endif %}
+
+      <div style="padding: 1em; width: 100%;">
+        <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
+          {% if not show_sp_exe and not show_ans %}
+          <strong style="font-size: 18px;">Submit your homework here!&emsp;
+          </strong>
+          <form method=post enctype=multipart/form-data>
+            <input type="file" name="file" />
+            <button class="btn btn-cont-w3 btn-block mt-4" style="padding: 8px 20px; max-width: 100px;">
+              Submit
+            </button>
+          </form>
+          {% elif show_sp_exe and not show_ans  %}
+          <strong style="font-size: 18px;">Submit your answer here!&emsp;
+          </strong>
+          <button class="btn btn-cont-w3 btn-block mt-4" style="padding: 8px 20px; max-width: 100px;">
             Submit
           </button>
-        </form>
-        {% elif show_sp_exe and not show_ans  %}
-        <strong style="font-size: 18px;"
-          >Submit your answer here!&emsp;
-        </strong>
-        <button
-          class="btn btn-cont-w3 btn-block mt-4"
-          style="padding: 8px 20px; max-width: 100px;"
-        >
-          Submit
-        </button>
-        </form>
-     
-        {% elif show_sp_exe and show_ans %}
-        <strong style="font-size: 18px;"
-          >Your have submitted the homework, Thank you!&emsp;
-        </strong>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <!-- //resources -->
+    </form>
 
-  {% endblock %}
+    {% elif show_sp_exe and show_ans %}
+    <strong style="font-size: 18px;">Your have submitted the homework, Thank you!&emsp;
+    </strong>
+    {% endif %}
+  </div>
+</div>
+</div>
+<!-- //resources -->
+<script type="text/javascript">
+  time_notice = PNotify.notice();
+
+  function showStackBottomRight() {
+    if (typeof window.stackBottomRight === "undefined") {
+      window.stackBottomRight = {
+        dir1: "up",
+        dir2: "left",
+        firstpos1: 25,
+        firstpos2: 25
+      };
+    }
+  
+    var opts = {
+      title: "",
+      text: "",
+      type: "notice",
+      hide: false,
+      stack: window.stackBottomRight,
+      modules: {
+        Buttons: {
+          closer: false,
+          sticker: false
+        },
+        Mobile: {
+          swipeDismiss: false
+        }
+      }
+    };
+    time_notice.update(opts);
+  }
+  
+  showStackBottomRight();
+  
+  function countdown() {
+    var expire_time = Date.parse(new Date("{{ expire_time }}")) / 1000;
+    var current_time = parseInt(Date.parse(new Date()) / 1000);
+    var diff_time = parseInt(expire_time - current_time) * 1000;
+  
+    var days = Math.floor(diff_time / (24 * 3600 * 1000));
+    var leave1 = diff_time % (24 * 3600 * 1000);
+    var hours = Math.floor(leave1 / (3600 * 1000));
+    var leave2 = leave1 % (3600 * 1000);
+    var minutes = Math.floor(leave2 / (60 * 1000));
+    var leave3 = leave2 % (60 * 1000);
+    var seconds = Math.round(leave3 / 1000);
+  
+    var opts = {};
+    if (diff_time > 0) {
+      {% if show_sp_exe and show_ans %}
+      opts = {
+        title: "Please check answer after the due.",
+        text:
+          " Left " + days + " Days " + hours + " Hours " + minutes + " Minutes"
+      };
+      $("img[name='ans_img']").each(function(){
+        $(this).hide();
+      });
+      {% else %}
+      opts = {
+        title: "Due Soon",
+        text:
+          " Left " + days + " Days " + hours + " Hours " + minutes + " Minutes"
+      };
+      {% endif %}
+    } else {
+      {% if show_sp_exe and show_ans %}
+      opts = {
+        title: "Expired",
+        text: "This homework is expired. You can check the answer now : )",
+        type: "success"
+      };
+      $("img[name='ans_img']").each(function(){
+        $(this).show ();
+      });
+      {% else %}
+      opts = {
+        title: "Overdue",
+        text: "Sorry, this homework is overdue."
+      };
+      {% endif %}
+    }
+  
+    time_notice.update(opts);
+  }
+  countdown();
+  var start_time = setInterval("countdown()", 1000);
+  
+</script>
+
+{% endblock %}
 </div>

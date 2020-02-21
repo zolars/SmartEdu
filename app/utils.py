@@ -54,9 +54,9 @@ def get_prob_ids(type):
         user_id = json.loads(g.user)['id']
 
         if type == "exam":
-            return [1, 3, 5]
+            return [7,8,9]
         if type == "ai_exercises":
-            return [2, 3, 4]
+            return [11,12,13]
 
     else:
         return []
