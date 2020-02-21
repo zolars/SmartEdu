@@ -41,9 +41,9 @@ content %}
         <div
           class="cards bg-wh"
           onclick="showDialog(
-            title='{{ item.title }}', 
-            description='{{ item.description }}', 
-            filetype='{{ item.filetype }}', 
+            title='{{ item.title }}',
+            description='{{ item.description }}',
+            filetype='{{ item.filetype }}',
             enter_time='{{ item.enter_time }}',
             enter_username='{{ item.enter_username }}',
             download_url='{{ url_for("res.download", filetype=item.filetype, context=item.context) }}',
@@ -91,12 +91,12 @@ content %}
     var chapters = document.getElementsByName("chapter");
     chapters[ {{ chapter_focused }} ].setAttribute('class','font-weight-bold');
   }
-  
+
   function filter(chapter) {
     if (chapter == 0) chapter = "all";
     location.href = '{{ url_for("page." + url) }}?chapter=' + chapter;
   }
-  
+
   function showDialog(
     title,
     description,
@@ -174,9 +174,9 @@ content %}
                             options = notice.options;
                             options.data.modules.Confirm.buttons[0].text = "Mark";
                             notice.update(options);
-                          }                  
+                          }
                         }
-                      });                
+                      });
                     }
                   },
                   {
@@ -184,23 +184,23 @@ content %}
                     click: function(notice) {
                       notice.update({
                         text: "<br /><strong>> Please rate the quality and difficulty of the resource:</strong><br /><br />" +
-                          "<strong>> Quality : &nbsp; </strong>" + 
-                          "<select id='rating'>" + 
+                          "<strong>> Quality : &nbsp; </strong>" +
+                          "<select id='rating'>" +
                           "  <option value='' style='color: #b6b6b6' disabled selected>Choose one</option>" +
-                          "  <option value='1'>1 score</option>" + 
-                          "  <option value='2'>2 score</option>" + 
-                          "  <option value='3'>3 score</option>" + 
-                          "  <option value='4'>4 score</option>" + 
-                          "  <option value='5'>5 score</option>" + 
-                          "</select>" + 
+                          "  <option value='1'>1 score</option>" +
+                          "  <option value='2'>2 score</option>" +
+                          "  <option value='3'>3 score</option>" +
+                          "  <option value='4'>4 score</option>" +
+                          "  <option value='5'>5 score</option>" +
+                          "</select>" +
                           "<br /><br />" +
-                          "<strong>> Difficulty : &nbsp; </strong>" + 
-                          "<select id='difficulty'>" + 
+                          "<strong>> Difficulty : &nbsp; </strong>" +
+                          "<select id='difficulty'>" +
                           "  <option value='' style='color: #b6b6b6' disabled selected>Choose one</option>" +
-                          "  <option value='1'>Easy</option>" + 
-                          "  <option value='2'>Normal</option>" + 
+                          "  <option value='1'>Easy</option>" +
+                          "  <option value='2'>Normal</option>" +
                           "  <option value='3'>Difficulty</option>" +
-                          "</select>" + 
+                          "</select>" +
                           "<br /><br />",
                         icon: true,
                         type: "info",
@@ -237,7 +237,7 @@ content %}
                                 text: "OK",
                                 primary: true,
                                 click: function(notice) {
-  
+
                                   var rating = null;
                                   var option = $("#rating option:selected");
                                   rating = option.val()
@@ -245,7 +245,7 @@ content %}
                                   var option = $("#difficulty option:selected");
                                   difficulty = option.val()
                                   data = { rating: rating, difficulty: difficulty };
-  
+
                                   $.ajax({
                                     url: rating_url,
                                     type: "post",
@@ -321,9 +321,9 @@ content %}
                                           }
                                         });
                                       }
-                                      }              
+                                      }
                                     }
-                                  );   
+                                  );
                                 }
                               }
                             ]
@@ -353,7 +353,7 @@ content %}
           }
         });
       }
-    });    
+    });
   }
 </script>
 

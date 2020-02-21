@@ -300,11 +300,11 @@ def detail(context):
     row = df.iloc[0]
 
     enter_time = str(row['enter_time'])[0:10]
+    expire_time = str(row['expire_time'])
     df = db.fetchall(
         'SELECT username FROM admin_info WHERE id={user_id}'.format(
             user_id=row['enter_user']))
     enter_username = df.iloc[0].username
-    chapter_id = row['chapter_id']
     week = row['week']
 
     ids = row['sp_exe_ids'].split(',')
@@ -370,7 +370,9 @@ def detail(context):
                                       operation=2,
                                       ans=request.form[item['context']])
         except Exception as err:
+            logging.error("error location 1 : ", err)
             return redirect(request.url)
+
         record_hw_history(request.remote_addr, 2, context)
         submitted, time = check_submitted(context, operation=2)
         flash(
@@ -388,6 +390,7 @@ def detail(context):
         'context': context,
         'items': items,
         'enter_time': enter_time,
+        'expire_time': expire_time,
         'enter_username': enter_username,
         'week': week,
         'url': 'detail',
@@ -530,7 +533,7 @@ def comments():
 
 
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx'}
+    allowed_extensions = {'pdf', 'jpg', 'png', 'doc', 'docx'}
 
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in allowed_extensions

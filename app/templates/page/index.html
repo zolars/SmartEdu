@@ -12,12 +12,12 @@ class="bg-li"
     <div class="d-md-flex">
       <div class="w3ls_banner_txt">
         <h3 class="w3ls_pvt-title">
-          什么是电路?
+          Introduction to Electronic System
         </h3>
         <p class="text-sty-banner">
-          电路分析是电子信息类、电气工程与自动化等专业本科生接触的第一门专业基础课。通过本课程的学习，学生能掌握电路的基本理论、分析电路的基本方法和进行实验的初步技能，并为后续课程铺垫必要的电路知识。
+          This course introduces the basic conceptions and analysis methods of electronic devices, components, circuits and simple electronic systems, and mainly focuses on the general concepts, principles, knowledge and analysis of direct current and alternative current circuits. The content of the course covers the simple resistive circuits analysis, techniques of circuit analysis, the operational amplifier, the natural and step response of RL and RC circuits, the natural and step response of RLC circuits, sinusoidal steady-state analysis, and frequency selective circuits, aiming to provide a sound theoretical background to both analogue and digital circuits courses in subsequent semesters.
         </p>
-        <a href="about.html" class="btn button-style mt-md-5 mt-4">了解更多</a>
+        <a href="https://iclass.bupt.edu.cn/" class="btn button-style mt-md-5 mt-4">了解更多</a>
       </div>
       <div class="banner-img">
         <img
@@ -75,12 +75,11 @@ class="bg-li"
             alt=""
             width="40%"
           />
-          <h4 class="my-4">热门视频</h4>
+          <h4 class="my-4">Hot Video</h4>
           <ul class="mt-4">
             <li>{{ hot_video[0] }}<li>
             <li>{{ hot_video[1] }}</li>
             <li>{{ hot_video[2] }}</li>
-            <li>{{ hot_video[3] }}</li>
           </ul>
           <a href="{{ url_for('page.video') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -92,12 +91,11 @@ class="bg-li"
             alt=""
             width="40%"
           />
-          <h4 class="my-4">热门课件</h4>
+          <h4 class="my-4">Hot Courseware</h4>
           <ul class="mt-4">
             <li>{{ hot_doc[0] }}</li>
             <li>{{ hot_doc[1] }}</li>
             <li>{{ hot_doc[2] }}</li>
-            <li>{{ hot_doc[3] }}</li>
           </ul>
           <a href="{{ url_for('page.doc') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -109,12 +107,11 @@ class="bg-li"
             alt=""
             width="40%"
           />
-          <h4 class="my-4">热门习题</h4>
+          <h4 class="my-4">Hot Exercise</h4>
           <ul class="mt-4">
             <li>{{ hot_exercise[0] }}</li>
             <li>{{ hot_exercise[1] }}</li>
             <li>{{ hot_exercise[2] }}</li>
-            <li>{{ hot_exercise[3] }}</li>
           </ul>
           <a href="{{ url_for('page.exercises') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
         </div>
@@ -130,11 +127,10 @@ class="bg-li"
     <div class="row">
       <div class="col-lg-6 about-right-faq">
         <h6>课程介绍</h6>
-        <h3 class="text-da">电路分析的学习要领</h3>
+        <h3 class="text-da">电子系统基础</h3>
         <p class="mt-4">
-          电路分析课程的学习要领是：理解电流参考方向和电压参考极性的基本概念；
-          在集总电路模型的假设下，抓住决定电路特性的两个约束：拓扑约束和元件约束；
-          掌握三大基本分析方法：叠加方法、分解方法和变换域分析方法。
+          本课程是支撑电信工程及管理专业、电子商务及法律专业毕业要求的核心课程之一，是支撑物联网工程专业毕业要求的重要课程之一。
+          本课程主要包括电阻性电路分析、节点电压分析方法、网孔电流分析方法、线性电路叠加定理、源变换定理、戴维南定理、诺顿定理、最大功率传输定理、运算放大电路分析、一阶和二阶电路响应、正选稳态电路分析、选频电路分析等内容。本课程着重介绍电子系统中电路分析的一般性原理，介绍电路的基本理论和工程知识、电路分析中的关键问题以及分析解决这些问题的思路和方法。通过本课程的学习，能够掌握电路及其元器件的基本模型、电路分析的基本理论知识和基本分析方法，培养科学思维能力、分析计算能力和理论联系实际的工程观点，夯实研究电路问题的理论基础，掌握典型电路分析案例，熟悉电子电路系统的关键指标及其分析方法，为学习后续电路相关的课程及进一步研究电路理论准备必要的基础知识，为从事信息通信网络领域的理论研究、工程技术及管理等工作奠定基础。
         </p>
       </div>
       <div class="col-lg-6 left-wthree-img text-right">
@@ -149,7 +145,7 @@ class="bg-li"
 </section>
 
 <!-- card -->
-<div class="card-sec py-5">
+<!-- <div class="card-sec py-5">
   <div class="container py-xl-5 py-lg-3">
     <div class="inner_sec_info_w3_info mt-3">
       <div class="row card-grid-main">
@@ -240,7 +236,7 @@ class="bg-li"
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- //card -->
 
 <!-- services -->
@@ -342,7 +338,7 @@ class="bg-li"
           </div>
           <div class="col-sm-4 count-w3ls mt-sm-0 mt-3">
             <h4>{{ visit_amount[5] }}+</h4>
-            <p>第六章点击量</p>
+            <p>第七章点击量</p>
           </div>
         </div>
       </div>

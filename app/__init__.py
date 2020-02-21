@@ -52,9 +52,6 @@ def create_app(test_config=None):
     from . import hw
     app.register_blueprint(hw.bp)
 
-    from . import sp_exe
-    app.register_blueprint(sp_exe.bp)
-
     from . import statistics
     app.register_blueprint(statistics.bp)
 
