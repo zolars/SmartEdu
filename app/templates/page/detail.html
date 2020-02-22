@@ -81,11 +81,13 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
           var correct_ans = parseInt(Math.random() * 4);
           for (var i = 0; i < 4; i++) {
             if (i == correct_ans) {
-              var answer = parseInt({{ item.ans_formula }});
+              var answer = parseFloat({{ item.ans_formula }});
+              answer = answer.toFixed(3);
         $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
         $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               } else {
-          var answer = parseInt({{ item.ans_formula }}) + parseInt(Math.random() * 401 - 200);
+              var answer = parseFloat({{ item.ans_formula }}) + parseFloat(Math.random() * parseFloat({{ item.ans_formula }}) - parseFloat({{ item.ans_formula }})/2);
+              answer = answer.toFixed(3);
         $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
         $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               }
