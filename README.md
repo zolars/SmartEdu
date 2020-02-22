@@ -40,6 +40,7 @@
    ```
 
 4. Test running flask application.
+
    ```
    $ conda activate smartedu
    $ export FLASK_APP=app
@@ -48,13 +49,23 @@
    ```
 
 5. Deploy the nginx.
+
    ```
    $ cp ./config/smartedu.conf /etc/nginx/conf.d/
    $ sudo service nginx restart
    ```
 
 6. Run the app with gunicorn.
+
    ```
+   $ conda activate smartedu
+   $ gunicorn -c ./config/gunicorn.conf.py wsgi:app
+   ```
+
+7. MySQL Restart.
+   ```
+   $ kill -9 <pid>
+   $ systemctl restart mariadb.service
    $ conda activate smartedu
    $ gunicorn -c ./config/gunicorn.conf.py wsgi:app
    ```

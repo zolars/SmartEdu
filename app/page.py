@@ -318,6 +318,8 @@ def detail(context):
         ans_formula = df.iloc[0].ans_formula
         items.append({'context': sp_context, 'ans_formula': ans_formula})
 
+    close_db()
+
     submitted, time = check_submitted(context, operation=1)
     if request.method == 'POST' and (not submitted):
         show_sp_exe = True
@@ -398,7 +400,6 @@ def detail(context):
         'show_ans': show_ans
     }
 
-    close_db()
     return render_template('/page/detail.html', **dict)
 
 
