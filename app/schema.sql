@@ -85,7 +85,8 @@ CREATE TABLE hw_info (
   FOREIGN KEY (enter_user) REFERENCES admin_info (id),
   enter_time TIMESTAMP DEFAULT now(),
   expire_time TIMESTAMP NOT NULL ,
-  week VARCHAR(50) NOT NULL
+  week VARCHAR(50) NOT NULL,
+  r_times INT NOT NULL
 );
 
 CREATE TABLE user_auth_history (

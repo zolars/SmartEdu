@@ -23,6 +23,11 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
   <div class="row card-grid-main">
     {% if not show_sp_exe and not show_ans %}
     <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+      <strong style="font-size: 18px;">
+        Your number R is {{ r }}
+      </strong>
+      <br />
+      <br />
       <img src="{{ url_for('hw.hw_img', context=context) }}" class="img-fluid" style="border-radius: 0;" />
     </div>
     {% elif show_sp_exe and not show_ans %}
@@ -46,38 +51,9 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
       </div>
       {% endfor %}
       <script>
-        var notice = PNotify.notice({
-          title: 'Input R',
-          text: '> Please input random number R:',
-          icon: 'fa fa-question-circle',
-          hide: false,
-          stack: {
-            modal: true,
-            overlayClose: false
-          },
-          modules: {
-            Buttons: {
-              closer: false,
-              sticker: false
-            },
-            History: {
-              history: false
-            },
-            Confirm: {
-              prompt: true,
-            }
-          }
-        });
-        notice.on('pnotify.confirm', function (e) {
-          notice.close();
-          var r = e.value;
-          var re = /^[0-9]+.?[0-9]*/;
-          if (!re.test(r)) {
-            PNotify.error("Please enter a number.");
-            location.reload();
-          }
-
-          {% for item in items %}
+        var r = {{ r }}
+        console.log(r);
+        {% for item in items %}
           var correct_ans = parseInt(Math.random() * 4);
           for (var i = 0; i < 4; i++) {
             if (i == correct_ans) {
@@ -93,11 +69,6 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
               }
             }
         {% endfor %}
-
-        });
-        notice.on('pnotify.cancel', function (e) {
-          location.reload();
-        });
       </script>
       {% elif show_sp_exe and show_ans %}
       {% for item in items %}
@@ -199,7 +170,8 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
       opts = {
         title: "Due Soon",
         text:
-          " Left " + days + " Days " + hours + " Hours " + minutes + " Minutes"
+          " Left " + days + " Days " + hours + " Hours " + minutes + " Minutes<br /><br /><h5>Notice! You can only submit the homework ONCE.</h5>",
+        textTrusted: true
       };
       {% endif %}
     } else {
