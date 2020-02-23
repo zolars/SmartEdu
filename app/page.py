@@ -261,14 +261,6 @@ def homework():
         enter_username = df.iloc[0].username
         chapter_id = row['chapter_id']
         week = row['week']
-        if week[-1] == '1':
-            week += 'st'
-        elif week[-1] == '2':
-            week += 'nd'
-        elif week[-1] == '3':
-            week += 'rd'
-        else:
-            week += 'th'
 
         if chapter_focused == 0 or chapter_focused == chapter_id:
             items.append({
@@ -306,6 +298,11 @@ def detail(context):
             user_id=row['enter_user']))
     enter_username = df.iloc[0].username
     week = row['week']
+
+    r = int(json.loads(g.user)['student_id']) % 100
+    if r == 0:
+        r = 100
+    r = r * row['r_times']
 
     ids = row['sp_exe_ids'].split(',')
 
@@ -395,6 +392,7 @@ def detail(context):
         'expire_time': expire_time,
         'enter_username': enter_username,
         'week': week,
+        'r': r,
         'url': 'detail',
         'show_sp_exe': show_sp_exe,
         'show_ans': show_ans
