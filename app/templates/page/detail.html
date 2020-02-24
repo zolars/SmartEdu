@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block title %}SmartEdu | Homework {% endblock %} {%
-block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
+block bodyParams %} class="bg-color-green" {% endblock %} {% block content %}
 
 <style>
   .ui-pnotify-container {
@@ -23,8 +23,8 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
   <div class="row card-grid-main">
     {% if not show_sp_exe and not show_ans %}
     <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
-      <strong style="font-size: 18px;">
-        Your number R is {{ r }}
+      <strong style="font-size: 18px; color:red;">
+        Notice: In this question, R is different for each student. For you, R= {{ "%.2f" % r }} kΩ
       </strong>
       <br />
       <br />
@@ -32,8 +32,11 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
     </div>
     {% elif show_sp_exe and not show_ans %}
     {% for item in items %}
-    <form method=post>
+    <form method=post>     
       <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <strong style="font-size: 18px; color:red;">
+              Notice: In this question, R is different for each student. For you, R= {{ "%.2f" % r }} kΩ
+        </strong>
         <img src="{{ url_for('hw.sp_prob_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;" />
       </div>
       <div style="padding: 1em">
@@ -51,7 +54,7 @@ block bodyParams %} class="bg-color-green"" {% endblock %} {% block content %}
       </div>
       {% endfor %}
       <script>
-        var r = {{ r }}
+        var r = {{ r }};
         console.log(r);
         {% for item in items %}
           var correct_ans = parseInt(Math.random() * 4);
