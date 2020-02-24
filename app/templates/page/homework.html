@@ -1,19 +1,21 @@
-{% extends 'base.html' %} {% block title %}SmartEdu | Homework {% endblock %}
-{% block bodyParams %} class="bg-color-yellow" onload="load();" {% endblock %} {% block
-content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | Homework {% endblock %} {%
+block bodyParams %} class="bg-color-yellow" onload="load();" {% endblock %} {%
+block content %}
 
 <style>
   .ui-pnotify-container {
     padding: 1.4em;
     z-index: 0;
   }
-
 </style>
 
 <!-- banner -->
 <div class="banner_w3lspvt-2">
   <ol class="breadcrumb">
-    <li class="breadcrumb-header" style="padding-top:1.5em; padding-bottom:0px;">
+    <li
+      class="breadcrumb-header"
+      style="padding-top:1.5em; padding-bottom:0px;"
+    >
       Homework
     </li>
   </ol>
@@ -53,7 +55,7 @@ content %}
           <div class="cards-context p-3">
             <h4 class="text-team-w3" style="margin-bottom: 10px;">
               <i class="fa fa-tasks"></i>
-              The {{ item.week }} Week
+              {{ item.context }}
             </h4>
             <span><i class="fa fa-clock-o"></i> {{ item.enter_time }} </span>
             <br />
@@ -73,12 +75,11 @@ content %}
     var chapters = document.getElementsByName("chapter");
     chapters[ {{ chapter_focused }} ].setAttribute('class','font-weight-bold');
   }
-  
+
   function filter(chapter) {
     if (chapter == 0) chapter = "all";
     location.href = '{{ url_for("page." + url) }}?chapter=' + chapter;
   }
 </script>
-
 
 {% endblock %}

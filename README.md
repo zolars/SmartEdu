@@ -62,7 +62,7 @@
    $ gunicorn -c ./config/gunicorn.conf.py wsgi:app
    ```
 
-7. MySQL Restart.
+7. Server Restart.
    ```
    $ kill -9 <pid>
    $ systemctl restart mariadb.service

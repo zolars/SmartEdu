@@ -292,7 +292,7 @@ def detail(context):
     row = df.iloc[0]
 
     enter_time = str(row['enter_time'])[0:10]
-    expire_time = str(row['expire_time'])
+    expire_time = str(row['expire_time']).replace("-", "/")
     df = db.fetchall(
         'SELECT username FROM admin_info WHERE id={user_id}'.format(
             user_id=row['enter_user']))
@@ -322,10 +322,12 @@ def detail(context):
         show_sp_exe = True
         if 'file' not in request.files:
             flash('您没有上传文件，请先选择要上传的文件。', 'error')
+            close_db()
             return redirect(request.url)
         file = request.files['file']
         if file.filename == '':
             flash('您没有上传文件，请先选择要上传的文件。', 'error')
+            close_db()
             return redirect(request.url)
         if file and allowed_file(file.filename):
             if (g.user != '{}') and (g.user is not None):
@@ -341,9 +343,11 @@ def detail(context):
                     flash(
                         "Sorry, the file has existed. Please contact the administrator!"
                         + err.message, "error")
+                    close_db()
                     return redirect(url_for('page.index'))
         else:
             flash('请检查选择的文件格式！', 'error')
+            close_db()
             return redirect(request.url)
 
         submitted, time = check_submitted(context, operation=1)
@@ -370,6 +374,7 @@ def detail(context):
                                       ans=request.form[item['context']])
         except Exception as err:
             logging.error("error location 1 : ", err)
+            close_db()
             return redirect(request.url)
 
         record_hw_history(request.remote_addr, 2, context)
@@ -397,7 +402,7 @@ def detail(context):
         'show_sp_exe': show_sp_exe,
         'show_ans': show_ans
     }
-
+    close_db()
     return render_template('/page/detail.html', **dict)
 
 
