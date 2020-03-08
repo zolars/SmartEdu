@@ -329,7 +329,8 @@ def detail(context):
             flash('您没有上传文件，请先选择要上传的文件。', 'error')
             close_db()
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        isRigthFormat, format = allowed_file(file.filename)
+        if file and isRigthFormat:
             if (g.user != '{}') and (g.user is not None):
                 student_id = json.loads(g.user)['student_id']
                 try:
@@ -346,14 +347,16 @@ def detail(context):
                     close_db()
                     return redirect(url_for('page.index'))
         else:
-            flash('请检查选择的文件格式！', 'error')
+            flash(
+                'Please check your file format! For now, your format is ' +
+                format, 'error')
             close_db()
             return redirect(request.url)
 
         submitted, time = check_submitted(context, operation=1)
-        flash(
-            "You have submitted the file at {}!".format(
-                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
+        # flash(
+        #     "You have submitted the file at {}!".format(
+        #         time.strftime('%Y.%m.%d %H:%M:%S')), "success")
     elif submitted:
         show_sp_exe = True
         flash(
@@ -379,9 +382,9 @@ def detail(context):
 
         record_hw_history(request.remote_addr, 2, context)
         submitted, time = check_submitted(context, operation=2)
-        flash(
-            "You have submitted the Multiple-Choice at {}!".format(
-                time.strftime('%Y.%m.%d %H:%M:%S')), "success")
+        # flash(
+        #     "You have submitted the Multiple-Choice at {}!".format(
+        #         time.strftime('%Y.%m.%d %H:%M:%S')), "success")
     elif submitted:
         show_ans = True
         flash(
@@ -498,46 +501,54 @@ def features():
 @login_required
 def comments():
     record_page_history(pagepath='/comments', user_ip=request.remote_addr)
-
+    user_id = -1
     if (g.user != '{}') and (g.user is not None):
         user_id = json.loads(g.user)['id']
-        db = get_db()
 
-        if request.method == 'POST':
-            comment = request.form['comment']
+    db = get_db()
 
-            db.execute(
-                'INSERT INTO cmt_history (user_id, time, comment) VALUES ({user_id}, now(), "{comment}")'
-                .format(user_id=user_id, comment=comment))
-            db.commit()
+    if request.method == 'POST':
+        comment = request.form['comment']
 
-            close_db()
+        type = 'comment'
+        if comment.split('#')[0] == 'feedback':
+            type = 'feedback'
 
-            flash('Your comment has been posted!', 'success')
-            return 'success'
+        db.execute(
+            'INSERT INTO cmt_history (user_id, time, comment) VALUES ({user_id}, now(), "{comment}")'
+            .format(user_id=user_id, comment=comment))
+        db.commit()
 
-        else:
-            items = []
-            for _, row in db.fetchall(
-                    'SELECT * FROM cmt_history ORDER BY id').iterrows():
-                df = db.fetchall(
-                    'SELECT username FROM user_info WHERE id={user_id}'.format(
-                        user_id=row['user_id']))
-                username = df.iloc[0].username
-                comment = row['comment']
-                time = row['time']
+        close_db()
+
+        flash('Your ' + type + ' has been posted!', 'success')
+      
+        return 'success'
+
+    else:
+        items = []
+        for _, row in db.fetchall(
+                'SELECT * FROM cmt_history ORDER BY id').iterrows():
+            df = db.fetchall(
+                'SELECT username FROM user_info WHERE id={user_id}'.format(
+                    user_id=row['user_id']))
+            username = df.iloc[0].username
+            comment = row['comment']
+            time = row['time']
+            if (comment.split("#")[0] != 'feedback'
+                    and comment.split("#")[0] != 'deleted'):
                 items.append({
                     'username': username,
                     'comment': comment,
                     'time': time
                 })
-
-            dict = {'items': items}
-            return render_template('/page/comments.html', **dict)
+        close_db()
+        dict = {'items': items}
+        return render_template('/page/comments.html', **dict)
 
 
 def allowed_file(filename):
-    allowed_extensions = {'pdf', 'jpg', 'png', 'doc', 'docx'}
+    allowed_extensions = {'pdf', 'jpg', 'jpeg', 'png', 'heic', 'doc', 'docx'}
 
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in allowed_extensions
+           filename.rsplit('.',1)[1].lower() in allowed_extensions, filename.rsplit('.',1)[1].lower()

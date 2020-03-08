@@ -1,10 +1,5 @@
-{% extends 'base.html' %} {% block title %}SmartEdu | 主页{% endblock %} 
-
-{% block bodyParams %}
-class="bg-li"
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% block title %}SmartEdu | 主页{% endblock %} {%
+block bodyParams %} class="bg-li" {% endblock %} {% block content %}
 
 <!-- banner -->
 <div class="banner_w3lspvt position-relative">
@@ -15,9 +10,23 @@ class="bg-li"
           Introduction to Electronic System
         </h3>
         <p class="text-sty-banner">
-          This course introduces the basic conceptions and analysis methods of electronic devices, components, circuits and simple electronic systems, and mainly focuses on the general concepts, principles, knowledge and analysis of direct current and alternative current circuits. The content of the course covers the simple resistive circuits analysis, techniques of circuit analysis, the operational amplifier, the natural and step response of RL and RC circuits, the natural and step response of RLC circuits, sinusoidal steady-state analysis, and frequency selective circuits, aiming to provide a sound theoretical background to both analogue and digital circuits courses in subsequent semesters.
+          This course introduces the basic conceptions and analysis methods of
+          electronic devices, components, circuits and simple electronic
+          systems, and mainly focuses on the general concepts, principles,
+          knowledge and analysis of direct current and alternative current
+          circuits. The content of the course covers the simple resistive
+          circuits analysis, techniques of circuit analysis, the operational
+          amplifier, the natural and step response of RL and RC circuits, the
+          natural and step response of RLC circuits, sinusoidal steady-state
+          analysis, and frequency selective circuits, aiming to provide a sound
+          theoretical background to both analogue and digital circuits courses
+          in subsequent semesters.
         </p>
-        <a href="https://iclass.bupt.edu.cn/" class="btn button-style mt-md-5 mt-4">了解更多</a>
+        <a
+          href="https://iclass.bupt.edu.cn/"
+          class="btn button-style mt-md-5 mt-4"
+          >了解更多</a
+        >
       </div>
       <div class="banner-img">
         <img
@@ -77,11 +86,16 @@ class="bg-li"
           />
           <h4 class="my-4">Hot Video</h4>
           <ul class="mt-4">
-            <li>{{ hot_video[0] }}<li>
+            <li>{{ hot_video[0] }}</li>
+            <li></li>
             <li>{{ hot_video[1] }}</li>
             <li>{{ hot_video[2] }}</li>
           </ul>
-          <a href="{{ url_for('page.video') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
+          <a
+            href="{{ url_for('page.video') }}"
+            class="button-w3ls btn mt-sm-5 mt-4"
+            >View More</a
+          >
         </div>
       </div>
       <div class="col-lg-4 about-grid my-lg-0 my-5">
@@ -97,7 +111,11 @@ class="bg-li"
             <li>{{ hot_doc[1] }}</li>
             <li>{{ hot_doc[2] }}</li>
           </ul>
-          <a href="{{ url_for('page.doc') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
+          <a
+            href="{{ url_for('page.doc') }}"
+            class="button-w3ls btn mt-sm-5 mt-4"
+            >View More</a
+          >
         </div>
       </div>
       <div class="col-lg-4 about-grid">
@@ -113,7 +131,11 @@ class="bg-li"
             <li>{{ hot_exercise[1] }}</li>
             <li>{{ hot_exercise[2] }}</li>
           </ul>
-          <a href="{{ url_for('page.exercises') }}" class="button-w3ls btn mt-sm-5 mt-4">View More</a>
+          <a
+            href="{{ url_for('page.exercises') }}"
+            class="button-w3ls btn mt-sm-5 mt-4"
+            >View More</a
+          >
         </div>
       </div>
     </div>
@@ -397,35 +419,52 @@ class="bg-li"
     </section> -->
 <!-- //partners -->
 
-<!-- 
 <div class="py-5">
   <div class="container py-xl-5 py-lg-3">
     <div class="feedback mx-auto">
       <div class="icon-effect-w3">
         <span class="fa fa-envelope"></span>
       </div>
-      <h2 class="tittle text-center font-weight-bold">问题反馈</h2>
+      <h2 class="tittle text-center font-weight-bold">Feedback</h2>
       <p class="sub-tittle text-center mt-3 mb-sm-5 mb-4">
-        如果您在使用中遇到问题，请通过此处反馈给后台工作人员，我们会尽快为您解决。
+        If you encounter problems during use, please feedback to us. <br />
+        We will fix it for you as soon as possible.
       </p>
-      <form action="#" method="post" class="feedback-wthree pt-2">
+      <form
+        class="feedback-wthree pt-2"
+      >
         <div class="d-flex feedback-wthree-field">
           <input
+            id="feedbackMsg"
             class="form-control"
-            type="text"
-            placeholder="请输入您的反馈..."
-            name="feedback"
+            placeholder="Please input your feedback..."
             required=""
           />
-          <button class="btn form-control w-50" type="submit">
+          <button type="button" id="feedback" class="btn form-control w-50">
             Submit
           </button>
         </div>
       </form>
     </div>
   </div>
-</div> -->
+</div>
 
 <div class="py-5"></div>
 
+<script>
+  $("button#feedback").click(function() {
+    if ($("input#feedbackMsg").val() == "") {
+      return;
+    }
+    data = { comment: "feedback#" + $("input#feedbackMsg").val() };
+    $.ajax({
+      type: "POST",
+      url: "{{ url_for('page.comments') }}",
+      data: data,
+      success: function(response) {
+        location.reload();
+      }
+    });
+  });
+</script>
 {% endblock %}

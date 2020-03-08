@@ -65,7 +65,6 @@
 7. Server Restart.
    ```
    $ kill -9 <pid>
-   $ systemctl restart mariadb.service
    $ conda activate smartedu
-   $ gunicorn -c ./config/gunicorn.conf.py wsgi:app
+   $ sh deploy.sh
    ```

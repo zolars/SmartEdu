@@ -24,7 +24,7 @@ block bodyParams %} class="bg-color-green" {% endblock %} {% block content %}
     {% if not show_sp_exe and not show_ans %}
     <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
       <strong style="font-size: 18px; color:red;">
-        Notice: In this question, R is different for each student. For you, R= {{ "%.2f" % r }} kΩ
+        Notice: In this question, <i>a</i> is different for each student. For you, <i>a</i>= {{ "%.2f" % r }} 
       </strong>
       <br />
       <br />
@@ -35,19 +35,19 @@ block bodyParams %} class="bg-color-green" {% endblock %} {% block content %}
     <form method=post>     
       <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
         <strong style="font-size: 18px; color:red;">
-              Notice: In this question, R is different for each student. For you, R= {{ "%.2f" % r }} kΩ
+          Notice: In this question, <i>a</i> is different for each student. For you, <i>a</i>= {{ "%.2f" % r }}
         </strong>
         <img src="{{ url_for('hw.sp_prob_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;" />
       </div>
       <div style="padding: 1em">
         <div class="about-grid-main" style="padding: 1.5em; width: 100%; background-color:  #dff0f0;">
-          <strong style="font-size: 18px;">Please give your answer :&emsp; </strong>
+          <strong style="font-size: 18px;">Please give your answer :&emsp; </strong><br />
           <input type="radio" name="{{ item.context }}" id="{{ item.context }}>0" value="">
-          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>0"></span>
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>0"></span><br />
           <input type="radio" name="{{ item.context }}" id="{{ item.context }}>1" value="">
-          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>1"></span>
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>1"></span><br/>
           <input type="radio" name="{{ item.context }}" id="{{ item.context }}>2" value="">
-          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>2"></span>
+          <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>2"></span><br/>
           <input type="radio" name="{{ item.context }}" id="{{ item.context }}>3" value="">
           <span class="col-lg-2" name="{{ item.context }}" id="{{ item.context }}>3"></span>
         </div>
@@ -60,15 +60,15 @@ block bodyParams %} class="bg-color-green" {% endblock %} {% block content %}
           var correct_ans = parseInt(Math.random() * 4);
           for (var i = 0; i < 4; i++) {
             if (i == correct_ans) {
-              var answer = parseFloat({{ item.ans_formula }});
-              answer = answer.toFixed(3);
-        $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
-        $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+                var answer = parseFloat({{ item.ans_formula }});
+                answer = answer.toFixed(3);
+                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(1);
+                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               } else {
-              var answer = parseFloat({{ item.ans_formula }}) + parseFloat(Math.random() * parseFloat({{ item.ans_formula }}) - parseFloat({{ item.ans_formula }})/2);
-              answer = answer.toFixed(3);
-        $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
-        $('span[id="{{ item.context }}>' + i + '"]').html(answer);
+                var answer = parseFloat({{ item.ans_formula }}) + parseFloat(Math.random() * parseFloat({{ item.ans_formula }}) - parseFloat({{ item.ans_formula }})/2);
+                answer = answer.toFixed(3);
+                $('input[type="radio"][id="{{ item.context }}>' + i + '"]').val(0);
+                $('span[id="{{ item.context }}>' + i + '"]').html(answer);
               }
             }
         {% endfor %}
@@ -76,6 +76,9 @@ block bodyParams %} class="bg-color-green" {% endblock %} {% block content %}
       {% elif show_sp_exe and show_ans %}
       {% for item in items %}
       <div class="about-grid-main" style="padding: 1.5em; width: 100%;">
+        <strong style="font-size: 18px; color:red;">
+          Notice: In this question, <i>a</i> is different for each student. For you, <i>a</i>= {{ "%.2f" % r }}
+        </strong>
         <img src="{{ url_for('hw.sp_prob_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;" />
         <img name="ans_img" src="{{ url_for('hw.sp_ans_img', context=item.context) }}" class="img-fluid" style="border-radius: 0;"/>
       </div>
